@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set pullcurrentbranch = $(git rev-parse --abbrev-ref HEAD)
+git fetch
+git pull origin $pullcurrentbranch

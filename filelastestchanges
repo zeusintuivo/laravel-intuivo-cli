@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+git blame --since=3.weeks --  $@ 

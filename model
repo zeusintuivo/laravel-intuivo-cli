@@ -1,0 +1,605 @@
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaras <jesus@gammpartners.com>
+#
+# Procedural Programming to Create 
+# Models, Migrations, Controllers, and Tests, 
+# 
+#
+
+
+//
+//
+//
+// Step 1 Check Arguments
+//
+//
+//
+
+# Before Loading anything Check Arguments Passed
+# Get argv 
+if (!isset($argv) || !isset($argv[1])) {
+	echo "
+	Sample Usage:    - expects only one Dir not more
+	    call model Person\PersonAddress
+	    call model Person/PersonAddress
+	    call model PersonAddress
+	    ";
+
+	die(0);
+}
+
+/**
+ * Sample Usage
+ * $argv[1] = changeSlash($argv[1] );
+ * 
+ */
+function changeSlash($que) {
+	if (stripos($que, "\\") > 0) {
+		$que = str_replace('\\', '/', $que);
+	}
+	return $que; 
+}
+
+
+
+//
+//
+//
+//
+//
+// Step 2. Load Laravel Kernel Basic app
+//
+//
+//
+//
+//
+//
+$input = "";
+$status = "";
+$kernel = "";
+$app = "";
+function createApplication() {
+	require __DIR__.'/bootstrap/autoload.php';
+
+	$app = require_once __DIR__.'/bootstrap/app.php';
+	
+	$kernel = $app->make('Illuminate\Contracts\Console\Kernel');
+
+	$input = new Symfony\Component\Console\Input\ArgvInput;
+
+
+	return $kernel;
+}
+$app = createApplication();
+
+//
+//
+// Load String Files
+//
+//
+use Illuminate\Support\Pluralizer;
+use Illuminate\Support\Str;
+	//LOAD TEST
+	// echo Pluralizer::plural("PersonStatus"),"\n";
+	// echo Str::snake("PersonStatus"),"\n";	
+	// $argv[1] = changeSlash($argv[1] );
+	// echo Pluralizer::plural($argv[1]),"\n";
+	// echo Str::snake($argv[1]),"\n";
+	// die();
+
+//
+//
+//
+// Wrap snake function 
+//
+//
+function camelToUnderScore($name) {
+	return Str::snake($name);
+}
+
+
+
+
+//
+//
+//
+// Load Colors Script
+//
+//
+//
+require "Colors";
+
+function replace(Colors $colors, $file, $find, $replace_with) {
+	say($colors, "Reading File to Change", $file);
+	if (!file_exists($file)) { 
+
+		err($colors, "File was not found:", $file);
+		return;
+	}
+	$contents = file_get_contents($file);
+	$contents = str_replace($find,  $replace_with, $contents);
+	file_put_contents($file, $contents);
+}
+
+//
+//
+//
+//
+//
+// Load scripts for author and email 
+//
+//
+//
+//
+
+$name= exec('git config user.name');
+$email= exec('git config user.email');
+$author="$name <$email>";
+
+//
+//
+// 
+// Change \ to /  from argument
+//
+//
+//
+$argv[1] = changeSlash($argv[1] );
+
+// Pass Argument "Person/PersonThing" to $entity variable
+$entity = $argv[1];
+
+//
+//
+//
+//
+// Obtain, plural, camel case ( snake case ), file and dir from request
+//
+//
+//
+//
+
+$file =""; //singular for model 
+$dir = ""; //for the mkdirs in the controllers, and tests
+$file_plural = ""; //plural for the migrations 
+$file_plural_snake = ""; //plural snake for the migrations 
+
+if (stripos($argv[1], "/") > 0) {
+	$file_exploded = explode("/", $argv[1]);
+	$file = $file_exploded[1];
+	$dir = $file_exploded[0];
+}
+
+$file_plural=Pluralizer::plural($file);
+$file_plural_snake =  camelToUnderScore($file_plural);
+
+
+//NaME CHANGE TEST
+// echo $file."\n";
+// echo $dir. "\n";
+// echo $file_plural. "\n";
+// echo $file_plural_snake. "\n";
+// die();
+
+
+//REF: http://symfony.com/doc/current/components/console/introduction.html
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+/*
+Verbosity Levels
+Mode	Value
+OutputInterface::VERBOSITY_QUIET	Do not output any messages
+OutputInterface::VERBOSITY_NORMAL	The default verbosity level
+OutputInterface::VERBOSITY_VERBOSE	Increased verbosity of messages
+OutputInterface::VERBOSITY_VERY_VERBOSE	Informative non essential messages
+OutputInterface::VERBOSITY_DEBUG	Debug messages
+// $output = new ConsoleOutput(Output::VERBOSITY_QUIET, true);
+*/
+
+$output = new ConsoleOutput();
+
+// TEST CONSOLE SAMPLE USE
+// green text
+// $output->writeln('<info>foo</info>');
+
+// // yellow text
+// $output->writeln('<comment>foo</comment>');
+
+// // black text on a cyan background
+// $output->writeln('<question>foo</question>');
+
+// // white text on a red background
+// $output->writeln('<error>foo</error>');
+
+// green text
+// $output->writeln('<fg=green>foo</fg=green>');
+
+// // black text on a cyan background
+// $output->writeln('<fg=black;bg=cyan>foo</fg=black;bg=cyan>');
+
+// // bold text on a yellow background
+// $output->writeln('<bg=yellow;options=bold>foo</bg=yellow;options=bold>');
+ // die(0);
+
+
+$description = "PHIWeb";
+$revision = "6";
+$version = "6";
+#
+#
+#
+#
+# Creation Start
+#
+#
+#
+#
+
+# Find migration file ad remove if an duplicated one
+$migration_file = @exec('ls database/migrations/*_'.$file_plural_snake.'_table.php');
+if ( file_exists($migration_file)) {
+	$said = @exec('rm '.$migration_file);
+	$said = @exec('git rm '.$migration_file);
+	say($colors, "Migration Removed", $migration_file. "\n-". $said);
+}
+
+#
+#
+#
+#
+# Model - 
+#
+#
+#
+# *Model is singular and the base for the other names
+
+$said = exec('php "artisan" make:model Models/'.$entity);
+say($colors, "Model", $said);
+
+
+# Place author's name in the Model
+# sample test -> find app/Models -type f -print0 | xargs -0 sed -i 's/{{author}}/"Jesus Alcaraz <jesus@gammapartners.com>"/g'
+replace($colors, "app/Models/".$entity.".php", '{{author}}', $author);
+replace($colors, "app/Models/".$entity.".php", '{{description}}', "Model created for ". $description);
+replace($colors, "app/Models/".$entity.".php", '{{version}}', $version);
+replace($colors, "app/Models/".$entity.".php", '{{revision}}', $revision);
+
+
+#
+#
+#
+# Migration
+#
+#
+#
+
+# Find migration file 
+$migration_file = exec('ls database/migrations/*_'.$file_plural_snake.'_table.php');
+
+say($colors, "Migration", $migration_file);
+
+# Place author's name in the Migration
+replace($colors, $migration_file, '{{author}}', $author);
+replace($colors, $migration_file, '{{dir}}', $dir);
+replace($colors, $migration_file, '{{file}}', $file);
+replace($colors, $migration_file, '{{revision}}', $revision);
+replace($colors, $migration_file, '{{version}}', $version);
+replace($colors, $migration_file, '{{description}}', "Migration created for ". $description);
+
+#
+#
+#
+# Controller
+#
+#
+#
+
+$said = exec('php "artisan" make:controller '.$entity.'Controller');
+say($colors, "Controller", $said);
+
+# Place author's name in the Controller
+
+replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{author}}', $author);
+replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{description}}', "Controller created for ". $description);
+replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{revision}}', $revision);
+replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{version}}', $version);
+
+
+
+#
+#
+#
+# Request
+#
+#
+#
+
+$said = exec('php "artisan" make:request '.$entity.'Request');
+say($colors, "Request", $said);
+
+# Place author's name in the Controller
+
+replace($colors, "app/Http/Requests/".$entity."Request.php", '{{author}}', $author);
+replace($colors, "app/Http/Requests/".$entity."Request.php", '{{description}}', "Request created for ".$description);
+replace($colors, "app/Http/Requests/".$entity."Request.php", '{{revision}}', $revision);
+replace($colors, "app/Http/Requests/".$entity."Request.php", '{{version}}', $version);
+
+
+
+
+
+
+#
+#
+#
+#
+# Seed
+#
+#
+#
+say($colors, "Seed", "Creating Seed");
+$said = exec('seedTemplate '.$entity);
+say($colors, "Seed", $said);
+
+# Place author's name in the Seed takes place in the same script
+
+
+
+
+#
+#
+#
+#
+# Tests
+#
+#
+#
+#
+
+#
+#
+#
+#
+# Tests - Model
+#
+#
+#
+#
+@mkdir("tests/models");
+@mkdir("tests/models/".$dir);
+@mkdir("tests/models/".$dir."/".$file);
+exec("touch tests/models/".$dir."/".$file."/model_test.php");
+
+$model_test_template = "<?php
+
+/**
+ * A Basic Model Test
+ *
+ * @author $author
+ * @revision 1
+ */
+use PHIWeb\Models\\".$dir."\\".$file.";
+
+class ".$file."Test extends TestCase {
+
+	public function testCanInstantiate".$file."() {
+		\$".camelToUnderScore($file)." = new ".$file.";
+		\$this->assertEquals(get_class(\$".$file_plural_snake."), '".$file."');
+	}
+}
+";
+
+file_put_contents("tests/models/".$dir."/".$file."/model_test.php",$model_test_template );
+
+
+
+#
+#
+#
+#
+# Tests - controller
+#
+#
+#
+#
+@mkdir("tests/controllers");
+@mkdir("tests/controllers/".$dir);
+@mkdir("tests/controllers/".$dir."/".$file);
+exec("touch tests/controllers/".$dir."/".$file."/controller_test.php");
+
+$controller_test_template = "<?php
+
+/**
+ * A Basic Controller Test
+ *
+ * @author $author
+ * @revision 1
+ */
+use PHIWeb\Models\\".$dir."\\".$file.";
+
+class ".$file."ControllerTest extends TestCase {
+
+	public function test".$file."ControllerBasicExample() {
+		\$response = \$this->call('GET', '/');
+		
+		\$this->assertEquals(200, \$response->getStatusCode());
+	}
+
+}
+";
+file_put_contents("tests/controllers/".$dir."/".$file."/controller_test.php",$controller_test_template );
+
+#
+#
+#
+#
+#
+# Tests - Request
+#
+#
+#
+#
+@mkdir("tests/requests");
+@mkdir("tests/requests/".$dir);
+@mkdir("tests/requests/".$dir."/".$file);
+exec("touch tests/requests/".$dir."/".$file."/request_test.php");
+
+$request_test_template = "<?php
+
+/**
+ * A Basic Request Test
+ *
+ * @author $author
+ * @revision 1
+ */
+use PHIWeb\Models\\".$dir."\\".$file.";
+
+class ".$file."RequestTest extends TestCase {
+
+	public function test".$file."RequestBasicExample() {
+		\$response = \$this->call('GET', '/');
+		
+		\$this->assertEquals(200, \$response->getStatusCode());
+	}
+
+}
+";
+file_put_contents("tests/requests/".$dir."/".$file."/request_test.php",$request_test_template );
+
+#
+#
+#
+#
+# Tests - migration
+#
+#
+#
+#
+@mkdir("tests/migration");
+@mkdir("tests/migration/".$dir);
+@mkdir("tests/migration/".$dir."/".$file);
+exec("touch tests/migration/".$dir."/".$file."/migration_test.php");
+
+$migration_test_template = "<?php
+
+/**
+ * Basic Migration Test.
+ *
+ * @author $author
+ * @revision 1
+ */
+class  ".$file."Test extends Illuminate\Foundation\Testing\TestCase {
+
+	public function setUp() {
+		parent::setUp();
+		Artisan::call('migrate');
+	}
+
+	public function tearDown() {
+		parent::setUp();
+		Artisan::call('migrate:reset');
+
+	}
+
+	public function createApplication() {
+		\$app = require __DIR__.'/../../../bootstrap/app.php';
+
+		\$app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
+
+		return \$app;
+	}
+
+}
+";
+
+file_put_contents("tests/migration/".$dir."/".$file."/migration_test.php",$migration_test_template);
+
+#
+#
+#
+#
+# Tests - route
+#
+#
+#
+#
+@mkdir("tests/routes");
+@mkdir("tests/routes/".$dir);
+@mkdir("tests/routes/".$dir."/".$file);
+exec("touch tests/routes/".$dir."/".$file."/route_test.php");
+
+$route_test_template = "<?php
+
+/**
+ * Basic Router Test.
+ *
+ * @author $author
+ * @revision 1
+ */
+class ".$file."Test extends TestCase {
+
+	/**
+	 * A basic router functional test example.
+	 *
+	 * @author $author
+	 * @return void
+	 */
+	public function test".$file."BasicExample() {
+		\$response = \$this->call('GET', '/');
+		
+		\$this->assertEquals(200, \$response->getStatusCode());
+	}
+
+}";
+
+file_put_contents("tests/routes/".$dir."/".$file."/route_test.php",$route_test_template);
+
+#
+#
+#
+#
+# Tests - view
+#
+#
+#
+#
+@mkdir("tests/views");
+@mkdir("tests/views/".$dir);
+@mkdir("tests/views/".$dir."/".$file);
+exec("touch tests/views/".$dir."/".$file."/view_test.php");
+
+$view_test_template = "<?php
+
+use Goutte\Client;
+
+/**
+ * Basic View Test
+ *
+ * @author $author
+ * @revision 1
+ */
+class ".$file."Test extends TestCase {
+
+}";
+file_put_contents("tests/views/".$dir."/".$file."/view_test.php",$view_test_template);
+
+
+
+// how to run a test exec('vendor/bin/phpunit tests/Models/'.$entity);
+
+#
+#
+#
+#
+# Commit to Github
+#
+#
+#
+#
+say($colors, "\n\nAdd", "Add files to git");
+exec("add");
+$commit_msg = ("Created ". $file. " Model, Controller, Request, Migration, Seeder, and Tests for View, Route, Migration, Model, Controller and Request");
+say($colors, "\n\nCommit", $commit_msg);
+exec("commit ". $commit_msg);
+exec ("status");

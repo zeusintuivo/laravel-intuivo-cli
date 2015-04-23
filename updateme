@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set updatemecurrentbranch = $(git rev-parse --abbrev-ref HEAD)
+master;
+pull;
+branch $updatemecurrentbranch;
+merge master;

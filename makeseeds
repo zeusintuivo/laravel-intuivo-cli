@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+rem call seedTemplate Auth/PasswordReset
+
+
+call seedTemplate DailyLog/DailyLog
+call seedTemplate DailyLog/DailyLogComment
+
+
+call seedTemplate Immunization/VaccineComments
+call seedTemplate Immunization/VaccineLog
+
+
+call seedTemplate Logger/Logger
+call seedTemplate Logger/LoggerComment
+
+
+call seedTemplate Medication/ProvisionComment
+call seedTemplate Medication/ProvisionLog
+
+
+call seedTemplate News/NewsCategory
+call seedTemplate News/NewsComment
+call seedTemplate News/NewsGroup
+call seedTemplate News/NewsThread
+
+call seedTemplate Organization/Insurance
+call seedTemplate Organization/InsuranceAddress
+call seedTemplate Organization/Jurisdiction
+call seedTemplate Organization/Member
+call seedTemplate Organization/Organization
+call seedTemplate Organization/OrganizationAddress
+call seedTemplate Organization/School
+
+
+
+rem call seedTemplate Param/ExternBmiPercentile
+rem call seedTemplate Param/Location
+rem call seedTemplate Param/Param
+call seedTemplate Param/Role
+call seedTemplate Param/SchoolYear
+call seedTemplate Param/Template
+
+
+call seedTemplate Person/Person
+call seedTemplate Person/PersonAddress
+call seedTemplate Person/PersonAlert
+call seedTemplate Person/PersonGuardian
+call seedTemplate Person/PersonPhone
+call seedTemplate Person/PersonPhoto
+call seedTemplate Person/PersonRelative
+call seedTemplate Person/PersonRole
+
+
+call seedTemplate Screen/ScreenBmi
+call seedTemplate Screen/ScreenCustom
+call seedTemplate Screen/ScreenHearing
+call seedTemplate Screen/Screening
+call seedTemplate Screen/ScreenScoliosis
+call seedTemplate Screen/ScreenVision
+
+
+call seedTemplate Student/Room
+call seedTemplate Student/Student
+call seedTemplate Student/StudentRecord
+
+cd ..
+cd ..
+call autoload
+cd database
+cd seeds

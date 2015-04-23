@@ -1,0 +1,422 @@
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaras <jesus@gammpartners.com>
+
+
+
+//
+//
+//
+// Step 1 Check Arguments
+//
+//
+//
+
+# Before Loading anything Check Arguments Passed
+# Get argv 
+if (!isset($argv) || !isset($argv[1])) {
+	echo "
+	Sample Usage:    - expects only one Dir not more
+	    call seedTemplate Person/PersonAddress
+	    call seedTemplate Person\PersonAddress
+	    call seedTemplate PersonAddress
+	    ";
+
+	die(0);
+}
+
+/**
+ * Sample Usage
+ * $argv[1] = changeSlash($argv[1] );
+ * 
+ */
+function changeSlash($que) {
+	if (stripos($que, "\\") > 0) {
+		$que = str_replace('\\', '/', $que);
+	}
+	return $que; 
+}
+
+
+
+
+
+//
+//
+//
+//
+//
+// Step 2. Load Laravel Kernel Basic app
+//
+//
+//
+//
+//
+//
+$input = "";
+$status = "";
+$kernel = "";
+$app = "";
+function createApplication() {
+	require __DIR__.'/bootstrap/autoload.php';
+
+	$app = require_once __DIR__.'/bootstrap/app.php';
+	
+	$kernel = $app->make('Illuminate\Contracts\Console\Kernel');
+
+	$input = new Symfony\Component\Console\Input\ArgvInput;
+
+
+	return $kernel;
+}
+$app = createApplication();
+
+//
+//
+// Load String Files
+//
+//
+use Illuminate\Support\Pluralizer;
+use Illuminate\Support\Str;
+	//LOAD TEST
+	// echo Pluralizer::plural("PersonStatus"),"\n";
+	// echo Str::snake("PersonStatus"),"\n";	
+	// $argv[1] = changeSlash($argv[1] );
+	// echo Pluralizer::plural($argv[1]),"\n";
+	// echo Str::snake($argv[1]),"\n";
+	// die();
+
+//
+//
+//
+// Wrap snake function 
+//
+//
+function camelToUnderScore($name) {
+	return Str::snake($name);
+}
+
+
+
+
+//
+//
+//
+// Load Colors Script
+//
+//
+//
+require "Colors";
+
+function replace(Colors $colors, $file, $find, $replace_with) {
+	say($colors, "Reading File to Change", $file);
+	if (!file_exists($file)) { 
+
+		err($colors, "File was not found:", $file);
+		return;
+	}
+	$contents = file_get_contents($file);
+	$contents = str_replace($find,  $replace_with, $contents);
+	file_put_contents($file, $contents);
+}
+
+//
+//
+//
+//
+//
+// Load scripts for author and email 
+//
+//
+//
+//
+
+$name= exec('git config user.name');
+$email= exec('git config user.email');
+$author="$name <$email>";
+
+//
+//
+// 
+// Change \ to /  from argument
+//
+//
+//
+$argv[1] = changeSlash($argv[1] );
+
+// Pass Argument "Person/PersonThing" to $entity variable
+$entity = $argv[1];
+
+//
+//
+//
+//
+// Obtain, plural, camel case ( snake case ), file and dir from request
+//
+//
+//
+//
+
+$file =""; //singular for model 
+$dir = ""; //for the mkdirs in the controllers, and tests
+$file_plural = ""; //plural for the migrations 
+$file_plural_snake = ""; //plural snake for the migrations 
+
+if (stripos($argv[1], "/") > 0) {
+	$file_exploded = explode("/", $argv[1]);
+	$file = $file_exploded[1];
+	$dir = $file_exploded[0];
+}
+
+$file_plural=Pluralizer::plural($file);
+$file_plural_snake =  camelToUnderScore($file_plural);
+
+
+//NaME CHANGE TEST
+// echo $file."\n";
+// echo $dir. "\n";
+// echo $file_plural. "\n";
+// echo $file_plural_snake. "\n";
+// die();
+
+
+//REF: http://symfony.com/doc/current/components/console/introduction.html
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+/*
+Verbosity Levels
+Mode	Value
+OutputInterface::VERBOSITY_QUIET	Do not output any messages
+OutputInterface::VERBOSITY_NORMAL	The default verbosity level
+OutputInterface::VERBOSITY_VERBOSE	Increased verbosity of messages
+OutputInterface::VERBOSITY_VERY_VERBOSE	Informative non essential messages
+OutputInterface::VERBOSITY_DEBUG	Debug messages
+// $output = new ConsoleOutput(Output::VERBOSITY_QUIET, true);
+*/
+
+$output = new ConsoleOutput();
+
+// TEST CONSOLE SAMPLE USE
+// green text
+// $output->writeln('<info>foo</info>');
+
+// // yellow text
+// $output->writeln('<comment>foo</comment>');
+
+// // black text on a cyan background
+// $output->writeln('<question>foo</question>');
+
+// // white text on a red background
+// $output->writeln('<error>foo</error>');
+
+// green text
+// $output->writeln('<fg=green>foo</fg=green>');
+
+// // black text on a cyan background
+// $output->writeln('<fg=black;bg=cyan>foo</fg=black;bg=cyan>');
+
+// // bold text on a yellow background
+// $output->writeln('<bg=yellow;options=bold>foo</bg=yellow;options=bold>');
+ // die(0);
+
+
+$description = "PHIWeb";
+$revision = "6";
+$version = "6";
+
+#
+#
+#
+#
+# Creation Start
+#
+#
+#
+#
+say($colors, "seedTemplate", $argv[1]);
+say($colors, "file", $file);
+say($colors, "dir", $dir);
+
+$seed_directory = "database/seeds/";
+
+
+//Create dir if it doesnot exists 
+say($colors, " create", $seed_directory.$dir);
+$said = @mkdir($seed_directory.$dir);
+say($colors, " -", $said);
+
+say($colors, " create", $seed_directory.$dir."/".$file."Seeder.php");
+$said = @exec("touch ".$seed_directory.$dir."/".$file."Seeder.php");
+say($colors, " -", $said);
+
+
+$template = "<?php
+
+use Illuminate\Database\Seeder;
+use PHIWeb\Models\PHIWebSeeder;
+use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Database\Migrations\Migration;
+use PHIWeb\Models\Param\Location;
+use PHIWeb\Models\Param\Param;
+use PHIWeb\Models\Person\Person;
+
+use PHIWeb\Models\\".$dir."\\".$file.";
+
+/**
+ * Run the database seeds.
+ *
+ * @author $author
+ * @revision 1
+ */
+class ".$file."Seeder extends PHIWebSeeder {
+
+	private \$currenttable = '".camelToUnderScore($file_plural)."';
+
+	/**
+	 * Run the database seeds.
+	 *
+	 * @author $author
+	 * @return void
+	 */
+	public function run()
+	{
+		Model::unguard();//disable Model checks 
+
+		".$file. "::truncate();
+
+		\$enabled = true;		
+		
+		//Leave first 1000 for programming options 
+		DB::statement( 'ALTER TABLE `'.\$this->currenttable.'`  AUTO_INCREMENT = 1000;');
+
+		
+		\$".camelToUnderScore($file)."_last_id = last(".$file. "::lists('id'));
+			\$max = \$".camelToUnderScore($file)."_last_id+4000;
+
+		if (\$enabled) {
+
+
+			\$password = bcrypt('123456');
+			\$currenttime = Carbon\Carbon::now();
+					
+			Eloquent::unguard(); //disable Model checks
+
+			\$faker = Faker\Factory::create();
+			
+			\$people_ids = Person::lists('id');
+		
+			\$".camelToUnderScore($file)."_comment_ids = ".$file. "::lists('id');
+
+			\$person_last_id = last(Person::lists('id'));
+			\$person_first_id = Person::first()->id;
+			
+			//Create sample 100 records 
+			foreach(range(\$".camelToUnderScore($file)."_last_id+1, \$max) as \$index) {
+				
+				//Get a random number for a category_ids
+				\$category_id = Param::seekParamRandomRecord(300010, 300018, 200000); //200000 is for category_ids
+
+				//Get a random number for a status_id
+				\$status_id = Param::seekParamRandomRecord(300100, 300105, 200100); //200100 is for status_id
+	
+				//Get a random number for a timeperiod_id
+				\$timeperiod_id = Param::seekParamRandomRecord(300161, 300163, 200200); //200200 is for timeperiod_id
+	
+				//Get a random number for a location_id
+				\$location_id = Param::seekParamRandomRecord(300190, 300192, 200300); //200200 is for location_id
+				
+				//Get a random number for a referred_to
+				\$referred_to = Param::seekParamRandomRecord(300220, 300222, 200400); //200200 is for referred_to
+				
+				//Get a random number for a country
+				\$country_id = Location::seekLocationRandomRecord(2000, 2747, 1000); //1000 is the type_id for country
+					
+				//Get a random number for a state
+				\$state_id = Location::seekLocationRandomRecord(3000, 3500, 1010); //1010 is the type id for state
+
+				//Get a random number for a city 
+				\$city_id = Location::seekLocationRandomRecord(4000, 87204, 1030); //1030 is the type id for city
+				
+				//Get a random number for a  county
+				\$county_id = Location::seekLocationRandomRecord(4000, 87204, 1020); //1020 is the type id for city
+				
+	
+
+				//Get a random number for a  person				
+				\$person_id = rand(\$person_first_id, \$person_last_id);
+
+				".$file."::create([
+					'id' => \$index,
+					'person_id' => \$person_id,
+
+					'created_at' => \$currenttime,
+					'updated_at' => \$currenttime
+					]);
+
+				//update Person Resolve
+				\$person = Person::find(\$person_id);
+				\$person->\$".camelToUnderScore($file)."_id = \$index;
+				\$person->save();
+			}	
+
+			DB::statement( 'ALTER TABLE `'.\$this->currenttable.'`  AUTO_INCREMENT = '.(\$max + 1).';');
+
+		} else {
+
+			//\$this->readSQLFile('".$file_plural."_inserts.sql');
+
+
+		DB::statement( \"
+			
+
+
+
+			\");
+			
+
+			\$".camelToUnderScore($file)."_last_id = last(".$file. "::lists('id'));
+
+			DB::statement( 'ALTER TABLE `'.\$this->currenttable.'`  AUTO_INCREMENT = '.(\$max + 1).';');
+		
+		} //end if enabled
+
+	}
+
+}
+"; //end template string
+
+
+file_put_contents($seed_directory .$argv[1]."Seeder.php", $template);
+say($colors,"Created Seed", $argv[1]."Seeder.php");
+
+$dataseeder = file_get_contents($seed_directory."DatabaseSeeder.php");
+
+//look for a record already int 
+if (stripos($dataseeder, $file."Seeder") > 0) {
+	//
+	// found
+	//
+	// do nothing
+	//
+} else {
+	//
+	//not found
+	//
+	// add it
+	//
+	$dataseeder_exploded = explode("~", $dataseeder);
+	//
+	$content = "\n		\$this->call('".$file."Seeder');\n";
+	$newcontent = $dataseeder_exploded[0]. $content ."		//~".$dataseeder_exploded[1];
+	//
+	file_put_contents($seed_directory ."DatabaseSeeder.php", $newcontent);
+	//
+
+	die(0);
+}
+
+	die(0);
+
+?>

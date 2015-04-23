@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+mysql -uroot -p het2 -e "describe $@

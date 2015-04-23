@@ -1,0 +1,2 @@
+@ECHO OFF
+mysql -uroot -p -e "drop schema  IF EXISTS het2; create schema het2 charset=utf8; use het2; show tables; drop schema  IF EXISTS het2_logger; create schema het2_logger charset=utf8; use het2_logger; SHOW SCHEMAS;

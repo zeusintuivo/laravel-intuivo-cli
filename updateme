@@ -1,7 +1,21 @@
-#!/usr/bin/env bash
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
 
-set updatemecurrentbranch = $(git rev-parse --abbrev-ref HEAD)
-master;
-pull;
-branch $updatemecurrentbranch;
-merge master;
+$updatemecurrentbranch = exec('git rev-parse --abbrev-ref HEAD');
+
+$said = exec('git add . ');
+echo $said ."\n";
+$said = exec('git commit -m "Updating branch '.$updatemecurrentbranch.' with Master branch. Adding and commiting beforehand."');
+echo $said ."\n";
+$said = exec('git push origin '.$updatemecurrentbranch);
+echo $said ."\n";
+$said = exec('./master');
+echo $said ."\n";
+$said = exec('./pull');
+echo $said ."\n";
+$said = exec('./branch '.$updatemecurrentbranch);
+echo $said ."\n";
+$said = exec('./merge master');
+echo $said ."\n";

@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
 
-set currentbranch = $(git rev-parse --abbrev-ref HEAD)
-git push origin $currentbranch
+$currentbranch = exec('git rev-parse --abbrev-ref HEAD');
+echo "Pushing ".$currentbranch."\n" ;
+$said = exec('git push origin '.$currentbranch);
+echo $said;

@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-# @author Jesus Alcaras <jesus@gammpartners.com>
+# @author Jesus Alcaraz <jesus@gammpartners.com>
 #
 # Procedural Programming to Create 
 # Models, Migrations, Controllers, and Tests, 
@@ -339,7 +339,13 @@ replace($colors, "app/Http/Requests/".$entity."Request.php", '{{version}}', $ver
 #
 #
 say($colors, "Seed", "Creating Seed");
-$said = exec('seedTemplate '.$entity);
+//Run Windows Command and ignore output to screen 
+$said = @exec('seedTemplate '.$entity);
+//Alternative for Linux
+if ($said=="") {  
+	$said = @exec('./seedTemplate '.$entity);
+
+} 
 say($colors, "Seed", $said);
 
 # Place author's name in the Seed takes place in the same script
@@ -598,8 +604,15 @@ file_put_contents("tests/views/".$dir."/".$file."/view_test.php",$view_test_temp
 #
 #
 say($colors, "\n\nAdd", "Add files to git");
-exec("add");
+//Run Windows Command and ignore output to screen 
+$said=@exec("add");
+//Alternative for Linux
+if ($said=="") {  
+	$said=@exec("./add");
+} 
 $commit_msg = ("Created ". $file. " Model, Controller, Request, Migration, Seeder, and Tests for View, Route, Migration, Model, Controller and Request");
 say($colors, "\n\nCommit", $commit_msg);
-exec("commit ". $commit_msg);
-exec ("status");
+
+$said=@exec('git commit -m "'. $commit_msg .'"');
+
+$said=@exec ("git status");

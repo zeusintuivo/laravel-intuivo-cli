@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+#echo $0=./replace
+ack -l $1 --print0 | xargs -0 sed  -i  -e s/$1/$2/g 

@@ -1,5 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
 
-set pullcurrentbranch = $(git rev-parse --abbrev-ref HEAD)
-git fetch
-git pull origin $pullcurrentbranch
+$pullcurrentbranch = exec('git rev-parse --abbrev-ref HEAD');
+echo "Fetching git \n" ;
+$said = exec('git fetch');
+echo $said;
+$said = exec('git pull origin '.$pullcurrentbranch);
+echo "Pulling ".$pullcurrentbranch."\n" ;
+echo $said;

@@ -171,7 +171,7 @@ if (stripos($argv[1], "/") > 0) {
 }
 
 $file_plural=Pluralizer::plural($file);
-$file_plural_snake =  camelToUnderScore($file_plural);
+$file_plural_snake_migration_name =  camelToUnderScore($file_plural);
 
 
 //NaME CHANGE TEST
@@ -179,6 +179,10 @@ $file_plural_snake =  camelToUnderScore($file_plural);
 // echo $dir. "\n";
 // echo $file_plural. "\n";
 // echo $file_plural_snake. "\n";
+$filo = Str::snake($file);
+// echo $filo ."\n";
+$file_plural_snake  =  Pluralizer::plural($filo);
+// echo $file_plural_snake ."\n";
 // die();
 
 
@@ -237,7 +241,8 @@ $version = "6";
 #
 
 # Find migration file ad remove if an duplicated one
-$migration_file = @exec('ls database/migrations/*_'.$file_plural_snake.'_table.php');
+
+$migration_file=@exec('ls database/migrations/*_'.$file_plural_snake.'_table.php');
 if ( file_exists($migration_file)) {
 	$said = @exec('rm '.$migration_file);
 	$said = @exec('git rm '.$migration_file);
@@ -604,13 +609,11 @@ file_put_contents("tests/views/".$dir."/".$file."/view_test.php",$view_test_temp
 #
 #
 say($colors, "\n\nAdd", "Add files to git");
-//Run Windows Command and ignore output to screen 
-$said=@exec("add");
-//Alternative for Linux
-if ($said=="") {  
-	$said=@exec("./add");
-} 
+
+$said=@exec("git add . ");
+
 $commit_msg = ("Created ". $file. " Model, Controller, Request, Migration, Seeder, and Tests for View, Route, Migration, Model, Controller and Request");
+
 say($colors, "\n\nCommit", $commit_msg);
 
 $said=@exec('git commit -m "'. $commit_msg .'"');

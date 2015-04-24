@@ -6,4 +6,6 @@
 $currentbranch = exec('git rev-parse --abbrev-ref HEAD');
 echo "Pushing ".$currentbranch."\n" ;
 $said = exec('git push origin '.$currentbranch);
-echo $said;
+echo $said . "\n";
+echo "Project Participation: \n";
+include('projectparticipation');

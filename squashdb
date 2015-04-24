@@ -1,4 +1,16 @@
-#!/usr/bin/env bash
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+# Procedural Programming to delete dbs and recreate new ones
+# 
+#
+include('load_env');
+//TEST VALUES
+// $DB_DATABASE= "het2";
+// $DB_DATABASE_LOGGER= "het2_logger";
+// $DB_USERNAME= "root";
+// $DB_PASSWORD= "toor";
 
-
-mysql -uroot -ptoor -e "drop schema  IF EXISTS het2; create schema het2 charset=utf8; use het2; show tables; drop schema  IF EXISTS het2_logger; create schema het2_logger charset=utf8; use het2_logger; SHOW SCHEMAS;"
+$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -e "drop schema  IF EXISTS '.$DB_DATABASE.'; create schema '.$DB_DATABASE.' charset=utf8; use '.$DB_DATABASE.'; show tables;drop schema  IF EXISTS '.$DB_DATABASE_LOGGER.'; create schema '.$DB_DATABASE_LOGGER.' charset=utf8; use '.$DB_DATABASE_LOGGER.'; SHOW SCHEMAS;"');
+echo "\n". $said. "\n";

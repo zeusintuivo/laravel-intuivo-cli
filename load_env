@@ -1,0 +1,178 @@
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+# Procedural Programming to load env for this laravel project
+# 
+#
+
+
+//
+//
+//
+// Step 1 Check Arguments
+//
+//
+//
+
+# Before Loading anything Check Arguments Passed
+# Get argv 
+// if (!isset($argv) || !isset($argv[1])) {
+// 	echo "
+// 	Sample Usage:    - expects only one Dir not more
+// 	    php squashdb Person\PersonAddress
+// 	    php squashdb Person/PersonAddress
+// 	    php squashdb PersonAddress
+// 	    ";
+
+// 	die(0);
+// }
+
+/**
+ * Sample Usage
+ * $argv[1] = changeSlash($argv[1] );
+ * 
+ */
+function changeSlash($que) {
+	if (stripos($que, "\\") > 0) {
+		$que = str_replace('\\', '/', $que);
+	}
+	return $que; 
+}
+
+
+
+//
+//
+//
+//
+//
+// Step 2. Load Laravel Kernel Basic app
+//
+//
+//
+//
+//
+//
+$input = "";
+$status = "";
+$kernel = "";
+$app = "";
+function createApplication() {
+	require __DIR__.'/bootstrap/autoload.php';
+
+	$app = require_once __DIR__.'/bootstrap/app.php';
+	
+	$kernel = $app->make('Illuminate\Contracts\Console\Kernel');
+
+	$input = new Symfony\Component\Console\Input\ArgvInput;
+
+
+	return $kernel;
+}
+$app = createApplication();
+
+//
+//
+// Load String Files
+//
+//
+use Illuminate\Support\Pluralizer;
+use Illuminate\Support\Str;
+	//LOAD TEST
+	// echo Pluralizer::plural("PersonStatus"),"\n";
+	// echo Str::snake("PersonStatus"),"\n";	
+	// $argv[1] = changeSlash($argv[1] );
+	// echo Pluralizer::plural($argv[1]),"\n";
+	// echo Str::snake($argv[1]),"\n";
+	// die();
+
+
+/**
+ * Path trickery ensures test suite will always run, standalone or within
+ * another composer package. Designed to find composer autoloader and require
+ */
+// $vendorPos = strpos(__DIR__, '/vendor/vlucas/phpdotenv');
+// if($vendorPos !== false) {
+//     // Package has been cloned within another composer package, resolve path to autoloader
+//     $vendorDir = substr(__DIR__, 0, $vendorPos) . '/vendor/';
+//     $loader = require $vendorDir . 'autoload.php';
+// } else {
+//     // Package itself (cloned standalone)
+//     $loader = require __DIR__.'/vendor/autoload.php';
+// }
+
+
+
+//ENV LOAD TEST
+// echo __DIR__."\n";
+// echo dirname(__DIR__)."\n";
+// Dotenv::load(__DIR__ . '/');
+// echo  getenv('DB_HOST')."\n";
+// die();
+
+Dotenv::load(__DIR__ . '/');
+$DB_HOST= getenv('DB_HOST');
+$DB_DATABASE= getenv('DB_DATABASE');
+$DB_USERNAME= getenv('DB_USERNAME');
+$DB_PASSWORD= getenv('DB_PASSWORD');
+
+$DB_HOST_LOGGER= getenv('DB_HOST_LOGGER');
+$DB_DATABASE_LOGGER= getenv('DB_DATABASE_LOGGER');
+$DB_USERNAME_LOGGER= getenv('DB_USERNAME_LOGGER');
+$DB_PASSWORD_LOGGER= getenv('DB_PASSWORD_LOGGER');
+
+
+
+
+
+
+//
+//
+//
+// Wrap snake function 
+//
+//
+function camelToUnderScore($name) {
+	return Str::snake($name);
+}
+
+
+
+
+//
+//
+//
+// Load Colors Script
+//
+//
+//
+require "Colors";
+
+function replace(Colors $colors, $file, $find, $replace_with) {
+	say($colors, "Reading File to Change", $file);
+	if (!file_exists($file)) { 
+
+		err($colors, "File was not found:", $file);
+		return;
+	}
+	$contents = file_get_contents($file);
+	$contents = str_replace($find,  $replace_with, $contents);
+	file_put_contents($file, $contents);
+}
+
+//
+//
+//
+//
+//
+// Load scripts for author and email 
+//
+//
+//
+//
+
+$name= exec('git config user.name');
+$email= exec('git config user.email');
+$author="$name <$email>";
+

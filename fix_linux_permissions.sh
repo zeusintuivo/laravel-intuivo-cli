@@ -35,6 +35,8 @@ sudo chmod +x serve
 sudo chmod +x showtables
 sudo chmod +x squashdb
 sudo chmod +x status
+sudo chmod +x load_env
+sudo chmod +x env
 sudo chmod +x replace
 sudo chmod +x tinker
 sudo chmod +x updateme

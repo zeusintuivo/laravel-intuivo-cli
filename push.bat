@@ -1,2 +1,2 @@
 @ECHO OFF
-call push 
+php "push" 

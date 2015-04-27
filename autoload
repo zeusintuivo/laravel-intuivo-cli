@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-php composer.phar dump-autoload;
+composer dump-autoload;

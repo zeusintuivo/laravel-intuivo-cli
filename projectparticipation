@@ -2,15 +2,26 @@
 <?php
 # @author Jesus Alcaraz <jesus@gammpartners.com>
 #
+if ((DIRECTORY_SEPARATOR)=="\\") { //windows
+	$said = @exec('set TERM=msys');
+	$said = shell_exec('git log --pretty=format:%an | gawk '."'".'{ ++c[$1]; } END { for(cc in c) printf "%6d %s\n",c[cc],cc; }'."'".' | sort /r');
+	#git shortlog -sne
+	echo $said ."\n";
 
-$said = @exec('export TERM=msys;');
+	echo "========= TOTAL COUNT =======\n";
+	$said = exec('git log --pretty=format:%an | gawk '."'".'{ ++c[$3]; } END { for(cc in c) printf "%6d %s\n",c[cc],cc; }'."'".' | sort /r');
+	echo $said ."\n";
 
-$said = shell_exec('git log --pretty=format:%an | gawk '."'".'{ ++c[$1]; } END { for(cc in c) printf "%6d %s\n",c[cc],cc; }'."'".' | sort -nr
-');
+} else { //linux
+	$said = @exec('export TERM=msys;');
+	#git shortlog -sne
+	$said = shell_exec('git log --pretty=format:%an | gawk '."'".'{ ++c[$1]; } END { for(cc in c) printf "%6d %s\n",c[cc],cc; }'."'".' | sort -nr');
 
-#git shortlog -sne
-echo $said ."\n";
-echo "========= TOTAL COUNT =======\n";
+	echo $said ."\n";
+	echo "========= TOTAL COUNT =======\n";
 
-$said = exec('git log --pretty=format:%an | gawk '."'".'{ ++c[$3]; } END { for(cc in c) printf "%6d %s\n",c[cc],cc; }'."'".' | sort -tr');
-echo $said ."\n";
+	$said = exec('git log --pretty=format:%an | gawk '."'".'{ ++c[$3]; } END { for(cc in c) printf "%6d %s\n",c[cc],cc; }'."'".' | sort -tr');
+	echo $said ."\n";
+
+}
+

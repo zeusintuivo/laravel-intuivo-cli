@@ -1,4 +1,29 @@
-#!/usr/bin/env bash
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+# Procedural Programming count the records(show the last id) of a table
+# 
+#
 
-mysql -uroot -p het2 -e "select `id` from  `$@` order by `id`  desc limit 1   
+include('load_env');
+# Before Loading anything Check Arguments Passed
+# Get argv 
+if (!isset($argv) || !isset($argv[1])) {
+	echo "
+	Sample Usage:    - expects only one Dir not more
+	    php count tablename
+	    ";
+	shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "show tables;"');
+	die(0);
+}
+$table = $argv[1];
+
+
+
+
+$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "select `id` from  `'.$table.'` order by `id`  desc limit 1');
+echo "\n". $said. "\n";
+
+   
 

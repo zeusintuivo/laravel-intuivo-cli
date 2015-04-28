@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+# Procedural Programming to show from the ENV loader 
+# to test what are the values that the env() function is loading.
+# 
+#
+include('load_env');
+
+echo "\n\n===TESTING ENV LOADING ENV VARS===\n\n";
+echo "APP_ENV:".getenv('APP_ENV')."\n";
+echo "APP_DEBUG:".getenv('APP_DEBUG')."\n";
+echo "APP_KEY:".getenv('APP_KEY')."\n";
+echo "\n";
+echo "DB_HOST:".getenv('DB_HOST')."\n";
+echo "DB_DATABASE:".getenv('DB_DATABASE')."\n";
+echo "DB_USERNAME:".getenv('DB_USERNAME')."\n";
+echo "DB_PASSWORD:".getenv('DB_PASSWORD')."\n";
+echo "\n";
+echo "DB_HOST_LOGGER:".getenv('DB_HOST_LOGGER')."\n";
+echo "DB_DATABASE_LOGGER:".getenv('DB_DATABASE_LOGGER')."\n";
+echo "DB_USERNAME_LOGGER:".getenv('DB_USERNAME_LOGGER')."\n";
+echo "DB_PASSWORD_LOGGER:".getenv('DB_PASSWORD_LOGGER')."\n";
+echo "\n";
+echo "CACHE_DRIVER:".getenv('CACHE_DRIVER')."\n";
+echo "SESSION_DRIVER:".getenv('SESSION_DRIVER')."\n";
+echo "QUEUE_DRIVER:".getenv('QUEUE_DRIVER')."\n";
+echo "\n";
+echo "MAIL_DRIVER:".getenv('MAIL_DRIVER')."\n";
+echo "MAIL_HOST:".getenv('MAIL_HOST')."\n";
+echo "MAIL_PORT:".getenv('MAIL_PORT')."\n";
+echo "MAIL_USERNAME:".getenv('MAIL_USERNAME')."\n";
+echo "MAIL_PASSWORD:".getenv('MAIL_PASSWORD')."\n";
+echo "MAIL_FROM:".getenv('MAIL_FROM')."\n";
+echo "MAIL_FROM_NAME:".getenv('MAIL_FROM_NAME')."\n";

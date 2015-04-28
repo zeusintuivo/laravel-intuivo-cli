@@ -9,4 +9,4 @@ $said = exec('git fetch');
 echo $said;
 $said = exec('git pull origin '.$pullcurrentbranch);
 echo "Pulling ".$pullcurrentbranch."\n" ;
-echo $said;
+echo $said . "\n";

@@ -2,7 +2,7 @@
 <?php
 # @author Jesus Alcaraz <jesus@gammpartners.com>
 #
-# Procedural Programming dump sql from Laravel DB
+# Procedural Programming place the sql in to the db
 # 
 #
 include('load_env');
@@ -31,7 +31,6 @@ if (isset($argv) || isset($argv[1])) {
 }
 
 
-$said=shell_exec('mysqldump -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' > '.$target_file .' ');
+$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' < '.$target_file .' ');
 echo "\n". $said. "\n";
-
 

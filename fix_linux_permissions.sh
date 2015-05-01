@@ -13,8 +13,14 @@ sudo chmod +x count
 sudo chmod +x dbmigrate
 sudo chmod +x describe
 sudo chmod +x dump
+sudo chmod +x dumpin
+sudo chmod +x dumpout
+sudo chmod +x testenv
 sudo chmod +x filelastestchanges
 sudo chmod +x fileparticipation
+sudo chmod +x fix_linux_permissions.sh
+sudo chmod +x indatabase
+sudo chmod +x forcepull
 sudo chmod +x list
 sudo chmod +x makeseeds
 sudo chmod +x master
@@ -25,6 +31,7 @@ sudo chmod +x newbranch
 sudo chmod +x projectparticipation
 sudo chmod +x pull
 sudo chmod +x push
+sudo chmod +x put
 sudo chmod +x refresh
 sudo chmod +x reset
 sudo chmod +x routes
@@ -36,7 +43,6 @@ sudo chmod +x showtables
 sudo chmod +x squashdb
 sudo chmod +x status
 sudo chmod +x load_env
-sudo chmod +x env
 sudo chmod +x replace
 sudo chmod +x tinker
 sudo chmod +x updateme

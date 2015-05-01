@@ -1,2 +1,2 @@
-ad -i @ECHO OFF
+@ECHO OFF
 php "artisan" migrate:refresh %*

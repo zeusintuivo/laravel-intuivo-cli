@@ -13,4 +13,5 @@ include('load_env');
 // $DB_PASSWORD= "toor";
 
 $said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -e "drop schema  IF EXISTS '.$DB_DATABASE.'; create schema '.$DB_DATABASE.' charset=utf8; use '.$DB_DATABASE.'; show tables;drop schema  IF EXISTS '.$DB_DATABASE_LOGGER.'; create schema '.$DB_DATABASE_LOGGER.' charset=utf8; use '.$DB_DATABASE_LOGGER.'; SHOW SCHEMAS;"');
+
 echo "\n". $said. "\n";

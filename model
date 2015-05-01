@@ -175,14 +175,17 @@ $file_plural_snake_migration_name =  camelToUnderScore($file_plural);
 
 
 //NaME CHANGE TEST
-// echo $file."\n";
-// echo $dir. "\n";
-// echo $file_plural. "\n";
+echo $file."\n";
+echo $dir. "\n";
+echo $file_plural. "\n";
 // echo $file_plural_snake. "\n";
+
 $filo = Str::snake($file);
-// echo $filo ."\n";
+echo $filo ."\n";
+
 $file_plural_snake  =  Pluralizer::plural($filo);
-// echo $file_plural_snake ."\n";
+echo $file_plural_snake ."\n";
+echo $file_plural_snake_migration_name ."\n";
 // die();
 
 
@@ -280,7 +283,7 @@ replace($colors, "app/Models/".$entity.".php", '{{revision}}', $revision);
 #
 
 # Find migration file 
-$migration_file = exec('ls database/migrations/*_'.$file_plural_snake.'_table.php');
+$migration_file = @exec('ls database/migrations/*_'.$file_plural_snake.'_table.php');
 
 say($colors, "Migration", $migration_file);
 
@@ -319,18 +322,32 @@ replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{version}}'
 #
 #
 #
+$request_name = $dir.'/Create'.$file.'Request';
 
-$said = exec('php "artisan" make:request '.$entity.'Request');
+$said = exec('php "artisan" make:request '.$request_name);
 say($colors, "Request", $said);
 
 # Place author's name in the Controller
 
-replace($colors, "app/Http/Requests/".$entity."Request.php", '{{author}}', $author);
-replace($colors, "app/Http/Requests/".$entity."Request.php", '{{description}}', "Request created for ".$description);
-replace($colors, "app/Http/Requests/".$entity."Request.php", '{{revision}}', $revision);
-replace($colors, "app/Http/Requests/".$entity."Request.php", '{{version}}', $version);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{author}}', $author);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{description}}', "Request created for Create ".$description);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
 
 
+
+
+$request_name = $dir.'/Delete'.$file.'Request';
+
+$said = exec('php "artisan" make:request '.$request_name);
+say($colors, "Request", $said);
+
+# Place author's name in the Controller
+
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{author}}', $author);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{description}}', "Request created for Delete ".$description);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
 
 
 

@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+# Procedural Programming provide the  mysql connection. 
+# 
+#
+include('load_env');
+//TEST VALUES
+// $DB_DATABASE= "het2";
+// $DB_DATABASE_LOGGER= "het2_logger";
+// $DB_USERNAME= "root";
+// $DB_PASSWORD= "toor";
+
+echo 'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE."\n";
+//$said=passthru('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE);
+//echo "\n". $said. "\n";

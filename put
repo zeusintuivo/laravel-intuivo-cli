@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+
+#add
+echo
+echo "=== Add . ===";
+echo
+git add .;
+echo
+echo "=== Status ===";
+echo
+git status;
+echo
+
+#commit
+OPTIONS="$@";
+echo
+echo "=== commit -am $OPTIONS ===";
+echo
+git commit -am "$OPTIONS";
+echo
+
+
+#pull
+echo
+echo "=== Pull ==="
+echo
+php "pull"  
+echo
+
+#push 
+echo
+echo "==== Push ==="
+echo
+php "push"
+echo

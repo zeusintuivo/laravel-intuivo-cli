@@ -1,3 +1,43 @@
-#!/usr/bin/env bash
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+# Procedural Programming dump sql from Laravel DB
+# 
+#
+include('load_env');
+//TEST VALUES
+// $DB_DATABASE= "het2";
+// $DB_DATABASE_LOGGER= "het2_logger";
+// $DB_USERNAME= "root";
+// $DB_PASSWORD= "toor";
 
-mysql -uroot -p het2 -e "describe $@
+# Before Loading anything Check Arguments Passed
+# Get argv 
+$usage = "
+	Sample Usage: 
+	    php describe table_name
+	    ";
+
+
+	
+if (!isset($argv) || !isset($argv[1])) {
+	$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -e "SHOW SCHEMAS;"');
+	echo "\n". $said. "\n";
+	echo "\n".$usage."\n";
+	die(0);
+}
+
+if (isset($argv[1]) && ($argv[1]=="-h"||$argv[1]=="/?"&&$argv[1]=="/h")) {
+	$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -e "SHOW SCHEMAS;"');
+	echo "\n". $said. "\n";
+	echo "\n".$usage."\n";
+	die(0);
+}
+
+$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "describe $@;"');
+echo "\n". $said. "\n";
+
+
+
+

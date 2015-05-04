@@ -2,7 +2,7 @@
 <?php
 # @author Jesus Alcaraz <jesus@gammpartners.com>
 #
-# Procedural Programming provide the  mysql connection. 
+# Procedural Programming print the mysql connector string using laravel's settings
 # 
 #
 include('load_env');
@@ -12,6 +12,6 @@ include('load_env');
 // $DB_USERNAME= "root";
 // $DB_PASSWORD= "toor";
 
-echo 'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE."\n";
+echo('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE."\n");
 //$said=passthru('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE);
 //echo "\n". $said. "\n";

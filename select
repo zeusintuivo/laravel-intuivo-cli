@@ -10,11 +10,13 @@ include('load_env');
 # Before Loading anything Check Arguments Passed
 # Get argv 
 if (!isset($argv) || !isset($argv[1])) {
+	$me=exec(`basename "$0"`);
 	echo "
 	Sample Usage:    - expects only one Dir not more
-	    php count tablename
+	    php $me tablename
 	    ";
-	shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "show tables;"');
+	$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "show tables;"');
+	echo "\n". $said. "\n";
 	die(0);
 }
 $table = $argv[1];

@@ -269,8 +269,8 @@ say($colors, "Model", $said);
 # Place author's name in the Model
 # sample test -> find app/Models -type f -print0 | xargs -0 sed -i 's/Jesus Alcaraz <jesus@gammapartners.com>/"Jesus Alcaraz <jesus@gammapartners.com>"/g'
 replace($colors, "app/Models/".$entity.".php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
-replace($colors, "app/Models/".$entity.".php", '{{description}}', "Model created for ". $description);
-replace($colors, "app/Models/".$entity.".php", '{{version}}', $version);
+replace($colors, "app/Models/".$entity.".php", 'Created for PHIWeb', "Model created for ". $description);
+replace($colors, "app/Models/".$entity.".php", '6', $version);
 replace($colors, "app/Models/".$entity.".php", '{{revision}}', $revision);
 
 
@@ -292,8 +292,8 @@ replace($colors, $migration_file, 'Jesus Alcaraz <jesus@gammapartners.com>', $au
 replace($colors, $migration_file, '{{dir}}', $dir);
 replace($colors, $migration_file, '{{file}}', $file);
 replace($colors, $migration_file, '{{revision}}', $revision);
-replace($colors, $migration_file, '{{version}}', $version);
-replace($colors, $migration_file, '{{description}}', "Migration created for ". $description);
+replace($colors, $migration_file, '6', $version);
+replace($colors, $migration_file, 'Created for PHIWeb', "Migration created for ". $description);
 
 #
 #
@@ -309,9 +309,9 @@ say($colors, "Controller", $said);
 # Place author's name in the Controller
 
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
-replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{description}}', "Controller created for ". $description);
+replace($colors, "app/Http/Controllers/".$entity."Controller.php", 'Created for PHIWeb', "Controller created for ". $description);
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{revision}}', $revision);
-replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{version}}', $version);
+replace($colors, "app/Http/Controllers/".$entity."Controller.php", '6', $version);
 
 
 
@@ -330,9 +330,9 @@ say($colors, "Request", $said);
 # Place author's name in the Controller
 
 replace($colors, "app/Http/Requests/".$request_name.".php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
-replace($colors, "app/Http/Requests/".$request_name.".php", '{{description}}', "Request created for Create ".$description);
+replace($colors, "app/Http/Requests/".$request_name.".php", 'Created for PHIWeb', "Request created for Create ".$description);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
-replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
+replace($colors, "app/Http/Requests/".$request_name.".php", '6', $version);
 
 
 
@@ -345,9 +345,9 @@ say($colors, "Request", $said);
 # Place author's name in the Controller
 
 replace($colors, "app/Http/Requests/".$request_name.".php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
-replace($colors, "app/Http/Requests/".$request_name.".php", '{{description}}', "Request created for Delete ".$description);
+replace($colors, "app/Http/Requests/".$request_name.".php", 'Created for PHIWeb', "Request created for Delete ".$description);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
-replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
+replace($colors, "app/Http/Requests/".$request_name.".php", '6', $version);
 
 
 

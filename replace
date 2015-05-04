@@ -1,4 +1,35 @@
 #!/usr/bin/env bash
 
+#bash shell script check input argument
+if [ -z "$1" ]
+  then
+  	echo " "
+    echo "Missing 1st argument "
+    echo " "
+	echo "Sample Usage:    - expects two arguments "
+	echo " "
+	echo "    replace seek_this replaced_it_with"
+	echo "    ";
+	exit
+fi
+
+if [ -z "$2" ]
+  then
+    echo "Missing 2nd argument "
+    echo " "
+	echo "Sample Usage:    - expects two arguments "
+	echo " "
+	echo "    replace seek_this replaced_it_with"
+	echo "    ";
+	exit
+fi
+
+SEEKING="$1";
+IMPLACING="$2";
+
 #echo $0=./replace
-ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules $1 --print0 | xargs -0 sed  -i  -e s/$1/$2/g 
+
+echo "Seek ignoring vendor, bower_components, node_modules and app/Stub with ack "
+echo "Replace $SEEKING for $IMPLACING  with Sed." 
+echo "WARNING INSIDE WINDOWS Sed locks you out of your file, and the solution is that you have to recreate it."
+ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s/"$SEEKING"/"$IMPLACING"/g 

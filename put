@@ -32,7 +32,7 @@ echo
 
 #push 
 echo
-echo "==== Push ==="
+echo "=== Push ==="
 echo
 php "push"
 echo

@@ -321,8 +321,8 @@ class ".$file."Seeder extends PHIWebSeeder {
 				//Get a random number for a status_id
 				\$status_id = Param::seekParamRandomRecord(300100, 300105, 200100); //200100 is for status_id
 	
-				//Get a random number for a timeperiod_id
-				\$timeperiod_id = Param::seekParamRandomRecord(300161, 300163, 200200); //200200 is for timeperiod_id
+				//Get a random number for a time_period_id
+				\$time_period_id = Param::seekParamRandomRecord(300161, 300163, 200200); //200200 is for time_period_id
 	
 				//Get a random number for a location_id
 				\$location_id = Param::seekParamRandomRecord(300190, 300192, 200300); //200200 is for location_id

@@ -31,6 +31,7 @@ if (isset($argv) || isset($argv[1])) {
 }
 
 
+echo "\n".'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' < '.$target_file ."\n\n";
 $said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' < '.$target_file .' ');
 echo "\n". $said. "\n";
 

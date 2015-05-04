@@ -19,6 +19,7 @@ sudo chmod +x testenv
 sudo chmod +x filelastestchanges
 sudo chmod +x fileparticipation
 sudo chmod +x fix_linux_permissions.sh
+sudo chmod +x find
 sudo chmod +x indatabase
 sudo chmod +x forcepull
 sudo chmod +x list
@@ -43,6 +44,7 @@ sudo chmod +x showtables
 sudo chmod +x squashdb
 sudo chmod +x status
 sudo chmod +x load_env
+sudo chmod +x recover_framework
 sudo chmod +x replace
 sudo chmod +x tinker
 sudo chmod +x updateme

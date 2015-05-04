@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+#bash shell script check input argument
+if [ -z "$1" ]
+  then
+  	echo " "
+    echo "Missing 1st argument "
+    echo " "
+	echo "Sample Usage:    - expects one arguments "
+	echo " "
+	echo "    find seek_this "
+	echo "    ";
+	exit
+fi
+
+
+SEEKING="$1";
+
+#echo $0=./replace
+
+echo "Seek ignoring vendor, bower_components, and node_modules with ack "
+echo "Finding $SEEKING " 
+ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules "$SEEKING"

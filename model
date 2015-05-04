@@ -267,8 +267,8 @@ say($colors, "Model", $said);
 
 
 # Place author's name in the Model
-# sample test -> find app/Models -type f -print0 | xargs -0 sed -i 's/{{author}}/"Jesus Alcaraz <jesus@gammapartners.com>"/g'
-replace($colors, "app/Models/".$entity.".php", '{{author}}', $author);
+# sample test -> find app/Models -type f -print0 | xargs -0 sed -i 's/Jesus Alcaraz <jesus@gammapartners.com>/"Jesus Alcaraz <jesus@gammapartners.com>"/g'
+replace($colors, "app/Models/".$entity.".php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
 replace($colors, "app/Models/".$entity.".php", '{{description}}', "Model created for ". $description);
 replace($colors, "app/Models/".$entity.".php", '{{version}}', $version);
 replace($colors, "app/Models/".$entity.".php", '{{revision}}', $revision);
@@ -288,7 +288,7 @@ $migration_file = @exec('ls database/migrations/*_'.$file_plural_snake.'_table.p
 say($colors, "Migration", $migration_file);
 
 # Place author's name in the Migration
-replace($colors, $migration_file, '{{author}}', $author);
+replace($colors, $migration_file, 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
 replace($colors, $migration_file, '{{dir}}', $dir);
 replace($colors, $migration_file, '{{file}}', $file);
 replace($colors, $migration_file, '{{revision}}', $revision);
@@ -308,7 +308,7 @@ say($colors, "Controller", $said);
 
 # Place author's name in the Controller
 
-replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{author}}', $author);
+replace($colors, "app/Http/Controllers/".$entity."Controller.php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{description}}', "Controller created for ". $description);
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{revision}}', $revision);
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{version}}', $version);
@@ -329,7 +329,7 @@ say($colors, "Request", $said);
 
 # Place author's name in the Controller
 
-replace($colors, "app/Http/Requests/".$request_name.".php", '{{author}}', $author);
+replace($colors, "app/Http/Requests/".$request_name.".php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{description}}', "Request created for Create ".$description);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
@@ -344,7 +344,7 @@ say($colors, "Request", $said);
 
 # Place author's name in the Controller
 
-replace($colors, "app/Http/Requests/".$request_name.".php", '{{author}}', $author);
+replace($colors, "app/Http/Requests/".$request_name.".php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{description}}', "Request created for Delete ".$description);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
@@ -413,7 +413,8 @@ class ".$file."Test extends TestCase {
 
 	public function testCanInstantiate".$file."() {
 		\$".camelToUnderScore($file)." = new ".$file.";
-		\$this->assertEquals(get_class(\$".$file_plural_snake."), '".$file."');
+		echo get_class(\$".camelToUnderScore($file).");
+		\$this->assertEquals(get_class(\$".camelToUnderScore($file)."), 'PHIWeb\Models\\".$dir."\\".$file."');
 	}
 }
 ";

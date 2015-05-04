@@ -3,7 +3,6 @@
 #get script name
 $me="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
 
-exit
 cd database/sp
 find . -name '*.sql' | awk '{ print "source",$0 }' | mysql -uroot -ptoor het2 --batch
 cd ..

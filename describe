@@ -6,6 +6,7 @@
 # 
 #
 include('load_env');
+
 //TEST VALUES
 // $DB_DATABASE= "het2";
 // $DB_DATABASE_LOGGER= "het2_logger";
@@ -14,28 +15,32 @@ include('load_env');
 
 # Before Loading anything Check Arguments Passed
 # Get argv 
-$usage = "
-	Sample Usage: 
-	    php describe table_name
-	    ";
-
-
-	
 if (!isset($argv) || !isset($argv[1])) {
-	$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -e "SHOW SCHEMAS;"');
+	#get script name
+	$me=array_pop(explode(DIRECTORY_SEPARATOR,__FILE__));
+
+	echo "
+	Sample Usage:    
+	    php $me tablename
+	    ";
+	$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "show tables;"');
 	echo "\n". $said. "\n";
-	echo "\n".$usage."\n";
 	die(0);
 }
+$table = $argv[1];
 
-if (isset($argv[1]) && ($argv[1]=="-h"||$argv[1]=="/?"&&$argv[1]=="/h")) {
-	$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -e "SHOW SCHEMAS;"');
-	echo "\n". $said. "\n";
-	echo "\n".$usage."\n";
-	die(0);
-}
+//$sql = "describe $table;";
+$sql="SELECT column_name FROM information_schema.columns WHERE table_name='$table';";
 
-$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "describe $@;"');
+# construct command to execute
+$command = 'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "'.$sql.'"';
+
+# display what this does
+echo "\033[36m \n ".$sql . "\n " . $command ."\n\n";
+
+echo "\033[33m "; 
+$said=shell_exec($command );
+echo "\033[31m "; 
 echo "\n". $said. "\n";
 
 

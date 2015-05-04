@@ -18,8 +18,8 @@ SEEKING="$1";
 
 #echo $0=./replace
 
-echo "Seek ignoring vendor, bower_components, node_modules and app/Stub with ack "
+echo "Seek ignoring vendor, bower_components, node_modules, app/Stub and storage/logs with ack "
 echo "Finding $SEEKING " 
 echo " "
-ack  --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=app/Stubs "$SEEKING" 
+ack  --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/logs --ignore-dir=app/Stubs "$SEEKING" 
 echo " "

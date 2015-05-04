@@ -10,20 +10,34 @@ include('load_env');
 # Before Loading anything Check Arguments Passed
 # Get argv 
 if (!isset($argv) || !isset($argv[1])) {
+	#get script name
+	$me=array_pop(explode(DIRECTORY_SEPARATOR,__FILE__));
+
 	echo "
-	Sample Usage:    - expects only one Dir not more
-	    php count tablename
+	Sample Usage:    
+	    php $me tablename
 	    ";
-	shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "show tables;"');
+	$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "show tables;"');
+	echo "\n". $said. "\n";
 	die(0);
 }
 $table = $argv[1];
 
+# construct query "select count(id) from  people order by id  desc limit 1;
+$sql = "select count(id) from  $table order by id  desc limit 1;";
 
+# construct command to execute
+$command = 'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "'.$sql.'"';
 
+# display what this does
+echo "\033[36m \n ".$sql . "\n " . $command ."\n\n";
 
-$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "select `id` from  `'.$table.'` order by `id`  desc limit 1');
+echo "\033[33m "; 
+$said=shell_exec($command );
+echo "\033[31m "; 
 echo "\n". $said. "\n";
+
+
 
    
 

@@ -36,6 +36,7 @@ sudo chmod +x projectparticipation
 sudo chmod +x pull
 sudo chmod +x push
 sudo chmod +x put
+sudo chmod +x phpunit
 sudo chmod +x refresh
 sudo chmod +x reset
 sudo chmod +x routes
@@ -51,3 +52,4 @@ sudo chmod +x recover_framework
 sudo chmod +x replace
 sudo chmod +x tinker
 sudo chmod +x updateme
+sudo chmod +x vendor/bin/phpunit

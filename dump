@@ -14,21 +14,26 @@ include('load_env');
 
 # Before Loading anything Check Arguments Passed
 # Get argv 
-$usage = 
-"
-	Sample Usage: 
-	    php dump  target_file.sql
-	    ";
+
 $target_file = "het2.sql";
 
-if ((isset($argv) || isset($argv[1])) && ($argv[1]=="-h"||$argv[1]=="/?"&&$argv[1]=="/h")) {
-	echo $usage;
+# Before Loading anything Check Arguments Passed
+# Get argv 
+if (!isset($argv) || !isset($argv[1])) {
+	echo "
+	Sample Usage:    - expects only one Dir not more
+	    php dumpin tablename
+	    ";
+	  echo ""
+	shell_exec('ls *.sql  | xargs -0 echo "dumpin');
 	die(0);
-} 
+}
+
 if (isset($argv) || isset($argv[1])) {
 	$target_file = $argv[1];
 
 }
+
 
 echo "\n".'mysqldump -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' > '.$target_file ."\n\n";
 $said=shell_exec('mysqldump -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' > '.$target_file .' ');

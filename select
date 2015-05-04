@@ -10,6 +10,7 @@ include('load_env');
 # Before Loading anything Check Arguments Passed
 # Get argv 
 if (!isset($argv) || !isset($argv[1])) {
+
 	#get script name
 	$me=array_pop(explode(DIRECTORY_SEPARATOR,__FILE__));
 
@@ -21,7 +22,6 @@ if (!isset($argv) || !isset($argv[1])) {
 	echo "\n". $said. "\n";
 	die(0);
 }
-
 $table = $argv[1];
 
 $sql = "select * from $table;";
@@ -29,12 +29,24 @@ $sql = "select * from $table;";
 # construct command to execute
 $command = 'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "'.$sql.'"';
 
+#Colors reference
+#Light Gray 0;37 
+#Dark Gray 1;30
+#Light Blue 1;34
+#Light Green 1;32
+#Light Cyan 1;36
+#Light Red 1;31
+#Light Purple 1;35
+#Yellow 1;33
+#White 1;37
+
 # display what this does
 echo "\033[36m \n ".$sql . "\n " . $command ."\n\n";
 
 echo "\033[33m "; 
 $said=shell_exec($command );
 echo "\033[31m "; 
+
 echo "\n". $said. "\n";
 
    

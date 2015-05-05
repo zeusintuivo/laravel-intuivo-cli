@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+echo "Recover .env"
+cp ../.env .
+
+echo "Recover composer.lock"
+cp ../composer.lock .
+
+echo "Recover composer.json"
+cp ../composer.json .
+
+echo "Recover bower_components"
+cp -r ../bower_components .
+
+echo "Recover vendor"
+cp -r ../vendor .
+
+echo "Recover node_modules"
+cp -r ../node_modules .

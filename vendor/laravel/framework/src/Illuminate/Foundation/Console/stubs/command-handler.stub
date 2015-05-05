@@ -1,0 +1,38 @@
+<?php namespace {{namespace}};
+
+use {{fullCommand}};
+
+use Illuminate\Queue\InteractsWithQueue;
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{class}} {
+
+	/**
+	 * Create the command handler.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function __construct()
+	{
+		//
+	}
+
+	/**
+	 * Handle the command.
+	 *
+	 * @author {{author}}
+	 * @param  {{command}}  $command
+	 * @return void
+	 */
+	public function handle({{command}} $command)
+	{
+		//
+	}
+
+}

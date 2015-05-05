@@ -1,0 +1,55 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{class}} extends Migration {
+
+	private $rev = '6';
+	private $currenttable = '{{table}}';
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function up()
+	{
+		$output = new ConsoleOutput();
+
+        $output->writeln('<info>'.$this->currenttable.'</info> migration start.');
+
+		Schema::create($this->currenttable, function(Blueprint $table)
+		{
+			//
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function down()
+	{
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+		Schema::table($this->currenttable, function(Blueprint $table)
+		{
+			//
+		});
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+		
+	}
+
+}

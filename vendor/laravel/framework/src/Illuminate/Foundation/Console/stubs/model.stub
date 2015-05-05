@@ -1,0 +1,15 @@
+<?php namespace {{namespace}};
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{class}} extends Model {
+
+	//
+
+}

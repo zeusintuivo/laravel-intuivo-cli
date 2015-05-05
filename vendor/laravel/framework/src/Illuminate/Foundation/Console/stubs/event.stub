@@ -1,0 +1,28 @@
+<?php namespace {{namespace}};
+
+use {{rootNamespace}}Events\Event;
+
+use Illuminate\Queue\SerializesModels;
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{class}} extends Event {
+
+	use SerializesModels;
+
+	/**
+	 * Create a new event instance.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function __construct()
+	{
+		//
+	}
+
+}

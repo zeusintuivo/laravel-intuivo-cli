@@ -1,17 +1,13 @@
-#!/usr/bin/env php
-<?php
-# @author Jesus Alcaraz <jesus@gammpartners.com>
-#
-# Procedural Programming print the mysql connector string using laravel's settings
-# 
-#
-include('load_env');
-//TEST VALUES
-// $DB_DATABASE= "het2";
-// $DB_DATABASE_LOGGER= "het2_logger";
-// $DB_USERNAME= "root";
-// $DB_PASSWORD= "toor";
+#!/usr/bin/env bash
 
-echo('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE."\n");
-//$said=passthru('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE);
-//echo "\n". $said. "\n";
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+THISOUTPUT="$(php 'mysql_connectors')"
+THISCONNECTOR=""
+echo "mysql ${THISCONNECTOR}"
+while read -r line; do
+    #echo "... $line ..."
+    THISCONNECTOR=$line
+done <<< "$THISOUTPUT"
+    echo "-- $THISCONNECTOR --"
+#exit
+mysql $THISCONNECTOR

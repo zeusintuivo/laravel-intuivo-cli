@@ -231,8 +231,22 @@ $output = new ConsoleOutput();
 
 
 $description = "PHIWeb";
-$revision = "6";
-$version = "6";
+$revision = "7";
+$version = "7";
+$camelToUnderScoreFile = camelToUnderScore($file);
+
+function replaceStrs($text) {
+	// $subject = str_ireplace( $search,  $replace,  $subject);
+	$return = "";
+	$return  = str_ireplace( "{{dir}}",  $dir,  $text);
+	$return  = str_ireplace( "{{file}}",  $file,  $return);
+	$return  = str_ireplace( "{{camelToUnderScoreFile}}",  $camelToUnderScoreFile,  $return);
+	$return  = str_ireplace( '{{author}}', $author,  $return);
+	$return  = str_ireplace( '{{revision}}', $revision,  $return);
+	$return  = str_ireplace( '{{version}}', $version,  $return);
+	return 
+}
+
 #
 #
 #
@@ -256,7 +270,7 @@ if ( file_exists($migration_file)) {
 #
 #
 #
-# Model - 
+# Model - Generates Migration too
 #
 #
 #
@@ -267,10 +281,10 @@ say($colors, "Model", $said);
 
 
 # Place author's name in the Model
-# sample test -> find app/Models -type f -print0 | xargs -0 sed -i 's/Jesus Alcaraz <jesus@gammapartners.com>/"Jesus Alcaraz <jesus@gammapartners.com>"/g'
-replace($colors, "app/Models/".$entity.".php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
+# sample test -> find app/Models -type f -print0 | xargs -0 sed -i 's/{{author}}/"{{author}}"/g'
+replace($colors, "app/Models/".$entity.".php", '{{author}}', $author);
 replace($colors, "app/Models/".$entity.".php", 'Created for PHIWeb', "Model created for ". $description);
-replace($colors, "app/Models/".$entity.".php", '6', $version);
+replace($colors, "app/Models/".$entity.".php", '{{version}}', $version);
 replace($colors, "app/Models/".$entity.".php", '{{revision}}', $revision);
 
 
@@ -288,11 +302,11 @@ $migration_file = @exec('ls database/migrations/*_'.$file_plural_snake.'_table.p
 say($colors, "Migration", $migration_file);
 
 # Place author's name in the Migration
-replace($colors, $migration_file, 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
+replace($colors, $migration_file, '{{author}}', $author);
 replace($colors, $migration_file, '{{dir}}', $dir);
 replace($colors, $migration_file, '{{file}}', $file);
 replace($colors, $migration_file, '{{revision}}', $revision);
-replace($colors, $migration_file, '6', $version);
+replace($colors, $migration_file, '{{version}}', $version);
 replace($colors, $migration_file, 'Created for PHIWeb', "Migration created for ". $description);
 
 #
@@ -308,10 +322,10 @@ say($colors, "Controller", $said);
 
 # Place author's name in the Controller
 
-replace($colors, "app/Http/Controllers/".$entity."Controller.php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
+replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{author}}', $author);
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", 'Created for PHIWeb', "Controller created for ". $description);
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{revision}}', $revision);
-replace($colors, "app/Http/Controllers/".$entity."Controller.php", '6', $version);
+replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{version}}', $version);
 
 
 
@@ -329,10 +343,10 @@ say($colors, "Request", $said);
 
 # Place author's name in the Controller
 
-replace($colors, "app/Http/Requests/".$request_name.".php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{author}}', $author);
 replace($colors, "app/Http/Requests/".$request_name.".php", 'Created for PHIWeb', "Request created for Create ".$description);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
-replace($colors, "app/Http/Requests/".$request_name.".php", '6', $version);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
 
 
 
@@ -344,10 +358,10 @@ say($colors, "Request", $said);
 
 # Place author's name in the Controller
 
-replace($colors, "app/Http/Requests/".$request_name.".php", 'Jesus Alcaraz <jesus@gammapartners.com>', $author);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{author}}', $author);
 replace($colors, "app/Http/Requests/".$request_name.".php", 'Created for PHIWeb', "Request created for Delete ".$description);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
-replace($colors, "app/Http/Requests/".$request_name.".php", '6', $version);
+replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
 
 
 
@@ -384,6 +398,24 @@ say($colors, "Seed", $said);
 #
 #
 #
+// how to run a test exec('vendor/bin/phpunit tests/Models/'.$entity);
+
+function generateFromStub($base_folder, $stub_File, $target_file, $dir, $file){
+
+	$file_targeted = $base_folder."/".$dir."/".$file."/".$target_file;
+
+	@mkdir($base_folder);
+	@mkdir($base_folder."/".$dir);
+	@mkdir($base_folder."/".$dir."/".$file);
+
+	exec("touch ".$file_targeted);
+
+	$template = file_get_contents($stub_file);
+	$template = replaceStrs($template);
+
+	file_put_contents($file_targeted, $template);
+}
+
 
 #
 #
@@ -394,33 +426,21 @@ say($colors, "Seed", $said);
 #
 #
 #
-@mkdir("tests/models");
-@mkdir("tests/models/".$dir);
-@mkdir("tests/models/".$dir."/".$file);
-exec("touch tests/models/".$dir."/".$file."/model_test.php");
+$base_folder = "tests/models";
+$target_file = "basic_".$camelToUnderScoreFile."_model_test.php";
+$stub_file = "app/Stubs/Tests/models/model_test.stub";
 
-$model_test_template = "<?php
+generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 
-/**
- * A Basic Model Test
- *
- * @author $author
- * @revision 1
- */
-use PHIWeb\Models\\".$dir."\\".$file.";
+$target_file = "delete_".$camelToUnderScoreFile."_model_test.php";
+$stub_file = "app/Stubs/Tests/models/delete_model_test.stub";
 
-class ".$file."Test extends TestCase {
+generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 
-	public function testCanInstantiate".$file."() {
-		\$".camelToUnderScore($file)." = new ".$file.";
-		echo get_class(\$".camelToUnderScore($file).");
-		\$this->assertEquals(get_class(\$".camelToUnderScore($file)."), 'PHIWeb\Models\\".$dir."\\".$file."');
-	}
-}
-";
+$target_file = "create_".$camelToUnderScoreFile."_model_test.php";
+$stub_file = "app/Stubs/Tests/models/create_model_test.stub";
 
-file_put_contents("tests/models/".$dir."/".$file."/model_test.php",$model_test_template );
-
+generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 
 
 #
@@ -432,32 +452,14 @@ file_put_contents("tests/models/".$dir."/".$file."/model_test.php",$model_test_t
 #
 #
 #
-@mkdir("tests/controllers");
-@mkdir("tests/controllers/".$dir);
-@mkdir("tests/controllers/".$dir."/".$file);
-exec("touch tests/controllers/".$dir."/".$file."/controller_test.php");
 
-$controller_test_template = "<?php
+$base_folder = "tests/controllers";
+$target_file = "basic_".$camelToUnderScoreFile."controller_test.php";
+$stub_file = "app/Stubs/Tests/controllers/controller_test.stub";
 
-/**
- * A Basic Controller Test
- *
- * @author $author
- * @revision 1
- */
-use PHIWeb\Models\\".$dir."\\".$file.";
+generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 
-class ".$file."ControllerTest extends TestCase {
 
-	public function test".$file."ControllerBasicExample() {
-		\$response = \$this->call('GET', '/');
-		
-		\$this->assertEquals(200, \$response->getStatusCode());
-	}
-
-}
-";
-file_put_contents("tests/controllers/".$dir."/".$file."/controller_test.php",$controller_test_template );
 
 #
 #
@@ -469,32 +471,15 @@ file_put_contents("tests/controllers/".$dir."/".$file."/controller_test.php",$co
 #
 #
 #
-@mkdir("tests/requests");
-@mkdir("tests/requests/".$dir);
-@mkdir("tests/requests/".$dir."/".$file);
-exec("touch tests/requests/".$dir."/".$file."/request_test.php");
 
-$request_test_template = "<?php
 
-/**
- * A Basic Request Test
- *
- * @author $author
- * @revision 1
- */
-use PHIWeb\Models\\".$dir."\\".$file.";
+$base_folder = "tests/requests";
+$target_file = "basic_".$camelToUnderScoreFile."request_test.php";
+$stub_file = "app/Stubs/Tests/requests/request_test.stub";
 
-class ".$file."RequestTest extends TestCase {
+generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 
-	public function test".$file."RequestBasicExample() {
-		\$response = \$this->call('GET', '/');
-		
-		\$this->assertEquals(200, \$response->getStatusCode());
-	}
 
-}
-";
-file_put_contents("tests/requests/".$dir."/".$file."/request_test.php",$request_test_template );
 
 #
 #
@@ -505,44 +490,15 @@ file_put_contents("tests/requests/".$dir."/".$file."/request_test.php",$request_
 #
 #
 #
-@mkdir("tests/migration");
-@mkdir("tests/migration/".$dir);
-@mkdir("tests/migration/".$dir."/".$file);
-exec("touch tests/migration/".$dir."/".$file."/migration_test.php");
 
-$migration_test_template = "<?php
+$base_folder = "tests/migration";
+$target_file = "basic_".$camelToUnderScoreFile."migration_test.php";
+$stub_file = "app/Stubs/Tests/migrations/migration_test.stub";;
 
-/**
- * Basic Migration Test.
- *
- * @author $author
- * @revision 1
- */
-class  ".$file."Test extends Illuminate\Foundation\Testing\TestCase {
+generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 
-	public function setUp() {
-		parent::setUp();
-		Artisan::call('migrate');
-	}
 
-	public function tearDown() {
-		parent::setUp();
-		Artisan::call('migrate:reset');
 
-	}
-
-	public function createApplication() {
-		\$app = require __DIR__.'/../../../bootstrap/app.php';
-
-		\$app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
-
-		return \$app;
-	}
-
-}
-";
-
-file_put_contents("tests/migration/".$dir."/".$file."/migration_test.php",$migration_test_template);
 
 #
 #
@@ -553,36 +509,12 @@ file_put_contents("tests/migration/".$dir."/".$file."/migration_test.php",$migra
 #
 #
 #
-@mkdir("tests/routes");
-@mkdir("tests/routes/".$dir);
-@mkdir("tests/routes/".$dir."/".$file);
-exec("touch tests/routes/".$dir."/".$file."/route_test.php");
 
-$route_test_template = "<?php
+$base_folder = "tests/routes";
+$target_file = "basic_".$camelToUnderScoreFile."route_test.php";
+$stub_file = "app/Stubs/Tests/routes/route_test.stub";;
 
-/**
- * Basic Router Test.
- *
- * @author $author
- * @revision 1
- */
-class ".$file."Test extends TestCase {
-
-	/**
-	 * A basic router functional test example.
-	 *
-	 * @author $author
-	 * @return void
-	 */
-	public function test".$file."BasicExample() {
-		\$response = \$this->call('GET', '/');
-		
-		\$this->assertEquals(200, \$response->getStatusCode());
-	}
-
-}";
-
-file_put_contents("tests/routes/".$dir."/".$file."/route_test.php",$route_test_template);
+generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 
 #
 #
@@ -593,29 +525,13 @@ file_put_contents("tests/routes/".$dir."/".$file."/route_test.php",$route_test_t
 #
 #
 #
-@mkdir("tests/views");
-@mkdir("tests/views/".$dir);
-@mkdir("tests/views/".$dir."/".$file);
-exec("touch tests/views/".$dir."/".$file."/view_test.php");
 
-$view_test_template = "<?php
+$base_folder = "tests/views";
+$target_file = "basic_".$camelToUnderScoreFile."view_test.php";
+$stub_file = "app/Stubs/Tests/views/view_test.stub";;
 
-use Goutte\Client;
+generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 
-/**
- * Basic View Test
- *
- * @author $author
- * @revision 1
- */
-class ".$file."Test extends TestCase {
-
-}";
-file_put_contents("tests/views/".$dir."/".$file."/view_test.php",$view_test_template);
-
-
-
-// how to run a test exec('vendor/bin/phpunit tests/Models/'.$entity);
 
 #
 #

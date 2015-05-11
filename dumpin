@@ -24,7 +24,7 @@ if (!isset($argv) || !isset($argv[1])) {
 	Sample Usage:    - expects only one Dir not more
 	    php dumpin tablename
 	    ";
-	  echo ""
+	  echo "";
 	shell_exec('ls *.sql  | xargs -0 echo "dumpin');
 	die(0);
 }

@@ -1,48 +1,65 @@
-#!/usr/bin/env php
-<?php
+#!/usr/bin/env bash
+
 # @author Jesus Alcaraz <jesus@gammpartners.com>
-#
-# Procedural Programming dump sql from Laravel DB
-# 
-#
-include('load_env');
+#bash shell script check input argument
+if [ -z "$1" ]
+  then
+  	echo " "
+    echo "Missing 1st argument "
+    echo " "
+	echo "Sample Usage:    - expects one arguments "
+	echo " "
+	echo "    describe table "
+	echo "    ";
+	./showtables;
+	exit
+fi
 
-//TEST VALUES
-// $DB_DATABASE= "het2";
-// $DB_DATABASE_LOGGER= "het2_logger";
-// $DB_USERNAME= "root";
-// $DB_PASSWORD= "toor";
 
-# Before Loading anything Check Arguments Passed
-# Get argv 
-if (!isset($argv) || !isset($argv[1])) {
-	#get script name
-	$me=array_pop(explode(DIRECTORY_SEPARATOR,__FILE__));
+TABLE="$1";
 
-	echo "
-	Sample Usage:    
-	    php $me tablename
-	    ";
-	$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "show tables;"');
-	echo "\n". $said. "\n";
-	die(0);
-}
-$table = $argv[1];
 
-//$sql = "describe $table;";
-$sql="SELECT column_name FROM information_schema.columns WHERE table_name='$table';";
+THISOUTPUT="$(php 'mysql_connectors')"
+THISCONNECTOR=""
 
-# construct command to execute
-$command = 'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "'.$sql.'"';
+while read -r line; do
+    #echo "... $line ..."
+    THISCONNECTOR=$line
+done <<< "$THISOUTPUT"
+#    echo "-- $THISCONNECTOR --"
+#exit
+
+
+
+THISSQL="SELECT column_name FROM information_schema.columns WHERE table_name='${TABLE}';";
+
+
+
+
+red=`tput setaf 1`
+cyan=`tput setaf 6`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+
+
+
+#Colors reference
+#Light Gray 0;37 
+#Dark Gray 1;30
+#Light Blue 1;34
+#Light Green 1;32
+#Light Cyan 1;36
+#Light Red 1;31
+#Light Purple 1;35
+#Yellow 1;33
+#White 1;37
 
 # display what this does
-echo "\033[36m \n ".$sql . "\n " . $command ."\n\n";
+echo "${cyan} mysql  ${THISCONNECTOR} -e '${THISSQL}'";
 
-echo "\033[33m "; 
-$said=shell_exec($command );
-echo "\033[31m "; 
-echo "\n". $said. "\n";
+echo "${green}  "; 
 
-
+mysql  $THISCONNECTOR -e "$THISSQL"
 
 

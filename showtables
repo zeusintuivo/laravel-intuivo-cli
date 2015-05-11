@@ -1,14 +1,51 @@
-#!/usr/bin/env php
-<?php
+#!/usr/bin/env bash
+
 # @author Jesus Alcaraz <jesus@gammpartners.com>
-#
-# Procedural Programming to create 
-# 
-#
 
-include('load_env');
-# Before Loading anything Check Arguments Passed
-# Get argv 
+#bash shell script check input argument
+# if [ -z "$1" ]
+#   then
+#   	echo " "
+#     echo "Missing 1st argument "
+#     echo " "
+# 	echo "Sample Usage:    - expects one arguments "
+# 	echo " "
+# 	echo "    showtables  "
+# 	echo "    ";
+# 	./showtables;
+# 	exit
+# fi
 
-$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -e "SHOW SCHEMAS;"');
-	echo "\n". $said. "\n";
+
+# TABLE="$1";
+
+
+THISOUTPUT="$(php 'mysql_connectors')"
+THISCONNECTOR=""
+
+while read -r line; do
+    #echo "... $line ..."
+    THISCONNECTOR=$line
+done <<< "$THISOUTPUT"
+#    echo "-- $THISCONNECTOR --"
+#exit
+
+
+THISSQL="SHOW TABLES;";
+
+
+red=`tput setaf 1`
+cyan=`tput setaf 6`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+
+# display what this does
+echo "${cyan} mysql  ${THISCONNECTOR} -e '${THISSQL}'";
+
+echo "${green}  "; 
+
+mysql  $THISCONNECTOR -e "$THISSQL"
+
+
+

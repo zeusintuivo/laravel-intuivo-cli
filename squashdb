@@ -11,7 +11,21 @@ include('load_env');
 // $DB_DATABASE_LOGGER= "het2_logger";
 // $DB_USERNAME= "root";
 // $DB_PASSWORD= "toor";
+$command = "\t\n\n ".'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' ';
+$command .= "\n\t  ". '-e "drop schema  IF EXISTS '.$DB_DATABASE.'; ';
+$command .= "\n\t\t  ". 'create schema '.$DB_DATABASE.' charset=utf8; ';
+$command .= "\n\t\t  ". 'use '.$DB_DATABASE.'; ';
+$command .= "\n\t\t  ". 'show tables;drop schema  IF EXISTS '.$DB_DATABASE_LOGGER.'; ';
+$command .= "\n\t\t  ". 'create schema '.$DB_DATABASE_LOGGER.' charset=utf8; ';
+$command .= "\n\t\t  ". 'use '.$DB_DATABASE_LOGGER.'; ';
+$command .= "\n\t\t  ". 'SHOW SCHEMAS;"';
+$command .= "\n\t\t  ". '';
 
+echo "\033[36m ";
+
+echo $command;
 $said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -e "drop schema  IF EXISTS '.$DB_DATABASE.'; create schema '.$DB_DATABASE.' charset=utf8; use '.$DB_DATABASE.'; show tables;drop schema  IF EXISTS '.$DB_DATABASE_LOGGER.'; create schema '.$DB_DATABASE_LOGGER.' charset=utf8; use '.$DB_DATABASE_LOGGER.'; SHOW SCHEMAS;"');
 
-echo "\n". $said. "\n";
+echo "\033[33m ";
+
+echo "\n\n". $said. "\n";

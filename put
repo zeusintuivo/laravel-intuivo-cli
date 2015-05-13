@@ -8,6 +8,8 @@ echo
 echo "=== Add . ===";
 echo
 git add .;
+
+#status
 echo
 echo "=== Status ===";
 echo
@@ -22,17 +24,16 @@ echo
 git commit -am "$OPTIONS";
 echo
 
-
 #pull
 echo
-echo "=== Pull ==="
+echo "=== Pull ===";
 echo
 php "pull"  
 echo
 
 #push 
 echo
-echo "=== Push ==="
+echo "=== Push ===";
 echo
 php "push"
 echo

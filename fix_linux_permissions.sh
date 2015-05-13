@@ -42,6 +42,7 @@ sudo chmod +x phpunit
 sudo chmod +x refresh
 sudo chmod +x reset
 sudo chmod +x routes
+sudo chmod +x rollback
 sudo chmod +x scite
 sudo chmod +x seedTemplate
 sudo chmod +x select

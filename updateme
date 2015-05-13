@@ -5,17 +5,58 @@
 
 $updatemecurrentbranch = exec('git rev-parse --abbrev-ref HEAD');
 
+
+#add
+echo "\n";
+echo "=== Add . ===\n";
+echo "\n";
 $said = exec('git add . ');
 echo $said ."\n";
+echo "\n";
+
+#commit
+echo "\n";
+echo "=== commit -m 'Updating branch $updatemecurrentbranch with Master branch. Adding and commiting beforehand.' ===\n";
+echo "\n";
 $said = exec('git commit -m "Updating branch '.$updatemecurrentbranch.' with Master branch. Adding and commiting beforehand."');
 echo $said ."\n";
+echo "\n";
+
+#push 
+echo "\n";
+echo "=== Push origin $updatemecurrentbranch ===\n";
+echo "\n";
 $said = exec('git push origin '.$updatemecurrentbranch);
 echo $said ."\n";
+echo "\n";
+
+#master
+echo "\n";
+echo "=== Master ===\n";
+echo "\n";
 $said = exec('./master');
 echo $said ."\n";
+echo "\n";
+
+#pull
+echo "\n";
+echo "=== Pull ===";
+echo "\n";
 $said = exec('./pull');
 echo $said ."\n";
+echo "\n";
+
+#branch
+echo "\n";
+echo "=== Branch back $updatemecurrentbranch ===\n";
+echo "\n";
 $said = exec('./branch '.$updatemecurrentbranch);
 echo $said ."\n";
+echo "\n";
+
+#merge
+echo "\n";
+echo "=== Merge Master Here ===";
+echo "\n";
 $said = exec('./merge master');
 echo $said ."\n";

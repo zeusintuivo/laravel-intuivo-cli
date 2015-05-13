@@ -16,3 +16,12 @@ cp -r ../vendor .
 
 echo "Recover node_modules"
 cp -r ../node_modules .
+
+echo "Recover directory for logs"
+mkdir -p storage/logs
+
+echo "Recover directory for debugbar"
+mkdir -p storage/debugbar
+
+echo "Finally Run composer-autoload"
+composer dump-autoload

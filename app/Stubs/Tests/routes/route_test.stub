@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * Basic Router Test.
+ *
+ * @author {{author}}
+ * @revision {{revision}}
+ */
+class {{file}}Test extends TestCase {
+
+	/**
+	 * A basic router functional test example.
+	 *
+ 	 * @author {{author}}
+	 * @return void
+	 */
+	public function test{{file}}BasicExample() {
+		$response = $this->call('GET', '/');
+		
+		$this->assertEquals(200, $response->getStatusCode());
+	}
+
+}

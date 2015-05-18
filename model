@@ -7,7 +7,6 @@
 # 
 #
 
-
 //
 //
 //
@@ -18,7 +17,7 @@
 
 # Before Loading anything Check Arguments Passed
 # Get argv 
-if (!isset($argv) || !isset($argv[1])) {
+// if (!isset($argv) || !isset($argv[1])) {
 	echo "
 	Sample Usage:    - expects only one Dir not more
 	    call model Person\PersonAddress
@@ -29,223 +28,7 @@ if (!isset($argv) || !isset($argv[1])) {
 	die(0);
 }
 
-/**
- * Sample Usage
- * $argv[1] = changeSlash($argv[1] );
- * 
- */
-function changeSlash($que) {
-	if (stripos($que, "\\") > 0) {
-		$que = str_replace('\\', '/', $que);
-	}
-	return $que; 
-}
-
-
-
-//
-//
-//
-//
-//
-// Step 2. Load Laravel Kernel Basic app
-//
-//
-//
-//
-//
-//
-$input = "";
-$status = "";
-$kernel = "";
-$app = "";
-function createApplication() {
-	require __DIR__.'/bootstrap/autoload.php';
-
-	$app = require_once __DIR__.'/bootstrap/app.php';
-	
-	$kernel = $app->make('Illuminate\Contracts\Console\Kernel');
-
-	$input = new Symfony\Component\Console\Input\ArgvInput;
-
-
-	return $kernel;
-}
-$app = createApplication();
-
-//
-//
-// Load String Files
-//
-//
-use Illuminate\Support\Pluralizer;
-use Illuminate\Support\Str;
-	//LOAD TEST
-	// echo Pluralizer::plural("PersonStatus"),"\n";
-	// echo Str::snake("PersonStatus"),"\n";	
-	// $argv[1] = changeSlash($argv[1] );
-	// echo Pluralizer::plural($argv[1]),"\n";
-	// echo Str::snake($argv[1]),"\n";
-	// die();
-
-//
-//
-//
-// Wrap snake function 
-//
-//
-function camelToUnderScore($name) {
-	return Str::snake($name);
-}
-
-
-
-
-//
-//
-//
-// Load Colors Script
-//
-//
-//
-require "Colors";
-
-function replace(Colors $colors, $file, $find, $replace_with) {
-	say($colors, "Reading File to Change", $file);
-	if (!file_exists($file)) { 
-
-		err($colors, "File was not found:", $file);
-		return;
-	}
-	$contents = file_get_contents($file);
-	$contents = str_replace($find,  $replace_with, $contents);
-	file_put_contents($file, $contents);
-}
-
-//
-//
-//
-//
-//
-// Load scripts for author and email 
-//
-//
-//
-//
-
-$name= exec('git config user.name');
-$email= exec('git config user.email');
-$author="$name <$email>";
-
-//
-//
-// 
-// Change \ to /  from argument
-//
-//
-//
-$argv[1] = changeSlash($argv[1] );
-
-// Pass Argument "Person/PersonThing" to $entity variable
-$entity = $argv[1];
-
-//
-//
-//
-//
-// Obtain, plural, camel case ( snake case ), file and dir from request
-//
-//
-//
-//
-
-$file =""; //singular for model 
-$dir = ""; //for the mkdirs in the controllers, and tests
-$file_plural = ""; //plural for the migrations 
-$file_plural_snake = ""; //plural snake for the migrations 
-
-if (stripos($argv[1], "/") > 0) {
-	$file_exploded = explode("/", $argv[1]);
-	$file = $file_exploded[1];
-	$dir = $file_exploded[0];
-}
-
-$file_plural=Pluralizer::plural($file);
-$file_plural_snake_migration_name =  camelToUnderScore($file_plural);
-
-
-//NaME CHANGE TEST
-echo $file."\n";
-echo $dir. "\n";
-echo $file_plural. "\n";
-// echo $file_plural_snake. "\n";
-
-$filo = Str::snake($file);
-echo $filo ."\n";
-
-$file_plural_snake  =  Pluralizer::plural($filo);
-echo $file_plural_snake ."\n";
-echo $file_plural_snake_migration_name ."\n";
-// die();
-
-
-//REF: http://symfony.com/doc/current/components/console/introduction.html
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\Output;
-
-/*
-Verbosity Levels
-Mode	Value
-OutputInterface::VERBOSITY_QUIET	Do not output any messages
-OutputInterface::VERBOSITY_NORMAL	The default verbosity level
-OutputInterface::VERBOSITY_VERBOSE	Increased verbosity of messages
-OutputInterface::VERBOSITY_VERY_VERBOSE	Informative non essential messages
-OutputInterface::VERBOSITY_DEBUG	Debug messages
-// $output = new ConsoleOutput(Output::VERBOSITY_QUIET, true);
-*/
-
-$output = new ConsoleOutput();
-
-// TEST CONSOLE SAMPLE USE
-// green text
-// $output->writeln('<info>foo</info>');
-
-// // yellow text
-// $output->writeln('<comment>foo</comment>');
-
-// // black text on a cyan background
-// $output->writeln('<question>foo</question>');
-
-// // white text on a red background
-// $output->writeln('<error>foo</error>');
-
-// green text
-// $output->writeln('<fg=green>foo</fg=green>');
-
-// // black text on a cyan background
-// $output->writeln('<fg=black;bg=cyan>foo</fg=black;bg=cyan>');
-
-// // bold text on a yellow background
-// $output->writeln('<bg=yellow;options=bold>foo</bg=yellow;options=bold>');
- // die(0);
-
-
-$description = "PHIWeb";
-$revision = "7";
-$version = "7";
-$camelToUnderScoreFile = camelToUnderScore($file);
-
-function replaceStrs($text) {
-	// $subject = str_ireplace( $search,  $replace,  $subject);
-	$return = "";
-	$return  = str_ireplace( "{{dir}}",  $dir,  $text);
-	$return  = str_ireplace( "{{file}}",  $file,  $return);
-	$return  = str_ireplace( "{{camelToUnderScoreFile}}",  $camelToUnderScoreFile,  $return);
-	$return  = str_ireplace( '{{author}}', $author,  $return);
-	$return  = str_ireplace( '{{revision}}', $revision,  $return);
-	$return  = str_ireplace( '{{version}}', $version,  $return);
-	return 
-}
+include('generatebase');
 
 #
 #
@@ -400,7 +183,7 @@ say($colors, "Seed", $said);
 #
 // how to run a test exec('vendor/bin/phpunit tests/Models/'.$entity);
 
-function generateFromStub($base_folder, $stub_File, $target_file, $dir, $file){
+function generateFromStub($base_folder, $stub_file, $target_file, $dir, $file){
 
 	$file_targeted = $base_folder."/".$dir."/".$file."/".$target_file;
 
@@ -426,21 +209,7 @@ function generateFromStub($base_folder, $stub_File, $target_file, $dir, $file){
 #
 #
 #
-$base_folder = "tests/models";
-$target_file = "basic_".$camelToUnderScoreFile."_model_test.php";
-$stub_file = "app/Stubs/Tests/models/model_test.stub";
-
-generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
-
-$target_file = "delete_".$camelToUnderScoreFile."_model_test.php";
-$stub_file = "app/Stubs/Tests/models/delete_model_test.stub";
-
-generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
-
-$target_file = "create_".$camelToUnderScoreFile."_model_test.php";
-$stub_file = "app/Stubs/Tests/models/create_model_test.stub";
-
-generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
+$said=@exec("php 'testmodel' $dir/$file");
 
 
 #
@@ -452,13 +221,7 @@ generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 #
 #
 #
-
-$base_folder = "tests/controllers";
-$target_file = "basic_".$camelToUnderScoreFile."controller_test.php";
-$stub_file = "app/Stubs/Tests/controllers/controller_test.stub";
-
-generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
-
+$said=@exec("php 'testcontroller' $dir/$file");
 
 
 #
@@ -477,7 +240,12 @@ $base_folder = "tests/requests";
 $target_file = "basic_".$camelToUnderScoreFile."request_test.php";
 $stub_file = "app/Stubs/Tests/requests/request_test.stub";
 
-generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file);
+
+say($colors, "Generated:", "phpunit $file_targeted"); 
+$said=@exec("phpunit $file_targeted");
+say($colors, "Tested:", $said); 
+
 
 
 
@@ -495,7 +263,12 @@ $base_folder = "tests/migration";
 $target_file = "basic_".$camelToUnderScoreFile."migration_test.php";
 $stub_file = "app/Stubs/Tests/migrations/migration_test.stub";;
 
-generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file);
+
+say($colors, "Generated:", "phpunit $file_targeted"); 
+$said=@exec("phpunit $file_targeted");
+say($colors, "Tested:", $said); 
+
 
 
 
@@ -514,7 +287,12 @@ $base_folder = "tests/routes";
 $target_file = "basic_".$camelToUnderScoreFile."route_test.php";
 $stub_file = "app/Stubs/Tests/routes/route_test.stub";;
 
-generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file);
+
+say($colors, "Generated:", "phpunit $file_targeted"); 
+$said=@exec("phpunit $file_targeted");
+say($colors, "Tested:", $said); 
+
 
 #
 #
@@ -530,7 +308,12 @@ $base_folder = "tests/views";
 $target_file = "basic_".$camelToUnderScoreFile."view_test.php";
 $stub_file = "app/Stubs/Tests/views/view_test.stub";;
 
-generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file);
+
+say($colors, "Generated:", "phpunit $file_targeted"); 
+$said=@exec("phpunit $file_targeted");
+say($colors, "Tested:", $said); 
+
 
 
 #
@@ -542,14 +325,8 @@ generateFromStub($base_folder, $stub_File, $target_file, $dir, $file);
 #
 #
 #
-say($colors, "\n\nAdd", "Add files to git");
 
-$said=@exec("git add . ");
+$commit_msg = ("Created ". $file. " Model, Controller, Request, Migration, Seeder, and Tests for View, Route, Migration, Model ( basic, create and delete ), Controller and Request");
+commitToGithub(	 $colors, $commit_msg ) {
 
-$commit_msg = ("Created ". $file. " Model, Controller, Request, Migration, Seeder, and Tests for View, Route, Migration, Model, Controller and Request");
 
-say($colors, "\n\nCommit", $commit_msg);
-
-$said=@exec('git commit -m "'. $commit_msg .'"');
-
-$said=@exec ("git status");

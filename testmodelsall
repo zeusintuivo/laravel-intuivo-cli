@@ -1,0 +1,116 @@
+find app/Models  -type f  | cut -d'.' -f1 | cut -c12-  | xargs  ./testmodel
+
+//List all 
+find tests/models/  -type f  | cut -d'.' -f1 | cut -c14-  | ack basic
+find tests/models/ -type f -name '*basic_*.*' 
+
+//Delete all 
+find tests/models/ -type f -name '*basic_*.*' -delete
+find tests/models/ -type f -name '*delete*.*' -delete
+
+./testmodel DailyLog/DailyLog
+./testmodel DailyLog/DailyLogProgress
+./testmodel DailyLog/DailyLogStatus
+./testmodel DailyLog/DailyLogProgressComment
+./testmodel DailyLog/DailyLogNotif
+./testmodel DailyLog/DailyLogComment
+
+./testdelete DailyLog/DailyLog
+./testdelete DailyLog/DailyLogProgress
+./testdelete DailyLog/DailyLogStatus
+./testdelete DailyLog/DailyLogProgressComment
+./testdelete DailyLog/DailyLogNotif
+./testdelete DailyLog/DailyLogComment
+
+./testmodel MedLog/MedLogProgress
+./testmodel MedLog/MedLogComment
+./testmodel MedLog/MedLog
+./testmodel MedLog/MedLogMedsGiven
+./testmodel MedLog/MedLogProgressComment
+./testmodel MedLog/MedLogScheduleTime
+./testmodel MedLog/MedLogSchedule
+
+./testmodel Person/Person
+./testmodel Person/PersonEmergencyContact
+./testmodel Person/PersonInsurance
+./testmodel Person/PersonRole
+./testmodel Person/PersonRelative
+./testmodel Person/PersonPhoto
+./testmodel Person/PersonAlert
+./testmodel Person/PersonAddress
+./testmodel Person/PersonGuardian
+./testmodel Person/PersonPhone
+
+
+./testmodel News/NewsComment
+./testmodel News/NewsThread
+./testmodel News/NewsGroup
+./testmodel News/NewsCategory
+
+//not passing
+
+            <file>tests/models/DailyLog/DailyLog/delete_daily_log_model_test.php</file>
+            <file>tests/models/DailyLog/DailyLogProgress/delete_daily_log_progress_model_test.php</file>
+            <file>tests/models/DailyLog/DailyLogStatus/delete_daily_log_status_model_test.php</file>
+            <file>tests/models/DailyLog/DailyLogProgressComment/delete_daily_log_progress_comment_model_test.php</file>
+            <file>tests/models/DailyLog/DailyLogNotif/delete_daily_log_notif_model_test.php</file>
+            <file>tests/models/DailyLog/DailyLogComment/delete_daily_log_comment_model_test.php</file>
+
+          <file>tests/models/Person/Person/delete_person_model_test.php</file>
+            <file>tests/models/Person/PersonEmergencyContact/delete_person_emergency_contact_model_test.php</file>
+            <file>tests/models/Person/PersonInsurance/delete_person_insurance_model_test.php</file>
+            <file>tests/models/Person/PersonRole/delete_person_role_model_test.php</file>
+            <file>tests/models/Person/PersonRelative/delete_person_relative_model_test.php</file>
+            <file>tests/models/Person/PersonPhoto/delete_person_photo_model_test.php</file>
+            <file>tests/models/Person/PersonAlert/delete_person_alert_model_test.php</file>
+            <file>tests/models/Person/PersonAddress/delete_person_address_model_test.php</file>
+            <file>tests/models/Person/PersonGuardian/delete_person_guardian_model_test.php</file>
+            <file>tests/models/Person/PersonPhone/delete_person_phone_model_test.php</file>
+                        
+           <file>tests/models/Immunization/VaccineLog/delete_vaccine_log_model_test.php</file>
+            <file>tests/models/Immunization/VaccineLogComment/basic_vaccine_log_comment_model_test.php</file>
+            <file>tests/models/Immunization/VaccineLogComment/delete_vaccine_log_comment_model_test.php</file>
+          
+            <file>tests/models/MedLog/MedLog/delete_med_log_model_test.php</file>
+            <file>tests/models/MedLog/MedLogComment/delete_med_log_comment_model_test.php</file>
+            <file>tests/models/MedLog/MedLogMedsGiven/delete_med_log_meds_given_model_test.php</file>
+            <file>tests/models/MedLog/MedLogProgress/delete_med_log_progress_model_test.php</file>
+            <file>tests/models/MedLog/MedLogProgressComment/delete_med_log_progress_comment_model_test.php</file>
+            <file>tests/models/MedLog/MedLogScheduleTime/delete_med_log_schedule_time_model_test.php</file>
+            <file>tests/models/MedLog/MedLogSchedule/delete_med_log_schedule_model_test.php</file>
+
+
+
+
+//pending
+
+
+
+./testmodel Immunization/VaccineLogComment
+./testmodel Immunization/VaccineLog
+./testmodel Screen/ScreenHearing
+./testmodel Screen/Screening
+./testmodel Screen/ScreenCustom
+./testmodel Screen/ScreenVision
+./testmodel Screen/ScreenBmi
+./testmodel Screen/ScreenScoliosis
+
+
+
+./testmodel Param/SchoolYear
+./testmodel Organization/School
+./testmodel Organization/OrganizationAddress
+./testmodel Organization/InsuranceAddress
+./testmodel Organization/PEClass
+./testmodel Organization/Jurisdiction
+./testmodel Organization/Organization
+./testmodel Organization/Insurance
+./testmodel Organization/Member
+./testmodel Organization/SchoolYear
+./testmodel Student/Student
+./testmodel Student/StudentRecord
+./testmodel Feature/Excel
+./testmodel Feature/PDF
+./testmodel Auth/PasswordReset
+./testmodel Auth/AngularToken
+./testmodel Template/MailTemplate

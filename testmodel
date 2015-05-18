@@ -1,0 +1,105 @@
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+# Procedural Programming to Create 
+# Models, Migrations, Controllers, and Tests, 
+# 
+#
+
+//
+//
+//
+// Step 1 Check Arguments
+//
+//
+//
+
+# Before Loading anything Check Arguments Passed
+# Get argv 
+if (!isset($argv) || !isset($argv[1])) {
+	echo "
+	Sample Usage:    - expects only one Dir not more
+	    call testmodel Person\PersonAddress
+	    call testmodel Person/PersonAddress
+	    call testmodel PersonAddress
+	    ";
+
+	die(0);
+}
+
+include('generatebase');
+
+#
+#
+#
+#
+# Creation Start
+#
+#
+#
+#
+
+
+
+#
+#
+#
+#
+# Tests
+#
+#
+#
+#
+// how to run a test exec('vendor/bin/phpunit tests/Models/'.$entity);
+
+
+#
+#
+#
+#
+# Tests - Model
+#
+#
+#
+#
+
+#base for tests generator
+$base_folder = "tests/models";
+
+#
+# Basic
+#
+$target_file = "basic_".$camelToUnderScoreFile."_model_test.php";
+$stub_file = "app/Stubs/Tests/models/basic_model_test.stub";
+
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
+
+
+
+#
+# Delete
+#
+// $target_file = "delete_".$camelToUnderScoreFile."_model_test.php";
+// $stub_file = "app/Stubs/Tests/models/delete_model_test.stub";
+
+// $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
+
+// # Commit to Github
+// $commit_msg = ("Created ". $file_targeted . " test for model. ");
+// commitToGithub( $colors, 	$commit_msg );
+
+
+// #
+// # Create
+// #
+// $target_file = "create_".$camelToUnderScoreFile."_model_test.php";
+// $stub_file = "app/Stubs/Tests/models/create_model_test.stub";
+
+// $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
+
+// say($colors, "Generated:", "phpunit $file_targeted"); 
+// $said=@exec("phpunit $file_targeted");
+// say($colors, "Tested:", $said); 
+
+

@@ -1,0 +1,180 @@
+<?php
+
+/**
+ * A Basic Controller Test
+ *
+ * @author Jesus Alcaraz <jesus@gammapartners.com>
+ * @revision 1
+ */
+
+use PHIWeb\Models\{{dir}}\{{file}};
+
+use PHIWeb\Models\Person\Person;
+use PHIWeb\Models\DailyLog\DailyLog;
+use PHIWeb\Models\Param\Param;
+
+class Create{{file}}Test extends TestCase {
+
+
+
+	public function testCreate{{file}}()
+	{
+				$index= last({{file}}::lists('id'))+1;
+
+                $currenttime = Carbon\Carbon::now();
+ 				
+                $faker = Faker\Factory::create();
+
+                
+                $people_ids = Person::lists('id');
+    			$person_last_id = last(Person::lists('id'));
+				$person_first_id = Person::first()->id;
+                
+                $daily_log_ids = DailyLog::lists('id');
+       			$daily_log_last_id = last(DailyLog::lists('id'));
+				$daily_log_first_id = DailyLog::first()->id;       			
+
+				$given_by_id = $faker->randomElement($people_ids);
+				$given_by = Person::find($given_by_id);
+
+				//acronym
+				$words = explode(" ", $given_by->first_name." ".$given_by->last_name);
+				$acronym = "";
+
+				foreach ($words as $w) {
+				  $acronym .= $w[0];
+				}
+
+
+				//
+				// Params Load
+				//
+
+				$alert_type_ids=(Param::arrayByTypeLongerName('alert_type_id'));
+				$category_ids=(Param::arrayByTypeLongerName('category_id'));
+				$daily_ids=(Param::arrayByTypeLongerName('daily_id'));
+				$dailylog_comment_type_ids=(Param::arrayByTypeLongerName('dailylog_comment_type_id'));
+				$dose_ids=(Param::arrayByTypeLongerName('dose_id'));
+				$dose_type_ids=(Param::arrayByTypeLongerName('dose_type_id'));
+				$end_schedules_ids=(Param::arrayByTypeLongerName('end_schedules_id'));
+				$frequency_ids=(Param::arrayByTypeLongerName('frequency_id'));
+				$grade_ids=(Param::arrayByTypeLongerName('grade_id'));
+				$guardian_type_ids=(Param::arrayByTypeLongerName('guardian_type_id'));
+				$homeroom_ids=(Param::arrayByTypeLongerName('homeroom_id'));
+				$insurance_type_ids=(Param::arrayByTypeLongerName('insurance_type_id'));
+				$legend_ids=(Param::arrayByTypeLongerName('legend_id'));
+				$location_ids=(Param::arrayByTypeLongerName('location_id'));
+				$log_comment_type_ids=(Param::arrayByTypeLongerName('log_comment_type_id'));
+				$logger_type_ids=(Param::arrayByTypeLongerName('logger_type_id'));
+				$medication_category_ids=(Param::arrayByTypeLongerName('medication_category_id'));
+				$medication_name_ids=(Param::arrayByTypeLongerName('medication_name_id'));
+				$medication_type_ids=(Param::arrayByTypeLongerName('medication_type_id'));
+				$month_ids=(Param::arrayByTypeLongerName('month_id'));
+				$nature_of_injury_ids=(Param::arrayByTypeLongerName('nature_of_injury_id'));
+				$new_category_ids=(Param::arrayByTypeLongerName('new_category_id'));
+				$notification_type_ids=(Param::arrayByTypeLongerName('notification_type_id'));
+				$order_status_ids=(Param::arrayByTypeLongerName('order_status_id'));
+				$organization_type_ids=(Param::arrayByTypeLongerName('organization_type_id'));
+				$param_type_ids=(Param::arrayByTypeLongerName('param_type_id'));
+				$permision_type_ids=(Param::arrayByTypeLongerName('permision_type_id'));
+				$phone_type_ids=(Param::arrayByTypeLongerName('phone_type_id'));
+				$procedure_ids=(Param::arrayByTypeLongerName('procedure_id'));
+				$procedure_type_ids=(Param::arrayByTypeLongerName('procedure_type_id'));
+				$referred_to_ids=(Param::arrayByTypeLongerName('referred_to_id'));
+				$relationship_type_ids=(Param::arrayByTypeLongerName('relationship_type_id'));
+				$repeat_every_ids=(Param::arrayByTypeLongerName('repeat_every_id'));
+				$report_type_ids=(Param::arrayByTypeLongerName('report_type_id'));
+				$role_type_ids=(Param::arrayByTypeLongerName('role_type_id'));
+				$route_ids=(Param::arrayByTypeLongerName('route_id'));
+				$schedule_cycle_by_ids=(Param::arrayByTypeLongerName('schedule_cycle_by_id'));
+				$schedule_cycle_ids=(Param::arrayByTypeLongerName('schedule_cycle_id'));
+				$school_district_ids=(Param::arrayByTypeLongerName('school_district_id'));
+				$school_type_ids=(Param::arrayByTypeLongerName('school_type_id'));
+				$screen_type_ids=(Param::arrayByTypeLongerName('screen_type_id'));
+				$signed_order_type_ids=(Param::arrayByTypeLongerName('signed_order_type_id'));
+				$staff_type_ids=(Param::arrayByTypeLongerName('staff_type_id'));
+				$status_ids=(Param::arrayByTypeLongerName('status_id'));
+				$student_type_ids=(Param::arrayByTypeLongerName('student_type_id'));
+				$subroute_ids=(Param::arrayByTypeLongerName('subroute_id'));
+				$time_period_ids=(Param::arrayByTypeLongerName('time_period_id'));
+				$user_type_ids=(Param::arrayByTypeLongerName('user_type_id'));
+				$vaccine_log_comment_type_ids=(Param::arrayByTypeLongerName('vaccine_log_comment_type_id'));
+				$vaccine_type_ids=(Param::arrayByTypeLongerName('vaccine_type_id'));
+				$weekday_ids=(Param::arrayByTypeLongerName('weekday_id'));			
+
+				//
+				// Params Pick One
+				//
+
+				$alert_type_id=array_rand($alert_type_ids);
+				$category_id=array_rand($category_ids);
+				$daily_id=array_rand($daily_ids);
+				$dailylog_comment_type_id=array_rand($dailylog_comment_type_ids);
+				$dose_id=array_rand($dose_ids);
+				$dose_type_id=array_rand($dose_type_ids);
+				$end_schedules_id=array_rand($end_schedules_ids);
+				$frequency_id=array_rand($frequency_ids);
+				$grade_id=array_rand($grade_ids);
+				$guardian_type_id=array_rand($guardian_type_ids);
+				$homeroom_id=array_rand($homeroom_ids);
+				$insurance_type_id=array_rand($insurance_type_ids);
+				$legend_id=array_rand($legend_ids);
+				$location_id=array_rand($location_ids);
+				$log_comment_type_id=array_rand($log_comment_type_ids);
+				$logger_type_id=array_rand($logger_type_ids);
+				$medication_category_id=array_rand($medication_category_ids);
+				$medication_name_id=array_rand($medication_name_ids);
+				$medication_type_id=array_rand($medication_type_ids);
+				$month_id=array_rand($month_ids);
+				$nature_of_injury_id=array_rand($nature_of_injury_ids);
+				$new_category_id=array_rand($new_category_ids);
+				$notification_type_id=array_rand($notification_type_ids);
+				$order_status_id=array_rand($order_status_ids);
+				$organization_type_id=array_rand($organization_type_ids);
+				$param_type_id=array_rand($param_type_ids);
+				$permision_type_id=array_rand($permision_type_ids);
+				$phone_type_id=array_rand($phone_type_ids);
+				$procedure_id=array_rand($procedure_ids);
+				$procedure_type_id=array_rand($procedure_type_ids);
+				$referred_to_id=array_rand($referred_to_ids);
+				$relationship_type_id=array_rand($relationship_type_ids);
+				$repeat_every_id=array_rand($repeat_every_ids);
+				$report_type_id=array_rand($report_type_ids);
+				$role_type_id=array_rand($role_type_ids);
+				$route_id=array_rand($route_ids);
+				$schedule_cycle_by_id=array_rand($schedule_cycle_by_ids);
+				$schedule_cycle_id=array_rand($schedule_cycle_ids);
+				$school_district_id=array_rand($school_district_ids);
+				$school_type_id=array_rand($school_type_ids);
+				$screen_type_id=array_rand($screen_type_ids);
+				$signed_order_type_id=array_rand($signed_order_type_ids);
+				$staff_type_id=array_rand($staff_type_ids);
+				$status_id=array_rand($status_ids);
+				$student_type_id=array_rand($student_type_ids);
+				$subroute_id=array_rand($subroute_ids);
+				$time_period_id=array_rand($time_period_ids);
+				$user_type_id=array_rand($user_type_ids);
+				$vaccine_log_comment_type_id=array_rand($vaccine_log_comment_type_ids);
+				$vaccine_type_id=array_rand($vaccine_type_ids);
+				$weekday_id=array_rand($weekday_ids);
+
+
+                {{file}}::create([
+
+                        'id' => $index,
+
+                        'created_at' => $currenttime,
+                        'updated_at' => $currenttime
+                 ]);
+
+				${{camelToUnderScoreFile}}= {{file}}::findOrFail( $index );
+				
+		        //
+		        // Actual testing here
+		        //
+				$this->assertEquals(${{camelToUnderScoreFile}}->id, $index);
+	}
+
+
+
+}

@@ -15,7 +15,6 @@ sudo chmod +x describe
 sudo chmod +x dump
 sudo chmod +x dumpin
 sudo chmod +x dumpout
-sudo chmod +x testenv
 sudo chmod +x filelastestchanges
 sudo chmod +x fileparticipation
 sudo chmod +x fix_linux_permissions.sh
@@ -23,6 +22,8 @@ sudo chmod +x find
 sudo chmod +x forcepull
 sudo chmod +x frameworkload
 sudo chmod +x frameworksave
+sudo chmod +x generateparams
+sudo chmod +x generatelocations
 sudo chmod +x indatabase
 sudo chmod +x list
 sudo chmod +x load_env
@@ -53,5 +54,14 @@ sudo chmod +x squashdb
 sudo chmod +x status
 sudo chmod +x replace
 sudo chmod +x tinker
+sudo chmod +x testenv
+sudo chmod +x testdelete
+sudo chmod +x testmodel
+sudo chmod +x testmodelsall
+sudo chmod +x testmigration
+sudo chmod +x testview
+sudo chmod +x testcontroller
+sudo chmod +x testroute
+sudo chmod +x testrequest
 sudo chmod +x updateme
 sudo chmod +x vendor/bin/phpunit

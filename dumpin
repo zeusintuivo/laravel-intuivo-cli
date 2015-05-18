@@ -34,8 +34,19 @@ if (isset($argv) || isset($argv[1])) {
 
 }
 
+use Carbon\Carbon;
+
+$starttime = Carbon::now();
+
 
 echo "\n".'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' < '.$target_file ."\n\n";
 $said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' < '.$target_file .' ');
 echo "\n". $said. "\n";
 
+$endtime = Carbon::now();
+
+
+say($colors, "Generated on ", $endtime->formatLocalized('%A %d %B %Y'));
+say($colors, "Generated in ", $endtime->diffInMinutes($starttime) . ' minutes');
+say($colors, "Generated in ", $endtime->diffInSeconds($starttime) . ' seconds');
+$said=@exec(" paplay boy.ogg ");

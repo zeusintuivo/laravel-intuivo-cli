@@ -1,0 +1,261 @@
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+# Procedural Programming to Create 
+# Models, Migrations, Controllers, and Tests, 
+# 
+#
+
+
+//
+//
+//
+// Step 1 Check Arguments
+//
+//
+//
+
+# Before Loading anything Check Arguments Passed
+# Get argv 
+if (!isset($argv) || !isset($argv[1])) {
+	$argv[] = __FILE__ ;
+	$argv[] = "" ;
+
+}
+
+
+include('generatebase');
+
+
+#
+#
+#
+#
+# Creation Start
+#
+#
+#
+#
+
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\Capsule;
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+use PHIWeb\Models\Param\Param;
+use PHIWeb\Models\Param\Location;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+// use PDO;
+
+
+$DB = new DB;
+
+$DB->addConnection([
+    'driver'    => 'mysql',
+    'host'      => $DB_HOST,
+    'database'  => $DB_DATABASE,
+    'username'  => $DB_USERNAME,
+    'password'  => $DB_PASSWORD,
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
+]);
+
+// Set the event dispatcher used by Eloquent models... (optional)
+use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
+$DB->setEventDispatcher(new Dispatcher(new Container));
+
+// Make this DB instance available globally via static methods... (optional)
+$DB->setAsGlobal();
+
+// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
+$DB->bootEloquent();
+
+
+// function byType($thistable = 'locations', $typeName='type', $display_name_name = 'type'){
+ 
+//         //tester oneliner
+//         //$typeName='categories'; DB::table(DB::RAW('locations a'))->select(['a.id', 'a.display_name', 'b.display_name as type'])->join(DB::RAW('locations b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->toSQL();
+
+
+//         return  DB::table(DB::RAW($thistable . ' a'))
+//                 ->select(['a.id', 'a.display_name', 'b.display_name as '.$display_name_name])
+//                 ->join(DB::RAW($thistable . ' b'),'a.param_type_id', '=', 'b.id')
+//                 ->where('b.display_name', [$typeName])
+//                 ->where('a.active', ['1'])
+//                 ->orderBy('a.param_type_id')
+//                 ->orderBy('a.display_order')
+//                 ->take(1)
+//                 ->get();
+       
+// } 
+
+
+// function arrayByType($thistable = 'locations', $typeName='type', $display_name_name = 'type') { 
+
+//         DB::setFetchMode(PDO::FETCH_ASSOC); //set results to array
+
+//         $r = byType($thistable, $typeName, $display_name_name);
+        
+//         $res = [];
+//         $keykey = 0;
+//         $valuevalue = "";
+//         foreach($r as $L) {
+//             foreach($L as $k => $v) {
+//                 if ($k=='id') $keykey = $v;
+//                 if ($k=='display_name') $valuevalue = $v;
+               
+//             }
+//              $res[$keykey] = $valuevalue;
+//         }
+//         DB::setFetchMode(PDO::FETCH_CLASS); //set results to array off , objects on
+//         return $res;
+// }     
+
+// DB::table(DB::RAW('locations a'))->select(['a.id', 'a.display_name', 'b.display_name as type'])->join(DB::RAW('locations b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->toSQL();
+
+
+//     $users = DB::table('locations')->where('id', '<', 1000)->get();
+//     $users = DB::table('locations')->where('id', '<', 1000)->lists( 'id', 'display_name');  //restuls in this order results "view" => "6"
+//     $users = DB::table('locations')->where('id', '<', 1000)->lists('display_name', 'id');   //restuls in this order results  6 => "view"
+//     $users = DB::table('locations')->where('id', '>', 1000)->lists('display_name', 'id');   //restuls in this order results  6 => "view"
+//use PHIWeb\Models\Param\Location;
+$typeName='districts'; 
+//     $users = DB::table(DB::RAW('locations a'))->select(['a.id', 'a.display_name', 'b.display_name as type'])->join(DB::RAW('locations b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->lists('display_name', 'id');   //restuls in this order results  6 => "view"
+//     $users = DB::table(DB::RAW('locations a'))->select(['a.id', 'a.display_name', 'b.display_name as type'])->join(DB::RAW('locations b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->get('display_name', 'id');   //restuls in this order results  6 => "view"
+//     $users = DB::table(DB::RAW('locations a'))->select(['a.active', 'a.display_order', 'a.longer_name', 'a.numeric_value', 'a.display_name', 'a.view_group_id', 'a.param_type_id', 'a.parent_param_id', 'a.id', 'b.display_name as type'])->join(DB::RAW('locations b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->lists('active', 'display_order', 'longer_name', 'numeric_value', 'display_name', 'view_group_id', 'param_type_id', 'parent_param_id', 'id');   //restuls in this order results  6 => "view"
+//     $users = DB::table(DB::RAW('locations a'))->select(['a.active', 'a.display_order', 'a.longer_name', 'a.numeric_value', 'a.display_name', 'a.view_group_id', 'a.param_type_id', 'a.parent_param_id', 'a.id', 'b.display_name as type'])->join(DB::RAW('locations b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->get();   //restuls in this order results  6 => "view"
+
+ 	// $contents = DB::table(DB::RAW('locations a'))->select(['a.active', 'a.display_order', 'a.longer_name', 'a.numeric_value', 'a.display_name', 'a.view_group_id', 'a.param_type_id', 'a.parent_param_id', 'a.id', 'b.display_name as type'])->join(DB::RAW('locations b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->get();   //restuls in this order results  6 => "view"
+
+	 //   	foreach ($contents as $content_key => $content_value) {
+	 //   		dump($content_key);
+	 //   		dump($content_value);
+	 //   		dump($content_value['id']);
+	 //   	}
+	   	// dd();
+$starttime = Carbon::now();
+$typeName='type'; 
+    $types = DB::table(DB::RAW('locations a'))->select(['a.id', 'a.display_name', 'b.display_name as type'])->join(DB::RAW('locations b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->lists('display_name', 'id');   //restuls in this order results  6 => "view"
+
+// $results = DB::select('select * from users where id = ?', array(1));
+// dump($results );
+
+//echo $typeName;
+//say($colors, "res:", arrayByType()); 
+
+$output = new ConsoleOutput();
+
+		
+foreach ($types as $key => $value) {
+		// DB::schema()->create('users', function($table)
+		// {
+		//     $table->increments('id');
+		//     $table->string('email')->unique();
+		//     $table->timestamps();
+		// });
+
+		$currenttable = $value;
+	// if ($currenttable=="districts") { //limit only one
+	   	
+		$output->writeln('<info>'.$currenttable.' migration start</info>');
+
+
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+		DB::schema()->dropIfExists($currenttable);
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+		DB::schema()->create($currenttable, function(Blueprint $table)
+		{
+			$table->increments('id')->unsigned()->unique();
+			$table->integer('parent_param_id')->unsigned()->nullable(); //EXPLANATION: Link to this same table to another Param in the list like PARAM 
+			$table->foreign('parent_param_id')->references('id')->on('locations');
+			//City el Paso will Belong to PARENT-PARAM: State Texas. Those with no parent will have "root" or 0 as parent
+			
+			$table->integer('param_type_id')->unsigned()->index()->nullable();
+			$table->foreign('param_type_id')->references('id')->on('locations');
+			
+			$table->integer('view_group_id')->unsigned()->index()->nullable();
+			// $table->foreign('view_group_id')->references('id')->on('locations');
+			
+			$table->string('display_name', 120)->index()->nullable();//EXAMPLE TEXAS. DISPLAY is TX Description is TEXAS
+			$table->integer('numeric_value')->default(0);//locations like Roles will have a numeric value to Address which is more valueable
+			
+			$table->string('longer_name', 255)->index()->nullable(); //EXAMPLE TEXAS. DISPLAY is TX Description is TEXAS
+		
+			$table->integer('display_order'); //Order number is in relationship to its type only 
+			
+			$table->enum('active', ["0","1"])->default("1");
+			
+			$table->timestamps();
+		});
+
+		$said=@exec("touch table_".$currenttable);
+
+		say($colors, "\n\ntouched table_$currenttable", $said);
+		$commit_msg = ("Created table ". $currenttable. " from locations. ");
+		commitToGithub( $colors, 	$commit_msg );
+
+
+		// $output->writeln('<info>'.$currenttable.' faker start </info>');
+		$output->writeln('<info>'.$currenttable.' direct statement </info>');
+
+		$typeName=$value; 
+	  	// $contents = DB::table(DB::RAW('locations a'))->select(['a.active', 'a.display_order', 'a.longer_name', 'a.numeric_value', 'a.display_name', 'a.view_group_id', 'a.param_type_id', 'a.parent_param_id', 'a.id', 'b.display_name as type'])->join(DB::RAW('locations b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->get();   //restuls in this order results  6 => "view"
+		
+		$keyType=$key; 
+		$contents = DB::table(DB::RAW('locations a'))->select(['a.active', 'a.display_order', 'a.longer_name', 'a.numeric_value', 'a.display_name', 'a.view_group_id', 'a.param_type_id', 'a.parent_param_id', 'a.id'])->where('a.param_type_id', [$keyType])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->get();   //restuls in this order results  6 => "view"
+
+		if (sizeof($contents)>0) {
+			//
+			//
+			$currenttime = Carbon::now();
+			$sql = 'INSERT INTO `'.$currenttable.'`    
+					(`id`, `parent_param_id`, `param_type_id`, `view_group_id`,  `display_name`, `numeric_value`, `longer_name`, `display_order`, `active`, `created_at`, `updated_at`) 
+					VALUES ';		
+			foreach ($contents as $content_key => $content_value) {
+				//dump($content_key); #object number
+				#dump($content_value);
+				#dump($content_value['id']);
+
+					 //   	  INSERT INTO `end_schedules`    
+				  // (`id`, `parent_param_id`, `param_type_id`, `view_group_id`,  `display_name`, `numeric_value`, `longer_name`, `display_order`, `active`, `created_at`, `updated_at`) 
+				  // VALUES 
+				  
+				  // (411601, 1400, 202252, "", "by Occurrences", 0, "by Occurrences", 2, "1", "2015-05-14 22:02:29", "2015-05-14 22:02:29");
+					$sql .= '("'.$content_value['id'].'", "'.$content_value['parent_param_id'].'", "'.$content_value['param_type_id'].'", "'.$content_value['view_group_id'].'", "'.$content_value['display_name'].'", "'.$content_value['numeric_value'].'", "'.$content_value['longer_name'].'", '.$content_value['display_order'].', "'.$content_value['active'].'", "'.$currenttime.'", "'.$currenttime.'"),';
+					// dump($sql);
+			} //end if foreach
+			$sql = rtrim($sql, ",");
+			$sql .= ";";
+			DB::statement($sql  );
+			//
+		} //end if (sizeof($contents)>0) {
+				
+
+		$said=@exec("rm table_".$currenttable);
+
+		say($colors, "\n\nremoved table_$currenttable", $said);
+  
+	// } //end if limit only one
+
+}
+
+$endtime = Carbon::now();
+
+say($colors, "Generated on ", $endtime->formatLocalized('%A %d %B %Y'));
+say($colors, "Generated in ", $endtime->diffInMinutes($starttime) . ' minutes');
+say($colors, "Generated in ", $endtime->diffInSeconds($starttime) . ' seconds');
+$said=@exec(" paplay boy.ogg ");
+
+
+#Generated in : 40 seconds
+#Generated in : 0 minutes
+# 2015 May 15
+// dump($types);

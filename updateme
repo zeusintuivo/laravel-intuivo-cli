@@ -16,9 +16,9 @@ echo "\n";
 
 #commit
 echo "\n";
-echo "=== commit -m 'Updating branch $updatemecurrentbranch with Master branch. Adding and commiting beforehand.' ===\n";
+echo "=== commit -am 'Updating branch $updatemecurrentbranch with Master branch. Adding and commiting beforehand.' ===\n";
 echo "\n";
-$said = exec('git commit -m "Updating branch '.$updatemecurrentbranch.' with Master branch. Adding and commiting beforehand."');
+$said = exec('git commit -am "Updating branch '.$updatemecurrentbranch.' with Master branch. Adding and commiting beforehand."');
 echo $said ."\n";
 echo "\n";
 

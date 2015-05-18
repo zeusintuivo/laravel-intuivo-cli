@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * A Basic Model Test
+ *
+ * @author {{author}}
+ * @revision {{revision}}
+ */
+use PHIWeb\Models\{{dir}}\{{file}};
+
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+use PHIWeb\Tests\Traits\ModelBasicsTester;
+
+class Basic{{file}}Test extends TestCase {
+
+	use ModelBasicsTester;
+	
+	public function testCanInstantiate{{file}}() {
+
+		$output = new ConsoleOutput();
+
+		$output->writeln("\n\n".'<info>--( {{file}} )--</info>');
+
+		${{filo}} = new {{file}};
+
+		$this->modelBasicsTester($this, ${{filo}}, 'PHIWeb\Models\{{dir}}\{{file}}', $output);
+
+	} //end function testCanInstantiate{{file}}()
+
+} //end class Basic{{file}}Test

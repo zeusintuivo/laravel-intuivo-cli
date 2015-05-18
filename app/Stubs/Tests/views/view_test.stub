@@ -1,0 +1,13 @@
+<?php
+
+use Goutte\Client;
+
+/**
+ * Basic View Test
+ *
+ * @author {{author}}
+ * @revision {{revision}}
+ */
+class {{file}}Test extends TestCase {
+
+}

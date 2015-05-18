@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * A Basic Request Test
+ *
+ * @author {{author}}
+ * @revision {{revision}}
+ */
+use PHIWeb\Models\{{dir}}\{{file}};
+
+class {{file}}RequestTest extends TestCase {
+
+	public function test{{file}}RequestBasicExample() {
+		$response = $this->call('GET', '/');
+		
+		$this->assertEquals(200, $response->getStatusCode());
+	}
+
+}

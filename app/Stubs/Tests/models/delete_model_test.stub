@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * A Basic Controller Test
+ *
+ * @author {{author}}
+ * @revision {{revision}}
+ */
+
+use PHIWeb\Models\{{dir}}\{{file}};
+
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+use PHIWeb\Tests\Traits\ModelDeletesTester;
+
+
+class Delete{{file}}Test extends TestCase {
+
+	use ModelDeletesTester;
+
+	public function testDelete{{file}}() {
+
+		$output = new ConsoleOutput();
+
+		// $output->writeln('<info>Test Start</info>');
+
+		${{filo}} = new {{file}}();
+		
+
+		$this->modelDeletesTesterWorker($this, $output, ${{filo}});
+
+	
+	} //endtestDelete{{file}}()
+
+
+} //end class Delete{{file}}Test

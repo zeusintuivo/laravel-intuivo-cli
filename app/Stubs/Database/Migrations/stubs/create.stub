@@ -1,0 +1,149 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+use PHIWeb\Models\Param\Location;
+use PHIWeb\Models\Param\Param;
+use PHIWeb\Models\Person\Person;
+use PHIWeb\Models\DailyLog\DailyLog;
+use PHIWeb\Models\{{dir}}\{{file}};
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{class}} extends Migration {
+
+	private $rev = '6';
+	private $currenttable = '{{table}}';
+
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function up()
+	{
+
+		$output = new ConsoleOutput();
+
+        $output->writeln('<info>'.$this->currenttable.'</info> migration start.');
+
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+		Schema::dropIfExists($this->currenttable);
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+		Schema::create($this->currenttable, function(Blueprint $table)
+		{
+			$table->engine = 'InnoDB';
+			$table->increments('id')->unsigned()->unique();
+
+			$table->timestamps();
+			$table->softDeletes();
+		});
+
+	        $enabled = true;
+	        $max = 1100;
+        $start_id = 1000; //Leave first 1000 for options
+
+
+        if ($enabled) {
+
+                $output->writeln('<info></info>'.$this->currenttable.' faker start. Generating.:'.($max-$start_id).' fields ');
+
+                $password = bcrypt('123456');
+                $currenttime = Carbon\Carbon::now();
+
+                Eloquent::unguard(); //disable Model checks
+
+                $faker = Faker\Factory::create();
+
+                $people_ids = Person::lists('id');
+    			$person_last_id = last(Person::lists('id'));
+				$person_first_id = Person::first()->id;
+                
+                $daily_log_ids = DailyLog::lists('id');
+       			$daily_log_last_id = last(DailyLog::lists('id'));
+				$daily_log_first_id = DailyLog::first()->id;
+
+                //Create sample 100 records
+                foreach(range($start_id, $max) as $index) {
+
+					//Get a random number for a  person				
+					$person_id = rand($person_first_id, $person_last_id);
+
+					//Get a random number for a  dailyLog				
+					$daily_log_id = rand($daily_log_first_id, $daily_log_last_id);
+				
+					//Get a random number for a category_ids
+					$category_id = Param::seekParamRandomRecord(300010, 300018, 200000); //200000 is for category_ids
+
+					//Get a random number for a status_id
+					$status_id = Param::seekParamRandomRecord(300100, 300105, 200100); //200100 is for status_id
+		
+					//Get a random number for a timeperiod_id
+					$timeperiod_id = Param::seekParamRandomRecord(300161, 300163, 200200); //200200 is for timeperiod_id
+		
+					//Get a random number for a location_id
+					$location_id = Param::seekParamRandomRecord(300190, 300192, 200300); //200200 is for location_id
+					
+					//Get a random number for a referred_to
+					$referred_to = Param::seekParamRandomRecord(300220, 300222, 200400); //200200 is for referred_to
+
+
+                    {{file}}::create([
+                            'id' => $index,
+                            'daily_log_id' => $daily_log_id,
+                          
+                            'person_id' =>  $person_id,
+ 
+                            'created_at' => $currenttime,
+                            'updated_at' => $currenttime
+                     ]);
+
+
+					//update Person Resolve
+					$person = Person::find($person_id);
+					$person->person_address_id = $index;
+					$person->save();
+			}
+
+			
+		} else {
+            
+            $output->writeln('<info>'.$this->currenttable.' direct statement </info>');
+			DB::statement( "
+
+
+
+			;");
+
+		}//end if enabled
+
+	
+		DB::statement( 'ALTER TABLE `'.$this->currenttable.'`  AUTO_INCREMENT = '.($max + 1).';');
+
+
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function down()
+	{
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+		Schema::dropIfExists($this->currenttable);
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+	}
+
+}

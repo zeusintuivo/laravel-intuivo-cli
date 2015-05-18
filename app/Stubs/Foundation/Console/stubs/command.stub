@@ -1,0 +1,37 @@
+<?php namespace {{namespace}};
+
+use {{rootNamespace}}Commands\Command;
+
+use Illuminate\Contracts\Bus\SelfHandling;
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{class}} extends Command implements SelfHandling {
+
+	/**
+	 * Create a new command instance.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function __construct()
+	{
+		//
+	}
+
+	/**
+	 * Execute the command.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function handle()
+	{
+		//
+	}
+
+}

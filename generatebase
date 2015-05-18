@@ -1,0 +1,429 @@
+<?php
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+#
+# Procedural Programming to Create 
+# Models, Migrations, Controllers, and Tests, 
+# 
+#
+
+
+//
+//
+//
+// Step 1 Check Arguments
+//
+//
+//
+
+# Before Loading anything Check Arguments Passed
+# Get argv 
+// if (!isset($argv) || !isset($argv[1])) {
+// 	echo "
+// 	Sample Usage:    - expects only one Dir not more
+// 	    call model Person\PersonAddress
+// 	    call model Person/PersonAddress
+// 	    call model PersonAddress
+// 	    ";
+
+// 	die(0);
+// }
+
+/**
+ * Sample Usage
+ * $argv[1] = changeSlash($argv[1] );
+ * 
+ */
+function changeSlash($que) {
+	if (stripos($que, "\\") > 0) {
+		$que = str_replace('\\', '/', $que);
+	}
+	return $que; 
+}
+
+
+
+//
+//
+//
+//
+//
+// Step 2. Load Laravel Kernel Basic app
+//
+//
+//
+//
+//
+//
+$input = "";
+$status = "";
+$kernel = "";
+$app = "";
+function createApplication() {
+	require __DIR__.'/bootstrap/autoload.php';
+
+	$app = require_once __DIR__.'/bootstrap/app.php';
+	
+	$kernel = $app->make('Illuminate\Contracts\Console\Kernel');
+
+	$input = new Symfony\Component\Console\Input\ArgvInput;
+
+
+	return $kernel;
+}
+$app = createApplication();
+
+//
+//
+// Load String Files
+//
+//
+use Illuminate\Support\Pluralizer;
+use Illuminate\Support\Str;
+	//LOAD TEST
+	// echo Pluralizer::plural("PersonStatus"),"\n";
+	// echo Str::snake("PersonStatus"),"\n";	
+	// $argv[1] = changeSlash($argv[1] );
+	// echo Pluralizer::plural($argv[1]),"\n";
+	// echo Str::snake($argv[1]),"\n";
+	// die();
+
+//
+//
+// Load env vars
+//
+//
+
+//ENV LOAD TEST
+// echo __DIR__."\n";
+// echo dirname(__DIR__)."\n";
+// Dotenv::load(__DIR__ . '/');
+// echo  getenv('DB_HOST')."\n";
+// die();
+
+Dotenv::load(__DIR__ . '/');
+$DB_HOST= getenv('DB_HOST');
+$DB_DATABASE= getenv('DB_DATABASE');
+$DB_USERNAME= getenv('DB_USERNAME');
+$DB_PASSWORD= getenv('DB_PASSWORD');
+
+$DB_HOST_LOGGER= getenv('DB_HOST_LOGGER');
+$DB_DATABASE_LOGGER= getenv('DB_DATABASE_LOGGER');
+$DB_USERNAME_LOGGER= getenv('DB_USERNAME_LOGGER');
+$DB_PASSWORD_LOGGER= getenv('DB_PASSWORD_LOGGER');
+
+
+
+
+
+
+
+
+//
+//
+//
+// Wrap snake function 
+//
+//
+function camelToUnderScore($name) {
+	return Str::snake($name);
+}
+
+
+
+
+//
+//
+//
+// Load Colors Script
+//
+//
+//
+require "Colors";
+
+function replace(Colors $colors, $file, $find, $replace_with) {
+	say($colors, "Reading File to Change", $file);
+	if (!file_exists($file)) { 
+
+		err($colors, "File was not found:", $file);
+		return;
+	}
+	$contents = file_get_contents($file);
+	$contents = str_replace($find,  $replace_with, $contents);
+	file_put_contents($file, $contents);
+}
+
+//
+//
+//
+//
+//
+// Load scripts for author and email 
+//
+//
+//
+//
+
+$name= exec('git config user.name');
+$email= exec('git config user.email');
+$author="$name <$email>";
+
+//
+//
+// 
+// Change \ to /  from argument
+//
+//
+//
+$argv[1] = changeSlash($argv[1] );
+
+// Pass Argument "Person/PersonThing" to $entity variable
+$entity = $argv[1];
+
+//
+//
+//
+//
+// Obtain, plural, camel case ( snake case ), file and dir from request
+//
+//
+//
+//
+
+$file =""; //singular for model 
+$dir = ""; //for the mkdirs in the controllers, and tests
+$file_plural = ""; //plural for the migrations 
+$file_plural_snake = ""; //plural snake for the migrations 
+
+if (stripos($argv[1], "/") > 0) {
+	$file_exploded = explode("/", $argv[1]);
+	$file = $file_exploded[1];
+	$dir = $file_exploded[0];
+}
+
+$file_plural=Pluralizer::plural($file);
+$file_plural_snake_migration_name =  camelToUnderScore($file_plural);
+
+
+//NaME CHANGE TEST
+// echo "file:". $file."\n";
+// echo "dir:". $dir. "\n";
+// echo "file_plural:". $file_plural. "\n";
+// echo $file_plural_snake. "\n";
+
+$filo = Str::snake($file);
+// echo "filo:". $filo ."\n";
+
+$file_plural_snake  =  Pluralizer::plural($filo);
+// echo "file_plural_snake:".$file_plural_snake ."\n";
+// echo "file_plural_snake_migration_name:".$file_plural_snake_migration_name ."\n";
+// die();
+
+$description = "PHIWeb";
+$revision = "7";
+$version = "7";
+$camelToUnderScoreFile = camelToUnderScore($file);
+
+$replace_array = array();
+$replace_array["dir"] = $dir;
+$replace_array["file"] = $file;
+$replace_array["filo"] = $filo;
+$replace_array["camelToUnderScoreFile"] = $camelToUnderScoreFile;
+$replace_array["author"] = $author;
+$replace_array["revision"] = $revision;
+$replace_array["version"] = $version;
+$replace_array["file_plural"] = $file_plural;
+$replace_array["file_plural_snake"] = $file_plural_snake;
+$replace_array["file_plural_snake_migration_name"] = $file_plural_snake_migration_name;
+
+say($colors, "DATA IN", ""); 
+foreach ($replace_array as $key => $value) {
+		//
+		say($colors, "{{$key}}", $value);
+}
+//REF: http://symfony.com/doc/current/components/console/introduction.html
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+/*
+Verbosity Levels
+Mode	Value
+OutputInterface::VERBOSITY_QUIET	Do not output any messages
+OutputInterface::VERBOSITY_NORMAL	The default verbosity level
+OutputInterface::VERBOSITY_VERBOSE	Increased verbosity of messages
+OutputInterface::VERBOSITY_VERY_VERBOSE	Informative non essential messages
+OutputInterface::VERBOSITY_DEBUG	Debug messages
+// $output = new ConsoleOutput(Output::VERBOSITY_QUIET, true);
+*/
+
+$output = new ConsoleOutput();
+
+// TEST CONSOLE SAMPLE USE
+// green text
+// $output->writeln('<info>foo</info>');
+
+// // yellow text
+// $output->writeln('<comment>foo</comment>');
+
+// // black text on a cyan background
+// $output->writeln('<question>foo</question>');
+
+// // white text on a red background
+// $output->writeln('<error>foo</error>');
+
+// green text
+// $output->writeln('<fg=green>foo</fg=green>');
+
+// // black text on a cyan background
+// $output->writeln('<fg=black;bg=cyan>foo</fg=black;bg=cyan>');
+
+// // bold text on a yellow background
+// $output->writeln('<bg=yellow;options=bold>foo</bg=yellow;options=bold>');
+ // die(0);
+
+
+
+/**
+ * Sample output of vars
+ * When calling:  ./testmodel PDF/PDF
+ * It results:
+ * file:PDF
+ * dir:PDF
+ * file_plural:PDFS
+ * filo:p_d_f
+ * file_plural_snake:p_d_fs
+ * file_plural_snake_migration_name:p_d_f_s
+ */
+function replaceStrs($text, Array $replace_array) {
+	// $subject = str_ireplace( $search,  $replace,  $subject);
+	$return = $text;
+	foreach ($replace_array as $key => $value) {
+		# code...
+		// $return  = str_replace( "{{$key}}",  $value,  $return);
+		$return = preg_replace('/\{\{'.$key.'\}\}/i',  $value, $return);
+	}
+
+	return $return;
+}
+
+
+
+#
+#
+# Generate from stub 
+#
+#
+function generateFromStub(Array $replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors){
+
+	$file_targeted = $base_folder."/".$dir."/".$file."/".$target_file;
+
+	@mkdir($base_folder);
+	@mkdir($base_folder."/".$dir);
+	@mkdir($base_folder."/".$dir."/".$file);
+
+	exec("touch ".$file_targeted);
+
+	$template = file_get_contents($stub_file);
+	$template = replaceStrs($template, $replace_array);
+
+	file_put_contents($file_targeted, $template);
+
+	say($colors, "Generated:", "phpunit $file_targeted"); 
+	$said=@exec("phpunit $file_targeted");
+	say($colors, "Tested:", $said); 
+
+	$said=addEntryToPhpunit($content_entry_to_replace=$file_targeted);
+	say($colors, "Add to PHPUnit:", ($said?"true":"false")); 
+		
+
+	# Commit to Github
+	$commit_msg = ("Created ". $file_targeted . " test for ".$base_folder);
+	commitToGithub( $colors, 	$commit_msg );
+
+	return $file_targeted;
+
+} // end generateFromStub()
+
+#
+#
+# Add entry in phpunit.xml - start 
+#
+#
+function addEntryToPhpunit($content_entry_to_replace) {
+
+	#
+	#
+	# Add entry in phpunit.xml - start 
+	#
+	#
+
+	$target_file_to_place_entry="phpunit.xml";
+	$_i_read_this_file = file_get_contents($target_file_to_place_entry);
+
+	//look for a record already int 
+	if (stripos($_i_read_this_file, $content_entry_to_replace) > 0) {
+		//
+		// found
+		//
+		// do nothing
+		return false;
+		//
+	} else {
+		//
+		// not found
+		//
+		// Split file to add more, to get a place to add it, split in two parts 
+		//
+		$_i_read_this_file_exploded = explode("end.php", $_i_read_this_file);
+		//
+		// Create new content to add 
+		//
+		$content = $content_entry_to_replace."</file>\n            <file>end.php";
+		$newcontent = $_i_read_this_file_exploded[0]. $content .$_i_read_this_file_exploded[1];
+		//
+		file_put_contents($target_file_to_place_entry, $newcontent);
+		//
+		return true;
+		//
+	}
+
+	#
+	#
+	# Add entry in phpunit.xml - end 
+	#
+	#
+
+} //end addEntryToPhpunit()
+
+#
+#
+#
+#
+# Commit to Github
+#
+#
+#
+#
+function commitToGithub($colors, $commit_msg) {
+	say($colors, "\n\nAdd", "Add files to git");
+
+	$said=@exec("git add . ");
+
+	say($colors, "\n\nCommit", $commit_msg);
+
+	$said=@exec('git commit -am "'. $commit_msg .'"');
+
+	$said=@exec ("git status");
+
+} //end commitToGithub
+
+
+#
+#
+#
+#
+# Creation Start
+#
+#
+#
+#
+

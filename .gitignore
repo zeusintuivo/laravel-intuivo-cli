@@ -5,6 +5,13 @@
 /.settings
 /storage/logs
 /storage/debugbar
+vendor/
+node_modules/
+bower_components/
+.idea/
+.settings/
+storage/logs/
+storage/debugbar/
 .env
 .buildpath
 .DS_Store
@@ -13,3 +20,4 @@ desktop.ini
 composer.json
 composer.lock
 ssh-agent.exe.stackdump
+het2_rev5-6-small.sql

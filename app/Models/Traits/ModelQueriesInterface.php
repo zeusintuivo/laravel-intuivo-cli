@@ -1,4 +1,4 @@
-<?php namespace PHIWeb\Models\Trait;
+<?php namespace PHIWeb\Models\Traits;
 
 
 

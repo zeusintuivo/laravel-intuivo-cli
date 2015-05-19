@@ -88,20 +88,20 @@ trait ModelDeletes {
             } //end if
             // 
             if (get_class($obj)=="Illuminate\Database\Eloquent\Collection") {
+                foreach ($obj as $itemkey => $itemValue) {
+                    //if (isset($itemValue->$child) && $itemValue->$child == $value) {
+                        echo "\n IF 5 \n";
+                        echo "\nChild:$child \n";
+                        $output->writeln("\n\n".'<info>--( '. (is_a($itemValue, "Illuminate\Database\Eloquent\Model") ?  get_class($itemValue)  . ' is a Model ' : '' ).'--</info>');
+                        echo "\n\n itemkey: $itemkey \n";
+                        echo "get_class is itemkey". (is_object($itemkey) ? get_class($itemkey) : $itemkey) ."\n";
+                        echo "\n\n itemValue: ". (is_array($itemValue)==true ? "[".implode(', ', $itemValue) ."]" : $itemValue) ."\n"; 
+                        echo "get_class is itemValue". (is_object($itemValue)==true ? get_class($itemValue) : (is_array($itemValue)==true ? "[".implode(', ', $itemValue) ."]" : $itemValue)) ."\n";
+                        // echo "key is ". (is_object($key) ? get_class($key) : $key) ."\n";
+                        // echo "value is ". (is_object($value) ? get_class($value) : $value) ."\n";
+                    //}
+                }
             } //end if
-            foreach ($obj as $itemkey => $itemValue) {
-                //if (isset($itemValue->$child) && $itemValue->$child == $value) {
-                    echo "\n IF 5 \n";
-                    echo "\nChild:$child \n";
-                    $output->writeln("\n\n".'<info>--( '. (is_a($itemValue, "Illuminate\Database\Eloquent\Model") ?  get_class($itemValue)  . ' is a Model ' : '' ).'--</info>');
-                    echo "\n\n itemkey: $itemkey \n";
-                    echo "get_class is itemkey". (is_object($itemkey) ? get_class($itemkey) : $itemkey) ."\n";
-                    echo "\n\n itemValue: ". (is_array($itemValue)==true ? "[".implode(', ', $itemValue) ."]" : $itemValue) ."\n"; 
-                    echo "get_class is itemValue". (is_object($itemValue)==true ? get_class($itemValue) : (is_array($itemValue)==true ? "[".implode(', ', $itemValue) ."]" : $itemValue)) ."\n";
-                    // echo "key is ". (is_object($key) ? get_class($key) : $key) ."\n";
-                    // echo "value is ". (is_object($value) ? get_class($value) : $value) ."\n";
-                //}
-            }
         } //end foreach
                     //$this
                     echo "\n IF 4 \n";
@@ -125,29 +125,24 @@ trait ModelDeletes {
                             echo "obj_item ". (method_exists($obj_item, 'save')==true ? ' has save' : '') ."\n";
                             echo "obj_item ". (method_exists($obj_item, 'id')==true ? ' has id' : '') ."\n";
 
-                            if (is_object($obj_item)) {
-                                $childClass = get_class($obj_item);
+                                if (is_object($obj_item)) {
+                                    $childClass = get_class($obj_item);
 
-                                if ($childClass =="Illuminate\Database\Eloquent\Model") {
-                                    $tempObj = $obj_item->find($obj_item->id);
-                                    echo "tempObj ". (method_exists($tempObj, 'undelete')==true ? ' has undelete' : '') ."\n";
-                                    echo "tempObj ". (method_exists($tempObj, 'save')==true ? ' has save' : '') ."\n";
-                                    echo "tempObj ". (($tempObj->id)!=null ? ' has id' : '') ."\n";
-                                    $tempObj->id = $obj_item->id;
-                                    $s = $tempObj->save();
-                                    if ($s==true)  echo "tempObj saves"; else echo "tempObj save error";
-                                }                                
-                            }
+                                    if (is_a($obj_item, "Illuminate\Database\Eloquent\Model")) {
+                                        $tempObj = $obj_item->find($obj_item->id);
+                                        echo "tempObj is a ". (is_object($obj_item) ? get_class($obj_item) : $obj_item) ."\n";
+                                        echo "tempObj ". (method_exists($tempObj, 'undelete')==true ? ' has undelete' : '') ."\n";
+                                        echo "tempObj ". (method_exists($tempObj, 'save')==true ? ' has save' : '') ."\n";
+                                        echo "tempObj ". ( isset($tempObj['id']) !=null ? ' has id' : ' ERROR Missing ID') ."\n";
+                                        echo "tempObj ". ( isset($tempObj['deleted_at']) !=null ? ' has deleted_at' : ' ERROR Missing deleted_at') ."\n";
+                                        echo "tempObj ". ( isset($tempObj['updated_at']) !=null ? ' has updated_at' : ' ERROR Missing updated_at') ."\n";
 
-                            if (method_exists($obj_item, 'save')) { 
-                                     $tempObj = $obj_item->find($obj_item->id);
-                                    echo "tempObj ". (method_exists($tempObj, 'undelete')==true ? ' has undelete' : '') ."\n";
-                                    echo "tempObj ". (method_exists($tempObj, 'save')==true ? ' has save' : '') ."\n";
-                                    echo "tempObj ". (($tempObj->id)!=null ? ' has id' : '') ."\n";
-                                    $tempObj->id = $obj_item->id;
-                                    $s = $tempObj->save();
-                                    if ($s==true)  echo "tempObj saves"; else echo "tempObj save error";
-                           }
+                                        $tempObj->id = $obj_item->id;
+                                        $s = $tempObj->save();
+                                        if ($s==true)  echo "tempObj saves"; else echo "tempObj save error";
+                                    }                                
+                                }
+
 
                         } //end foreach
                     } //end foreach 
@@ -241,45 +236,45 @@ trait ModelDeletes {
                         echo "obj is ". get_class($obj)."\n";
                         echo "obj  ". (method_exists($obj, 'undelete')==true ? 'has undelete' : '') ."\n";
                         echo "obj  ". (method_exists($obj, 'save')==true ? 'has save' : '') ."\n";
-                        foreach ($obj as $obj_item) { 
-                            $output->writeln("\n\n".'<info>--( '. (is_a($obj_item, "Illuminate\Database\Eloquent\Model") ?  get_class($obj_item)  . ' is a Model ' : '' ).'--</info>');
-                            echo "obj_item: ". (is_array($obj_item)==true ? "[".implode(', ', $obj_item) ."]" : $obj_item) ."\n"; 
-                            echo "obj_item is ". (is_object($obj_item)==true ? get_class($obj_item) : (is_array($obj_item)==true ? "[".implode(', ', $obj_item) ."]" : $obj_item)) ."\n";
-                            echo "obj_item ". (method_exists($obj_item, 'undelete')==true ? ' has undelete' : '') ."\n";
-                            echo "obj_item ". (method_exists($obj_item, 'save')==true ? ' has save' : '') ."\n";
-                            echo "obj_item ". (method_exists($obj_item, 'id')==true ? ' has id' : '') ."\n";
+                        
+                        if (is_a($obj, "Illuminate\Database\Eloquent\Collection") ) {
+                             
+                            foreach ($obj as $obj_item) { 
+                                $output->writeln("\n\n".'<info>--( '. (is_a($obj_item, "Illuminate\Database\Eloquent\Model") ?  get_class($obj_item)  . ' is a Model ' : '' ).'--</info>');
+                                echo "obj_item: ". (is_array($obj_item)==true ? "[".implode(', ', $obj_item) ."]" : $obj_item) ."\n"; 
+                                echo "obj_item is ". (is_object($obj_item)==true ? get_class($obj_item) : (is_array($obj_item)==true ? "[".implode(', ', $obj_item) ."]" : $obj_item)) ."\n";
+                                echo "obj_item ". (method_exists($obj_item, 'undelete')==true ? ' has undelete' : '') ."\n";
+                                echo "obj_item ". (method_exists($obj_item, 'save')==true ? ' has save' : '') ."\n";
+                                echo "obj_item ". (method_exists($obj_item, 'id')==true ? ' has id' : '') ."\n";
 
-                            if (is_object($obj_item)) {
-                                $childClass = get_class($obj_item);
+                                if (is_object($obj_item)) {
+                                    $childClass = get_class($obj_item);
 
-                                if ($childClass =="Illuminate\Database\Eloquent\Model") {
-                                    $tempObj = $obj_item->find($obj_item->id);
-                                    echo "tempObj ". (method_exists($tempObj, 'undelete')==true ? ' has undelete' : '') ."\n";
-                                    echo "tempObj ". (method_exists($tempObj, 'save')==true ? ' has save' : '') ."\n";
-                                    echo "tempObj ". (($tempObj->id)!=null ? ' has id' : '') ."\n";
-                                    $tempObj->id = $obj_item->id;
-                                    $s = $tempObj->save();
-                                    if ($s==true)  echo "tempObj saves"; else echo "tempObj save error";
-                                }                                
-                            }
+                                    if (is_a($obj_item, "Illuminate\Database\Eloquent\Model")) {
+                                        $tempObj = $obj_item->find($obj_item->id);
+                                        echo "tempObj is a ". (is_object($obj_item) ? get_class($obj_item) : $obj_item) ."\n";
+                                        echo "tempObj ". (method_exists($tempObj, 'undelete')==true ? ' has undelete' : '') ."\n";
+                                        echo "tempObj ". (method_exists($tempObj, 'save')==true ? ' has save' : '') ."\n";
 
-                            if (method_exists($obj_item, 'save')) { 
-                                     $tempObj = $obj_item->find($obj_item->id);
-                                    echo "tempObj ". (method_exists($tempObj, 'undelete')==true ? ' has undelete' : '') ."\n";
-                                    echo "tempObj ". (method_exists($tempObj, 'save')==true ? ' has save' : '') ."\n";
-                                    echo "tempObj ". (($tempObj->id)!=null ? ' has id' : '') ."\n";
-                                    $tempObj->id = $obj_item->id;
-                                    $s = $tempObj->save();
-                                    if ($s==true)  echo "tempObj saves"; else echo "tempObj save error";
-                           }
+                                        echo "tempObj ". ( isset($tempObj['id']) !=null ? ' has id' : ' ERROR Missing ID') ."\n";
+                                        echo "tempObj ". ( isset($tempObj['deleted_at']) !=null ? ' has deleted_at' : ' ERROR Missing deleted_at') ."\n";
+                                        echo "tempObj ". ( isset($tempObj['updated_at']) !=null ? ' has updated_at' : ' ERROR Missing updated_at') ."\n";
 
-                        } //end foreach
+                                        $tempObj->id = $obj_item->id;
+                                        $s = $tempObj->save();
+                                        if ($s==true)  echo "tempObj saves"; else echo "tempObj save error";
+                                    }                                
+                                }
+
+
+                            } //end foreach
+                        } //end if 
                     } //end foreach 
 
     } //end function exploreWithTrashed
 
-    protected $softdeleting = false;
-    protected $softrestoring = false;
+    private $softdeleting = false;
+    private $softrestoring = false;
     /**
      * SoftDelete override to this->delete without parenthesis to work 
      * used instead of the "public static function boot, static::deleted" override found online

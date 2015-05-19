@@ -34,6 +34,7 @@ sudo chmod +x merge
 sudo chmod +x migrate
 sudo chmod +x model
 sudo chmod +x mysql_connectors
+sudo chmod +x mysql_connector
 sudo chmod +x newbranch
 sudo chmod +x projectparticipation
 sudo chmod +x pull
@@ -63,5 +64,6 @@ sudo chmod +x testview
 sudo chmod +x testcontroller
 sudo chmod +x testroute
 sudo chmod +x testrequest
+sudo chmod +x testsql
 sudo chmod +x updateme
 sudo chmod +x vendor/bin/phpunit

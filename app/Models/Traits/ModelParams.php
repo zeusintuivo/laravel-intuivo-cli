@@ -128,14 +128,14 @@ trait ModelParams {
      * @author Jesus Alcaraz <jesus@gammapartners.com>
      * @version 1
      */
-    public static function byTypeLongerName($longerName='type', $display_name_name = 'type'){
+    public static function byTypeLongerName($longerName='type', $display_name_name = 'type', $longer_name_or_display_name = 'display_name'){
  
         //tester oneliner
         //$longerName='category_id'; DB::table(DB::RAW('params a'))->select(['a.id', 'a.display_name', 'b.display_name as type'])->join(DB::RAW('params b'),'a.param_type_id', '=', 'b.id')->where('b.longer_name', [$longerName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->toSQL();
     	$thistable = static::getClassCallerName();
 
         return  DB::table(DB::RAW($thistable . ' a'))
-                ->select(['a.id', 'a.display_name', 'b.display_name as '.$display_name_name])
+                ->select(['a.id', 'a.'.$longer_name_or_display_name, 'b.display_name as '.$display_name_name])
                 ->join(DB::RAW($thistable . ' b'),'a.param_type_id', '=', 'b.id')
                 ->where('b.longer_name', [$longerName])
                 ->where('a.active', ['1'])
@@ -156,18 +156,18 @@ trait ModelParams {
      * @author Jesus Alcaraz <jesus@gammapartners.com>
      * @version 1
      */
-    public static function arrayByTypeLongerName($longerName='type', $display_name_name = 'type') { 
+    public static function arrayByTypeLongerName($longerName='type', $display_name_name = 'type', $longer_name_or_display_name = 'display_name') { 
         DB::setFetchMode(PDO::FETCH_ASSOC); //set results to array
 
-        $r = static::byTypeLongerName($longerName, $display_name_name);
-
+        $r = static::byTypeLongerName($longerName, $display_name_name, $longer_name_or_display_name);
+        
         $res = [];
         $keykey = 0;
         $valuevalue = "";
         foreach($r as $L) {
             foreach($L as $k => $v) {
                 if ($k=='id') $keykey = $v;
-                if ($k=='display_name') $valuevalue = $v;
+                if ($k==$longer_name_or_display_name) $valuevalue = $v;
                
             }
              $res[$keykey] = $valuevalue;

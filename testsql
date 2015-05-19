@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mysqladmin -uroot -ptoor  -i10 -r extended

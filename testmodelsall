@@ -15,12 +15,12 @@ find tests/models/ -type f -name '*delete*.*' -delete
 ./testmodel DailyLog/DailyLogNotif
 ./testmodel DailyLog/DailyLogComment
 
-./testdelete DailyLog/DailyLog
-./testdelete DailyLog/DailyLogProgress
-./testdelete DailyLog/DailyLogStatus
-./testdelete DailyLog/DailyLogProgressComment
-./testdelete DailyLog/DailyLogNotif
-./testdelete DailyLog/DailyLogComment
+      ./testdelete DailyLog/DailyLog
+      ./testdelete DailyLog/DailyLogProgress
+      ./testdelete DailyLog/DailyLogStatus
+      ./testdelete DailyLog/DailyLogProgressComment
+      ./testdelete DailyLog/DailyLogNotif
+      ./testdelete DailyLog/DailyLogComment
 
 ./testmodel MedLog/MedLogProgress
 ./testmodel MedLog/MedLogComment
@@ -29,6 +29,16 @@ find tests/models/ -type f -name '*delete*.*' -delete
 ./testmodel MedLog/MedLogProgressComment
 ./testmodel MedLog/MedLogScheduleTime
 ./testmodel MedLog/MedLogSchedule
+
+
+      ./testdelete MedLog/MedLogProgress
+      ./testdelete MedLog/MedLogComment
+      ./testdelete MedLog/MedLog
+      ./testdelete MedLog/MedLogMedsGiven
+      ./testdelete MedLog/MedLogProgressComment
+      ./testdelete MedLog/MedLogScheduleTime
+      ./testdelete MedLog/MedLogSchedule
+
 
 ./testmodel Person/Person
 ./testmodel Person/PersonEmergencyContact
@@ -42,10 +52,26 @@ find tests/models/ -type f -name '*delete*.*' -delete
 ./testmodel Person/PersonPhone
 
 
+      ./testdelete Person/Person
+      ./testdelete Person/PersonEmergencyContact
+      ./testdelete Person/PersonInsurance
+      ./testdelete Person/PersonRole
+      ./testdelete Person/PersonRelative
+      ./testdelete Person/PersonPhoto
+      ./testdelete Person/PersonAlert
+      ./testdelete Person/PersonAddress
+      ./testdelete Person/PersonGuardian
+      ./testdelete Person/PersonPhone
+
 ./testmodel News/NewsComment
 ./testmodel News/NewsThread
 ./testmodel News/NewsGroup
 ./testmodel News/NewsCategory
+
+      ./testdelete News/NewsComment
+      ./testdelete News/NewsThread
+      ./testdelete News/NewsGroup
+      ./testdelete News/NewsCategory
 
 //not passing
 

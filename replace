@@ -29,7 +29,18 @@ IMPLACING="$2";
 
 #echo $0=./replace
 
-echo "Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ack "
-echo "Replace $SEEKING for $IMPLACING  with Sed." 
-echo "WARNING INSIDE WINDOWS Sed locks you out of your file, and the solution is that you have to recreate it."
+
+red=`tput setaf 1`
+cyan=`tput setaf 6`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+echo "   ";
+echo "${reset} ${green} Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ack "
+echo "${reset} ${green} Replacing ${reset} $SEEKING ${green} for ${reset} $IMPLACING  ${green} with Sed." 
+echo "${green} ${red} WARNING INSIDE WINDOWS Sed locks you out of your file, and the solution is that you have to recreate it."
+echo "   ";
+echo "${cyan}  ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
+echo "   ";
 ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s/"$SEEKING"/"$IMPLACING"/g 
+#echo "    ";

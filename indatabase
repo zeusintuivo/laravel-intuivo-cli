@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# set working directory as the scripts location during the execution of script 
+cd "$(dirname "$0")"
+
+
 # @author Jesus Alcaraz <jesus@gammpartners.com>
 THISOUTPUT="$(php 'mysql_connectors')"
 THISCONNECTOR=""

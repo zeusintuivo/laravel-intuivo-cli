@@ -230,36 +230,57 @@ trait ModelDeletes {
                     foreach($this->children as $child) //scroll by children
                     {
                         $obj = $this["$child"];
-                        echo "\nChild:$child \n";
-                        $output->writeln("\n\n".'<info>--( '. (is_a($obj, "Illuminate\Database\Eloquent\Collection") ?  get_class($obj)  . ' is a collection ' : '' ).'--</info>');                           
-                        $output->writeln("\n\n".'<info>--( '. (is_a($obj, "Illuminate\Database\Eloquent\Model") ?  get_class($obj)  . ' is a Model ' : '' ).'--</info>');
+                       echo "\nChild:$child \n";
+                        $is_a_collection = (is_a($obj, "Illuminate\Database\Eloquent\Collection") ?  'collection' : '');
+                        $is_a_model = (is_a($obj, "Illuminate\Database\Eloquent\Model") ?  'model' : '');
+
+                        $what_is_it =  ($is_a_collection ? $is_a_collection  : ( $is_a_model ? $is_a_model : get_class($obj) ) );
+
+                        $output->writeln("\n\n <info>--( $child ". get_class($obj)  . ' is a '.$what_is_it .'--</info>');                           
                         echo "obj is ". get_class($obj)."\n";
-                        echo "obj  ". (method_exists($obj, 'undelete')==true ? 'has undelete' : '') ."\n";
-                        echo "obj  ". (method_exists($obj, 'save')==true ? 'has save' : '') ."\n";
+                        // echo "obj  ". (method_exists($obj, 'undelete')==true ? 'has undelete' : '') ."\n";
+                        // echo "obj  ". (method_exists($obj, 'save')==true ? 'has save' : '') ."\n";
                         
-                        if (is_a($obj, "Illuminate\Database\Eloquent\Collection") ) {
-                             
+                        if ($what_is_it == 'collection' ) {
+                              dump(sizeof($obj));
                             foreach ($obj as $obj_item) { 
                                 $output->writeln("\n\n".'<info>--( '. (is_a($obj_item, "Illuminate\Database\Eloquent\Model") ?  get_class($obj_item)  . ' is a Model ' : '' ).'--</info>');
+
                                 echo "obj_item: ". (is_array($obj_item)==true ? "[".implode(', ', $obj_item) ."]" : $obj_item) ."\n"; 
                                 echo "obj_item is ". (is_object($obj_item)==true ? get_class($obj_item) : (is_array($obj_item)==true ? "[".implode(', ', $obj_item) ."]" : $obj_item)) ."\n";
                                 echo "obj_item ". (method_exists($obj_item, 'undelete')==true ? ' has undelete' : '') ."\n";
-                                echo "obj_item ". (method_exists($obj_item, 'save')==true ? ' has save' : '') ."\n";
-                                echo "obj_item ". (method_exists($obj_item, 'id')==true ? ' has id' : '') ."\n";
+                                echo "obj_item ". (method_exists($obj_item, 'save')==true ? ' has save'  : ' ERROR Missing save') ."\n";
+                                //
+                                // This is the only way to check if a 'null' deleted_at exists
+                                //                                       
+                                $model_count = substr_count($obj_item, 'deleted_at') > 0;
+                                echo "obj_item ". ( $model_count ? ' has deleted_at' : ' ERROR Missing deleted_at') ."\n";
+                                echo "obj_item ". (method_exists($obj_item, 'id')==true ? ' has id' : ' ERROR Missing save') ."\n";
+
 
                                 if (is_object($obj_item)) {
                                     $childClass = get_class($obj_item);
 
                                     if (is_a($obj_item, "Illuminate\Database\Eloquent\Model")) {
+                                        //
+                                        //
+                                        //
                                         $tempObj = $obj_item->find($obj_item->id);
                                         echo "tempObj is a ". (is_object($obj_item) ? get_class($obj_item) : $obj_item) ."\n";
                                         echo "tempObj ". (method_exists($tempObj, 'undelete')==true ? ' has undelete' : '') ."\n";
                                         echo "tempObj ". (method_exists($tempObj, 'save')==true ? ' has save' : '') ."\n";
 
-                                        echo "tempObj ". ( isset($tempObj['id']) !=null ? ' has id' : ' ERROR Missing ID') ."\n";
-                                        echo "tempObj ". ( isset($tempObj['deleted_at']) !=null ? ' has deleted_at' : ' ERROR Missing deleted_at') ."\n";
-                                        echo "tempObj ". ( isset($tempObj['updated_at']) !=null ? ' has updated_at' : ' ERROR Missing updated_at') ."\n";
 
+                                        //
+                                        // This is the only way to check if a 'null' deleted_at exists
+                                        //
+                                        $model_count = substr_count($tempObj, 'deleted_at') > 0;
+
+                                        echo "tempObj ". ( isset($tempObj['id']) !=null ? ' has id' : ' ERROR Missing ID') ."\n";
+                                        //echo "tempObj ". ( isset($tempObj['deleted_at']) !=null ? ' has deleted_at' : ' ERROR Missing deleted_at') ."\n";
+                                        echo "tempObj ". ( $model_count ? ' has deleted_at' : ' ERROR Missing deleted_at') ."\n";
+                                        echo "tempObj ". ( isset($tempObj['updated_at']) !=null ? ' has updated_at' : ' ERROR Missing updated_at') ."\n";
+                                       
                                         $tempObj->id = $obj_item->id;
                                         $s = $tempObj->save();
                                         if ($s==true)  echo "tempObj saves"; else echo "tempObj save error";

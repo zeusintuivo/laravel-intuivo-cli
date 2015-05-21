@@ -4,6 +4,8 @@
 #get script name
 #$me="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
 
+# set working directory as the scripts location during the execution of script 
+cd "$(dirname "$0")"
 
 
 THISOUTPUT="$(php 'mysql_connectors')"

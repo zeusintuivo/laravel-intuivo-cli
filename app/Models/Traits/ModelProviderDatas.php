@@ -12,6 +12,8 @@ use PHIWeb\Models\Param\Param;
 use PHIWeb\Models\Person\Person;
 use PHIWeb\Models\DailyLog\DailyLog;
 use PHIWeb\Models\Organization\School;
+use PHIWeb\Models\Organization\Insurance;
+use PHIWeb\Models\Immunization\VaccineLog;
 
 /**
  * Trait created for PHIWeb
@@ -52,6 +54,7 @@ trait ModelProviderDatas {
     private $older_ids          ;
   
     private $principal_id       ;
+    private $principal_ids      ;
   
     private $provider_id        ;
     private $provider_last_id   ;
@@ -82,6 +85,30 @@ trait ModelProviderDatas {
     private $daily_log_ids      ;
     private $daily_log_last_id  ;
     private $daily_log_first_id ;
+
+    #
+    # MedLogs
+    #
+    private $med_log_id       ;
+    private $med_log_ids      ;
+    private $med_log_last_id  ;
+    private $med_log_first_id ;
+
+    #
+    # Insurance
+    #
+    private $insurance_id       ;
+    private $insurance_ids      ;
+    private $insurance_last_id  ;
+    private $insurance_first_id ;
+
+    #
+    # Vaccines
+    #
+    private $vaccine_id       ;
+    private $vaccine_ids      ;
+    private $vaccine_last_id  ;
+    private $vaccine_first_id ;
 
     # 
     # other
@@ -188,7 +215,8 @@ trait ModelProviderDatas {
         $this->provider_last_id  = Person::where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',999)->orderBy('id','desc')->take(1)->lists('id')[0];
         $this->provider_first_id = Person::where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',999)->orderBy('id','asc')->take(1)->lists('id')[0];
         
-        $this->given_by_ids      = Person::where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',999)->lists('id');
+        $this->given_by_ids      =  $this->older_ids;
+        $this->principal_ids     =  $this->older_ids;
         
         //younger than 18 
         $this->patient_ids       = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->lists('id');
@@ -209,6 +237,30 @@ trait ModelProviderDatas {
         $this->daily_log_ids      = DailyLog::lists('id');
         $this->daily_log_last_id  = last(DailyLog::lists('id'));
         $this->daily_log_first_id = DailyLog::first()->id; 
+    }
+    private function requireMedLogs() {
+        //
+        // DailyLog Load Arrays
+        //
+        $this->med_log_ids      = MedLog::lists('id');
+        $this->med_log_last_id  = last(MedLog::lists('id'));
+        $this->med_log_first_id = MedLog::first()->id; 
+    }
+    private function requireInsurances() {
+        //
+        // DailyLog Load Arrays
+        //
+        $this->insurance_ids      = Insurance::lists('id');
+        $this->insurance_last_id  = last(Insurance::lists('id'));
+        $this->insurance_first_id = Insurance::first()->id; 
+    }
+    private function requireVaccines() {
+        //
+        // DailyLog Load Arrays
+        //
+        $this->vaccine_ids      = Vaccine::lists('id');
+        $this->vaccine_last_id  = last(Vaccine::lists('id'));
+        $this->vaccine_first_id = Vaccine::first()->id; 
     }
 
     private function pickLocations() {
@@ -298,10 +350,10 @@ trait ModelProviderDatas {
         $this->closed_at     = $this->faker->dateTimeBetween($startDate = '-3 months', $endDate = 'now');
         $this->printed_at    = $this->faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now');
 
-        $this->provider_id   = $this->faker->randomElement($this->older_ids);
+        $this->provider_id   = $this->faker->randomElement($this->user_ids);
         $this->principal_id  = $this->faker->randomElement($this->older_ids);
         
-        $this->given_by_id   = $this->faker->randomElement($this->given_by_ids);
+        $this->given_by_id   = $this->faker->randomElement($this->user_ids);
         $this->given_by      = Person::find($this->given_by_id);
         $this->given_at      = $this->faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now');
         $this->words         = explode(" ", $this->given_by->first_name." ".$this->given_by->last_name);
@@ -318,6 +370,18 @@ trait ModelProviderDatas {
     }    
     private function pickDailyLogs() {
         $this->daily_log_id     =  $this->faker->randomElement($this->daily_log_ids);  
+
+    }  
+    private function pickMedLogs() {
+        $this->med_log_id     =  $this->faker->randomElement($this->med_log_ids);  
+
+    }   
+    private function pickInsurances() {
+        $this->insurance_id     =  $this->faker->randomElement($this->insurance_ids);  
+
+    }   
+    private function pickVaccines() {
+        $this->vaccine_id     =  $this->faker->randomElement($this->vaccine_ids);  
 
     }
 } //end trait

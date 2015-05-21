@@ -23,10 +23,61 @@ class Basic{{file}}Test extends TestCase {
 
 		$output->writeln("\n\n".'<info>--( {{file}} )--</info>');
 
-		${{filo}} = new {{file}};
+		${{filo}}  = new {{file}}();  // Model Loads
+		if ( is_object(${{filo}})) { 
+			//pass
+		} else {
+			//failed
+			//
+			// stop test execution and tip about how to fix it 
+			//
+			$output->writeln("<error>- - - - - - - - - -mode load </error> FAILED! ");
+			$output->writeln("\n      ./tinker " );
+			$output->writeln("\n      PHIWeb\Models\{{dir}}\{{file}}; ");
+			$output->writeln("      \$t= new " . {{file}} ."()" );
+			$output->writeln("      \$t->id" );
+			$output->writeln("\n    subl app/Models/{{dir}}/{{file}}.php \n" );
+			dd('FIX ');
+			$test->assertEquals(true, false);	
+		}
+
+		${{filo}} = {{file}}::first();     // Model gets me one record 
+		if (sizeof(${{filo}} ) == 0 || is_null(${{filo}} )) { 
+			//failed 
+			//TEST DB Directly for records
+			${{filo}}_record = DB::select(DB::RAW('select * from {{file_plural_snake}} where limit 1'));
+			if (sizeof(${{filo}}_record ) == 0 || is_null(${{filo}}_record )) { 
+				//
+				// failed
+				// 
+				// has no records and cannot test without records 
+				//
+				// stop test execution and tip about how to fix it 
+				//
+				$output->writeln("<error>- - - - - - - - - -has not records </error> FAILED! ");
+				$output->writeln("\n      ./tinker " );
+				$output->writeln("\n      PHIWeb\Models\{{dir}}\{{file}}; ");
+				$output->writeln("      \$t= new " . {{file}} ."()" );
+				$output->writeln("      \$t->id" );
+				$output->writeln("\n    subl app/Models/{{dir}}/{{file}}.php \n" );
+				dd('FIX ');
+				$test->assertEquals(true, false);	
+				
+			}
+
+		} else {
+			//
+			// pass
+			//
+		}
+
+		// dump(${{filo}});
+		
+		// ${{filo}} = {{file}}::withTrashed()->find(${{filo}}_first_id);
 
 		$this->modelBasicsTester($this, ${{filo}}, 'PHIWeb\Models\{{dir}}\{{file}}', $output);
 
 	} //end function testCanInstantiate{{file}}()
 
 } //end class Basic{{file}}Test
+

@@ -25,8 +25,9 @@ class Delete{{file}}Test extends TestCase {
 
 		// $output->writeln('<info>Test Start</info>');
 
-		${{filo}} = new {{file}}();
-		
+		${{filo}} = {{file}}::first();
+		// ${{filo}}_first_id = {{file}}::first()->id;
+		// ${{filo}} = {{file}}::withTrashed()->find(${{filo}}_first_id);
 
 		$this->modelDeletesTesterWorker($this, $output, ${{filo}});
 

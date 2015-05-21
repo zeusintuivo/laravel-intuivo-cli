@@ -12,6 +12,7 @@ sudo chmod +x controller
 sudo chmod +x count 
 sudo chmod +x dbmigrate
 sudo chmod +x describe
+sudo chmod +x describelist
 sudo chmod +x dump
 sudo chmod +x dumpin
 sudo chmod +x dumpout
@@ -56,6 +57,9 @@ sudo chmod +x status
 sudo chmod +x replace
 sudo chmod +x tinker
 sudo chmod +x testenv
+sudo chmod +x testexists
+sudo chmod +x testerrorstoclipboard
+sudo chmod +x testerrorstoclipboardcall
 sudo chmod +x testdelete
 sudo chmod +x testmodel
 sudo chmod +x testmodelsall

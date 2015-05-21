@@ -8,6 +8,113 @@ find tests/models/ -type f -name '*basic_*.*'
 find tests/models/ -type f -name '*basic_*.*' -delete
 find tests/models/ -type f -name '*delete*.*' -delete
 
+
+
+
+
+
+
+
+EXISTANCE TEST - Model can Load
+
+# Get Almost all the model names
+find app/Models  -type f  | cut -d'.' -f1 | cut -c12-  
+
+
+
+./testexists News/NewsComment
+./testexists News/NewsThread
+./testexists News/NewsGroup
+./testexists News/NewsCategory
+
+
+./testexists DailyLog/DailyLog
+./testexists DailyLog/DailyLogProgress
+./testexists DailyLog/DailyLogStatus
+./testexists DailyLog/DailyLogProgressComment
+./testexists DailyLog/DailyLogNotif
+./testexists DailyLog/DailyLogComment
+
+
+./testexists Immunization/VaccineLogComment
+./testexists Immunization/VaccineLog
+
+./testexists Screen/ScreenHearing
+
+./testexists Screen/ScreenCustom
+./testexists Screen/ScreenVision
+./testexists Screen/ScreenBmi
+./testexists Screen/ScreenScoliosis
+
+
+./testexists Person/Person
+./testexists Person/PersonEmergencyContact
+./testexists Person/PersonInsurance
+./testexists Person/PersonRole
+./testexists Person/PersonRelative
+./testexists Person/PersonPhoto
+./testexists Person/PersonAlert
+./testexists Person/PersonAddress
+./testexists Person/PersonGuardian
+./testexists Person/PersonPhone
+
+
+./testexists MedLog/MedLogProgress
+./testexists MedLog/MedLogComment
+./testexists MedLog/MedLog
+./testexists MedLog/MedLogMedsGiven
+./testexists MedLog/MedLogProgressComment
+./testexists MedLog/MedLogScheduleTime
+./testexists MedLog/MedLogSchedule
+
+./testexists Logger/Logger
+./testexists Logger/LoggerComment
+
+./testexists Param/InformationSchema
+./testexists Param/ExternBmiPercentile
+./testexists Param/Location
+./testexists Param/Param
+./testexists Param/Template
+./testexists Param/Role
+
+
+./testexists Todo
+
+./testexists Organization/School
+
+./testexists Organization/InsuranceAddress
+./testexists Organization/Insurance
+
+./testexists Organization/PEClass
+./testexists Organization/Jurisdiction
+
+./testexists Organization/OrganizationAddress
+./testexists Organization/Organization
+./testexists Organization/Member
+./testexists School/SchoolYear
+./testexists Student/Student
+./testexists Student/StudentRecord
+./testexists Feature/Excel
+./testexists Feature/PDF
+./testexists Auth/PasswordReset
+./testexists Auth/AngularToken
+./testexists Template/MailTemplate
+
+
+
+
+BASIC  TEST - Model can Load, Has SoftDelete Atributes and it Saves
+
+# Get Almost all the model names
+find app/Models  -type f  | cut -d'.' -f1 | cut -c12-  
+
+
+./testmodel News/NewsComment
+./testmodel News/NewsThread
+./testmodel News/NewsGroup
+./testmodel News/NewsCategory
+
+
 ./testmodel DailyLog/DailyLog
 ./testmodel DailyLog/DailyLogProgress
 ./testmodel DailyLog/DailyLogStatus
@@ -15,29 +122,15 @@ find tests/models/ -type f -name '*delete*.*' -delete
 ./testmodel DailyLog/DailyLogNotif
 ./testmodel DailyLog/DailyLogComment
 
-      ./testdelete DailyLog/DailyLog
-      ./testdelete DailyLog/DailyLogProgress
-      ./testdelete DailyLog/DailyLogStatus
-      ./testdelete DailyLog/DailyLogProgressComment
-      ./testdelete DailyLog/DailyLogNotif
-      ./testdelete DailyLog/DailyLogComment
 
-./testmodel MedLog/MedLogProgress
-./testmodel MedLog/MedLogComment
-./testmodel MedLog/MedLog
-./testmodel MedLog/MedLogMedsGiven
-./testmodel MedLog/MedLogProgressComment
-./testmodel MedLog/MedLogScheduleTime
-./testmodel MedLog/MedLogSchedule
+./testmodel Immunization/VaccineLogComment
+./testmodel Immunization/VaccineLog
 
-
-      ./testdelete MedLog/MedLogProgress
-      ./testdelete MedLog/MedLogComment
-      ./testdelete MedLog/MedLog
-      ./testdelete MedLog/MedLogMedsGiven
-      ./testdelete MedLog/MedLogProgressComment
-      ./testdelete MedLog/MedLogScheduleTime
-      ./testdelete MedLog/MedLogSchedule
+./testmodel Screen/ScreenHearing
+./testmodel Screen/ScreenCustom
+./testmodel Screen/ScreenVision
+./testmodel Screen/ScreenBmi
+./testmodel Screen/ScreenScoliosis
 
 
 ./testmodel Person/Person
@@ -52,87 +145,39 @@ find tests/models/ -type f -name '*delete*.*' -delete
 ./testmodel Person/PersonPhone
 
 
-      ./testdelete Person/Person
-      ./testdelete Person/PersonEmergencyContact
-      ./testdelete Person/PersonInsurance
-      ./testdelete Person/PersonRole
-      ./testdelete Person/PersonRelative
-      ./testdelete Person/PersonPhoto
-      ./testdelete Person/PersonAlert
-      ./testdelete Person/PersonAddress
-      ./testdelete Person/PersonGuardian
-      ./testdelete Person/PersonPhone
+./testmodel MedLog/MedLogProgress
+./testmodel MedLog/MedLogComment
+./testmodel MedLog/MedLog
+./testmodel MedLog/MedLogMedsGiven
+./testmodel MedLog/MedLogProgressComment
+./testmodel MedLog/MedLogScheduleTime
+./testmodel MedLog/MedLogSchedule
 
-./testmodel News/NewsComment
-./testmodel News/NewsThread
-./testmodel News/NewsGroup
-./testmodel News/NewsCategory
+./testmodel Logger/Logger
+./testmodel Logger/LoggerComment
 
-      ./testdelete News/NewsComment
-      ./testdelete News/NewsThread
-      ./testdelete News/NewsGroup
-      ./testdelete News/NewsCategory
-
-//not passing
-
-            <file>tests/models/DailyLog/DailyLog/delete_daily_log_model_test.php</file>
-            <file>tests/models/DailyLog/DailyLogProgress/delete_daily_log_progress_model_test.php</file>
-            <file>tests/models/DailyLog/DailyLogStatus/delete_daily_log_status_model_test.php</file>
-            <file>tests/models/DailyLog/DailyLogProgressComment/delete_daily_log_progress_comment_model_test.php</file>
-            <file>tests/models/DailyLog/DailyLogNotif/delete_daily_log_notif_model_test.php</file>
-            <file>tests/models/DailyLog/DailyLogComment/delete_daily_log_comment_model_test.php</file>
-
-          <file>tests/models/Person/Person/delete_person_model_test.php</file>
-            <file>tests/models/Person/PersonEmergencyContact/delete_person_emergency_contact_model_test.php</file>
-            <file>tests/models/Person/PersonInsurance/delete_person_insurance_model_test.php</file>
-            <file>tests/models/Person/PersonRole/delete_person_role_model_test.php</file>
-            <file>tests/models/Person/PersonRelative/delete_person_relative_model_test.php</file>
-            <file>tests/models/Person/PersonPhoto/delete_person_photo_model_test.php</file>
-            <file>tests/models/Person/PersonAlert/delete_person_alert_model_test.php</file>
-            <file>tests/models/Person/PersonAddress/delete_person_address_model_test.php</file>
-            <file>tests/models/Person/PersonGuardian/delete_person_guardian_model_test.php</file>
-            <file>tests/models/Person/PersonPhone/delete_person_phone_model_test.php</file>
-                        
-           <file>tests/models/Immunization/VaccineLog/delete_vaccine_log_model_test.php</file>
-            <file>tests/models/Immunization/VaccineLogComment/basic_vaccine_log_comment_model_test.php</file>
-            <file>tests/models/Immunization/VaccineLogComment/delete_vaccine_log_comment_model_test.php</file>
-          
-            <file>tests/models/MedLog/MedLog/delete_med_log_model_test.php</file>
-            <file>tests/models/MedLog/MedLogComment/delete_med_log_comment_model_test.php</file>
-            <file>tests/models/MedLog/MedLogMedsGiven/delete_med_log_meds_given_model_test.php</file>
-            <file>tests/models/MedLog/MedLogProgress/delete_med_log_progress_model_test.php</file>
-            <file>tests/models/MedLog/MedLogProgressComment/delete_med_log_progress_comment_model_test.php</file>
-            <file>tests/models/MedLog/MedLogScheduleTime/delete_med_log_schedule_time_model_test.php</file>
-            <file>tests/models/MedLog/MedLogSchedule/delete_med_log_schedule_model_test.php</file>
+./testmodel Param/InformationSchema
+./testmodel Param/ExternBmiPercentile
+./testmodel Param/Location
+./testmodel Param/Param
+./testmodel Param/Template
+./testmodel Param/Role
 
 
+./testmodel Todo
 
-
-//pending
-
-
-
-./testmodel Immunization/VaccineLogComment
-./testmodel Immunization/VaccineLog
-./testmodel Screen/ScreenHearing
-./testmodel Screen/Screening
-./testmodel Screen/ScreenCustom
-./testmodel Screen/ScreenVision
-./testmodel Screen/ScreenBmi
-./testmodel Screen/ScreenScoliosis
-
-
-
-./testmodel Param/SchoolYear
 ./testmodel Organization/School
-./testmodel Organization/OrganizationAddress
+
 ./testmodel Organization/InsuranceAddress
+./testmodel Organization/Insurance
+
 ./testmodel Organization/PEClass
 ./testmodel Organization/Jurisdiction
+
+./testmodel Organization/OrganizationAddress
 ./testmodel Organization/Organization
-./testmodel Organization/Insurance
 ./testmodel Organization/Member
-./testmodel Organization/SchoolYear
+./testmodel School/SchoolYear
 ./testmodel Student/Student
 ./testmodel Student/StudentRecord
 ./testmodel Feature/Excel
@@ -140,3 +185,89 @@ find tests/models/ -type f -name '*delete*.*' -delete
 ./testmodel Auth/PasswordReset
 ./testmodel Auth/AngularToken
 ./testmodel Template/MailTemplate
+
+
+
+SOFTDELETE  TEST - Model can Delete and Cascade the Deleting
+
+# Get Almost all the model names
+find app/Models  -type f  | cut -d'.' -f1 | cut -c12-  
+
+
+./testdelete News/NewsComment
+./testdelete News/NewsThread
+./testdelete News/NewsGroup
+./testdelete News/NewsCategory
+
+
+./testdelete DailyLog/DailyLog
+./testdelete DailyLog/DailyLogProgress
+./testdelete DailyLog/DailyLogStatus
+./testdelete DailyLog/DailyLogProgressComment
+./testdelete DailyLog/DailyLogNotif
+./testdelete DailyLog/DailyLogComment
+
+
+./testdelete Immunization/VaccineLogComment
+./testdelete Immunization/VaccineLog
+
+./testdelete Screen/ScreenHearing
+./testdelete Screen/ScreenCustom
+./testdelete Screen/ScreenVision
+./testdelete Screen/ScreenBmi
+./testdelete Screen/ScreenScoliosis
+
+
+./testdelete Person/Person
+./testdelete Person/PersonEmergencyContact
+./testdelete Person/PersonInsurance
+./testdelete Person/PersonRole
+./testdelete Person/PersonRelative
+./testdelete Person/PersonPhoto
+./testdelete Person/PersonAlert
+./testdelete Person/PersonAddress
+./testdelete Person/PersonGuardian
+./testdelete Person/PersonPhone
+
+
+./testdelete MedLog/MedLogProgress
+./testdelete MedLog/MedLogComment
+./testdelete MedLog/MedLog
+./testdelete MedLog/MedLogMedsGiven
+./testdelete MedLog/MedLogProgressComment
+./testdelete MedLog/MedLogScheduleTime
+./testdelete MedLog/MedLogSchedule
+
+./testdelete Logger/Logger
+./testdelete Logger/LoggerComment
+
+./testdelete Param/InformationSchema
+./testdelete Param/ExternBmiPercentile
+./testdelete Param/Location
+./testdelete Param/Param
+./testdelete Param/Template
+./testdelete Param/Role
+
+
+./testdelete Todo
+
+./testdelete Organization/School
+
+./testdelete Organization/InsuranceAddress
+./testdelete Organization/Insurance
+
+./testdelete Organization/PEClass
+./testdelete Organization/Jurisdiction
+
+./testdelete Organization/OrganizationAddress
+./testdelete Organization/Organization
+./testdelete Organization/Member
+./testdelete School/SchoolYear
+./testdelete Student/Student
+./testdelete Student/StudentRecord
+./testdelete Feature/Excel
+./testdelete Feature/PDF
+./testdelete Auth/PasswordReset
+./testdelete Auth/AngularToken
+./testdelete Template/MailTemplate
+

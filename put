@@ -3,6 +3,10 @@
 # @author Jesus Alcaraz <jesus@gammpartners.com>
 #
 
+# set working directory as the scripts location during the execution of script 
+cd "$(dirname "$0")"
+
+
 #add
 echo
 echo "=== Add . ===";

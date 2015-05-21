@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# cat testerrors | xclip &
+cat testerrors | xsel &
+# xclip -o > file.txt
+#xclip -in -selection c <filename>
+#echo -n 'I will be copied to the clipboard!' | xclip -selection c
+# xclip -sel clip < testerrors
+
+

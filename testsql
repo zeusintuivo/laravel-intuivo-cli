@@ -1,3 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-mysqladmin -uroot -ptoor  -i10 -r extended
+# @author Jesus Alcaraz <jesus@gammpartners.com>
+
+# mysqladmin -uroot -ptoor  -i10 -r extended
+
+# set working directory as the scripts location during the execution of script 
+cd "$(dirname "$0")"
+
+
+THISOUTPUT="$(php 'mysql_connector')"
+THISCONNECTOR=""
+while read -r line; do
+    #echo "... $line ..."
+    THISCONNECTOR=$line
+done <<< "$THISOUTPUT"
+    # echo "-- $THISCONNECTOR --"
+#exit
+
+mysqladmin $THISCONNECTOR  -i10 -r extended

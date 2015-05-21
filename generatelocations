@@ -200,7 +200,7 @@ foreach ($types as $key => $value) {
 
 		say($colors, "\n\ntouched table_$currenttable", $said);
 		$commit_msg = ("Created table ". $currenttable. " from locations. ");
-		commitToGithub( $colors, 	$commit_msg );
+		// commitToGithub( $colors, 	$commit_msg );
 
 
 		// $output->writeln('<info>'.$currenttable.' faker start </info>');

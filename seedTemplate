@@ -419,7 +419,7 @@ if (stripos($dataseeder, $file."Seeder") > 0) {
 	//
 	$dataseeder_exploded = explode("~", $dataseeder);
 	//
-	$content = "\n		\$this->call('".$file."Seeder');\n";
+	$content = "\n		\$this->seedTemplate('".$file."Seeder');\n";
 	$newcontent = $dataseeder_exploded[0]. $content ."		//~".$dataseeder_exploded[1];
 	//
 	file_put_contents($seed_directory ."DatabaseSeeder.php", $newcontent);

@@ -17,7 +17,7 @@
 
 # Before Loading anything Check Arguments Passed
 # Get argv 
-// if (!isset($argv) || !isset($argv[1])) {
+if (!isset($argv) || !isset($argv[1])) {
 	echo "
 	Sample Usage:    - expects only one Dir not more
 	    call model Person\PersonAddress
@@ -181,23 +181,6 @@ say($colors, "Seed", $said);
 #
 #
 #
-// how to run a test exec('vendor/bin/phpunit tests/Models/'.$entity);
-
-function generateFromStub($base_folder, $stub_file, $target_file, $dir, $file){
-
-	$file_targeted = $base_folder."/".$dir."/".$file."/".$target_file;
-
-	@mkdir($base_folder);
-	@mkdir($base_folder."/".$dir);
-	@mkdir($base_folder."/".$dir."/".$file);
-
-	exec("touch ".$file_targeted);
-
-	$template = file_get_contents($stub_file);
-	$template = replaceStrs($template);
-
-	file_put_contents($file_targeted, $template);
-}
 
 
 #
@@ -209,6 +192,7 @@ function generateFromStub($base_folder, $stub_file, $target_file, $dir, $file){
 #
 #
 #
+$said=@exec("php 'testexists' $dir/$file");
 $said=@exec("php 'testmodel' $dir/$file");
 
 
@@ -221,7 +205,7 @@ $said=@exec("php 'testmodel' $dir/$file");
 #
 #
 #
-$said=@exec("php 'testcontroller' $dir/$file");
+// $said=@exec("php 'testcontroller' $dir/$file");
 
 
 #
@@ -237,14 +221,11 @@ $said=@exec("php 'testcontroller' $dir/$file");
 
 
 $base_folder = "tests/requests";
-$target_file = "basic_".$camelToUnderScoreFile."request_test.php";
+$target_file = "basic_".$camelToUnderScoreFile."_request_test.php";
 $stub_file = "app/Stubs/Tests/requests/request_test.stub";
 
-$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file);
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
 
-say($colors, "Generated:", "phpunit $file_targeted"); 
-$said=@exec("phpunit $file_targeted");
-say($colors, "Tested:", $said); 
 
 
 
@@ -260,14 +241,11 @@ say($colors, "Tested:", $said);
 #
 
 $base_folder = "tests/migration";
-$target_file = "basic_".$camelToUnderScoreFile."migration_test.php";
+$target_file = "basic_".$camelToUnderScoreFile."_migration_test.php";
 $stub_file = "app/Stubs/Tests/migrations/migration_test.stub";;
 
-$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file);
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
 
-say($colors, "Generated:", "phpunit $file_targeted"); 
-$said=@exec("phpunit $file_targeted");
-say($colors, "Tested:", $said); 
 
 
 
@@ -284,14 +262,11 @@ say($colors, "Tested:", $said);
 #
 
 $base_folder = "tests/routes";
-$target_file = "basic_".$camelToUnderScoreFile."route_test.php";
+$target_file = "basic_".$camelToUnderScoreFile."_route_test.php";
 $stub_file = "app/Stubs/Tests/routes/route_test.stub";;
 
-$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file);
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
 
-say($colors, "Generated:", "phpunit $file_targeted"); 
-$said=@exec("phpunit $file_targeted");
-say($colors, "Tested:", $said); 
 
 
 #
@@ -305,14 +280,11 @@ say($colors, "Tested:", $said);
 #
 
 $base_folder = "tests/views";
-$target_file = "basic_".$camelToUnderScoreFile."view_test.php";
+$target_file = "basic_".$camelToUnderScoreFile."_view_test.php";
 $stub_file = "app/Stubs/Tests/views/view_test.stub";;
 
-$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file);
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
 
-say($colors, "Generated:", "phpunit $file_targeted"); 
-$said=@exec("phpunit $file_targeted");
-say($colors, "Tested:", $said); 
 
 
 
@@ -327,6 +299,6 @@ say($colors, "Tested:", $said);
 #
 
 $commit_msg = ("Created ". $file. " Model, Controller, Request, Migration, Seeder, and Tests for View, Route, Migration, Model ( basic, create and delete ), Controller and Request");
-commitToGithub(	 $colors, $commit_msg ) {
+commitToGithub(	 $colors, $commit_msg );
 
 

@@ -410,7 +410,7 @@ function commitToGithub($colors, $commit_msg) {
 
 	say($colors, "\n\nCommit", $commit_msg);
 
-	$said=@exec('git commit -am "'. $commit_msg .'"');
+	// $said=@exec('git commit -am "'. $commit_msg .'"');
 
 	$said=@exec ("git status");
 

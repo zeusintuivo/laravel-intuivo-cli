@@ -1,5 +1,5 @@
 <?php
-# @author Jesus Alcaraz <jesus@gammpartners.com>
+# @author Jesus Alcaraz <jesus@gammapartners.com>
 #
 # Procedural Programming to Create 
 # Models, Migrations, Controllers, and Tests, 
@@ -224,21 +224,49 @@ $version = "7";
 $camelToUnderScoreFile = camelToUnderScore($file);
 
 $replace_array = array();
+$replace_array["field"] = "name";
+$replace_array["appName"] = "PHIWeb";
+$replace_array["rootNamespace"] = $replace_array["appName"]."\\";
+$replace_array["child"] = "child";
+$replace_array["dirChild"] = "dirChild";
+$replace_array["fileChild"] = "fileChild";
+$replace_array["grandchild"] = "grandchild";
+$replace_array["childCamelLowerCased"] = "childCamelLowerCased";
+$replace_array["parentCamelLowerCased"] = "parentCamelLowerCased";
+$replace_array["dirParent"] = "dirParent";
+$replace_array["fileParent"] = "fileParent";
+$replace_array["parent"] = "parent";
+$replace_array["child_snake_cased"] = "child_snake_cased";
+$replace_array["description"] = "Created for ".$replace_array["appName"];
+/**
+ * Sample output of vars
+ * When calling:  ./testmodel PDF/PDF
+ * It results:
+ * file:PDF
+ * dir:PDF
+ * file_plural:PDFS
+ * filo:p_d_f
+ * file_plural_snake:p_d_fs     <- for table names
+ * file_plural_snake_migration_name:p_d_f_s
+ */
 $replace_array["dir"] = $dir;
 $replace_array["file"] = $file;
+$replace_array["class"] = $file;
 $replace_array["filo"] = $filo;
 $replace_array["camelToUnderScoreFile"] = $camelToUnderScoreFile;
 $replace_array["author"] = $author;
 $replace_array["revision"] = $revision;
 $replace_array["version"] = $version;
 $replace_array["file_plural"] = $file_plural;
-$replace_array["file_plural_snake"] = $file_plural_snake;
+$replace_array["file_plural_snake"] = $file_plural_snake;   # <- for table names
+$replace_array["table"] = $file_plural_snake;   # <- for table names
 $replace_array["file_plural_snake_migration_name"] = $file_plural_snake_migration_name;
+$replace_array["namespace"] = $replace_array["appName"]."\\Models\\".$replace_array["dir"];
 
 say($colors, "DATA IN", ""); 
 foreach ($replace_array as $key => $value) {
 		//
-		say($colors, "{{$key}}", $value);
+		// say($colors, "{{$key}}", $value);
 }
 //REF: http://symfony.com/doc/current/components/console/introduction.html
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -290,7 +318,7 @@ $output = new ConsoleOutput();
  * dir:PDF
  * file_plural:PDFS
  * filo:p_d_f
- * file_plural_snake:p_d_fs
+ * file_plural_snake:p_d_fs     <- for table
  * file_plural_snake_migration_name:p_d_f_s
  */
 function replaceStrs($text, Array $replace_array) {
@@ -312,31 +340,90 @@ function replaceStrs($text, Array $replace_array) {
 # Generate from stub 
 #
 #
-function generateFromStub(Array $replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors){
+function generateFromStub(Array $replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, $type_of_creation=" test for "){
 
-	$file_targeted = $base_folder."/".$dir."/".$file."/".$target_file;
+	# 
+	# File name assignation
+	#
+	if ( $type_of_creation == " test for ") {    
+		#
+		# Tests get an extra level because one model, or controller, has to be tested in different ways
+		#
+		$file_targeted = $base_folder."/".$dir."/".$file."/".$target_file;
+	} else {
+		#
+		# Models, controllers and etc, get regular level as directed 
+		#
+		$file_targeted = $base_folder."/".$target_file;
+	} # end if 
+	
 
+	#
+	# Create dirs
+	#
 	@mkdir($base_folder);
 	@mkdir($base_folder."/".$dir);
-	@mkdir($base_folder."/".$dir."/".$file);
+	if ( $type_of_creation == " test for ") {    
+		#
+		# Tests get an extra level because one model, or controller, has to be tested in different ways
+		#
+		@mkdir($base_folder."/".$dir."/".$file);
+	}
 
+	#
+	# Create file by touching it
+	#
 	exec("touch ".$file_targeted);
 
+	#
+	# Read file 
+	#
 	$template = file_get_contents($stub_file);
+
+	
+	#
+	# Prepare contents Replace template vars 
+	#
 	$template = replaceStrs($template, $replace_array);
 
+	#
+	# Write  file 
+	#
 	file_put_contents($file_targeted, $template);
 
-	say($colors, "Generated:", "phpunit $file_targeted"); 
-	$said=@exec("phpunit $file_targeted");
-	say($colors, "Tested:", $said); 
 
-	$said=addEntryToPhpunit($content_entry_to_replace=$file_targeted);
-	say($colors, "Add to PHPUnit:", ($said?"true":"false")); 
+	# 
+	# If this is a test. Test it
+	#
+	if ( $type_of_creation == " test for ") {   
+		say($colors, "Generated:", "phpunit $file_targeted"); 
+		$said=@exec("phpunit $file_targeted");
+		#
+		# Check test output and color it 
+		#
+		// $said = preg_replace('/OK/i',  "<question> OK </question>", $said);
+		if (substr_count($said, "OK")) {
+			say($colors, $colors->getColoredString("Passed:", "yellow", "black"), $colors->getColoredString($said, "yellow", "black")); 
+		} else {
+			say($colors, $colors->getColoredString("Tested:", "yellow", "red"), $colors->getColoredString($said, "yellow", "red")); 
+			// say($colors, ":", $said); 
+		} # end if 
+
+		#
+		# Add to phpuint.xml file list
+		#
+		$said=addEntryToPhpunit($content_entry_to_replace=$file_targeted);
+		say($colors, "Add to PHPUnit:", ($said?"true":"false")); 
+		
+	} else { 
+		say($colors, "Generated:", "$file_targeted"); 
+	} # end if
+
+
 		
 
 	# Commit to Github
-	$commit_msg = ("Created ". $file_targeted . " test for ".$base_folder);
+	$commit_msg = ("Created ". $file_targeted . $type_of_creation .$base_folder);
 	commitToGithub( $colors, 	$commit_msg );
 
 	return $file_targeted;

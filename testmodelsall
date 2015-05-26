@@ -40,7 +40,6 @@ find app/Models  -type f  | cut -d'.' -f1 | cut -c12-
 ./testexists Immunization/VaccineLog
 
 ./testexists Screen/ScreenHearing
-
 ./testexists Screen/ScreenCustom
 ./testexists Screen/ScreenVision
 ./testexists Screen/ScreenBmi
@@ -103,11 +102,58 @@ find app/Models  -type f  | cut -d'.' -f1 | cut -c12-
 
 
 
+
+
+
+
+
+
 BASIC  TEST - Model can Load, Has SoftDelete Atributes and it Saves
 
 # Get Almost all the model names
 find app/Models  -type f  | cut -d'.' -f1 | cut -c12-  
 
+
+NONTESTED
+
+~
+~ FAILING MISSING RECORDS  -IGNORING FOR NOW
+~
+
+
+~  PIVOT TABLES
+./testmodel School/SchoolYear
+./testmodel Student/Student
+./testmodel Organization/Member
+
+~  SPECIAL MODELS
+./testmodel Auth/PasswordReset
+./testmodel Auth/AngularToken
+
+
+~  MEANING LESS FOR NOW
+./testmodel Param/Template
+./testmodel Param/Role
+./testmodel Organization/Jurisdiction
+./testmodel Todo
+./testmodel Feature/Excel
+./testmodel Feature/PDF
+
+~  NOT BEEN IMPLMENTED AS A MODEL 
+./testmodel Logger/Logger
+./testmodel Logger/LoggerComment
+
+~ PARAMS THAT DON'T NEED SOFT DELETES
+./testmodel Param/InformationSchema
+./testmodel Param/ExternBmiPercentile
+./testmodel Param/Location
+./testmodel Param/Param
+
+
+
+
+
+TESTED  
 
 ./testmodel News/NewsComment
 ./testmodel News/NewsThread
@@ -139,32 +185,19 @@ find app/Models  -type f  | cut -d'.' -f1 | cut -c12-
 ./testmodel Person/PersonRole
 ./testmodel Person/PersonRelative
 ./testmodel Person/PersonPhoto
-./testmodel Person/PersonAlert
+./testmodel Person/PersonAlert   
 ./testmodel Person/PersonAddress
 ./testmodel Person/PersonGuardian
 ./testmodel Person/PersonPhone
 
 
 ./testmodel MedLog/MedLogProgress
-./testmodel MedLog/MedLogComment
-./testmodel MedLog/MedLog
-./testmodel MedLog/MedLogMedsGiven
 ./testmodel MedLog/MedLogProgressComment
-./testmodel MedLog/MedLogScheduleTime
+./testmodel MedLog/MedLogComment
+./testmodel MedLog/MedLogMedsGiven  
+./testmodel MedLog/MedLog 
+./testmodel MedLog/MedLogScheduleTime  
 ./testmodel MedLog/MedLogSchedule
-
-./testmodel Logger/Logger
-./testmodel Logger/LoggerComment
-
-./testmodel Param/InformationSchema
-./testmodel Param/ExternBmiPercentile
-./testmodel Param/Location
-./testmodel Param/Param
-./testmodel Param/Template
-./testmodel Param/Role
-
-
-./testmodel Todo
 
 ./testmodel Organization/School
 
@@ -172,19 +205,21 @@ find app/Models  -type f  | cut -d'.' -f1 | cut -c12-
 ./testmodel Organization/Insurance
 
 ./testmodel Organization/PEClass
-./testmodel Organization/Jurisdiction
+
+
 
 ./testmodel Organization/OrganizationAddress
 ./testmodel Organization/Organization
-./testmodel Organization/Member
-./testmodel School/SchoolYear
-./testmodel Student/Student
+
+
 ./testmodel Student/StudentRecord
-./testmodel Feature/Excel
-./testmodel Feature/PDF
-./testmodel Auth/PasswordReset
-./testmodel Auth/AngularToken
 ./testmodel Template/MailTemplate
+~
+
+
+
+
+
 
 
 
@@ -200,12 +235,12 @@ find app/Models  -type f  | cut -d'.' -f1 | cut -c12-
 ./testdelete News/NewsCategory
 
 
-./testdelete DailyLog/DailyLog
 ./testdelete DailyLog/DailyLogProgress
-./testdelete DailyLog/DailyLogStatus
 ./testdelete DailyLog/DailyLogProgressComment
+./testdelete DailyLog/DailyLogStatus
 ./testdelete DailyLog/DailyLogNotif
 ./testdelete DailyLog/DailyLogComment
+./testdelete DailyLog/DailyLog
 
 
 ./testdelete Immunization/VaccineLogComment
@@ -218,38 +253,25 @@ find app/Models  -type f  | cut -d'.' -f1 | cut -c12-
 ./testdelete Screen/ScreenScoliosis
 
 
-./testdelete Person/Person
+./testdelete Person/PersonPhone
 ./testdelete Person/PersonEmergencyContact
 ./testdelete Person/PersonInsurance
 ./testdelete Person/PersonRole
 ./testdelete Person/PersonRelative
 ./testdelete Person/PersonPhoto
-./testdelete Person/PersonAlert
+./testdelete Person/PersonAlert   
 ./testdelete Person/PersonAddress
 ./testdelete Person/PersonGuardian
-./testdelete Person/PersonPhone
+./testdelete Person/Person
 
 
 ./testdelete MedLog/MedLogProgress
-./testdelete MedLog/MedLogComment
-./testdelete MedLog/MedLog
-./testdelete MedLog/MedLogMedsGiven
 ./testdelete MedLog/MedLogProgressComment
-./testdelete MedLog/MedLogScheduleTime
+./testdelete MedLog/MedLogComment
+./testdelete MedLog/MedLogMedsGiven  
+./testdelete MedLog/MedLogScheduleTime  
 ./testdelete MedLog/MedLogSchedule
-
-./testdelete Logger/Logger
-./testdelete Logger/LoggerComment
-
-./testdelete Param/InformationSchema
-./testdelete Param/ExternBmiPercentile
-./testdelete Param/Location
-./testdelete Param/Param
-./testdelete Param/Template
-./testdelete Param/Role
-
-
-./testdelete Todo
+./testdelete MedLog/MedLog 
 
 ./testdelete Organization/School
 
@@ -257,17 +279,13 @@ find app/Models  -type f  | cut -d'.' -f1 | cut -c12-
 ./testdelete Organization/Insurance
 
 ./testdelete Organization/PEClass
-./testdelete Organization/Jurisdiction
+
+
 
 ./testdelete Organization/OrganizationAddress
 ./testdelete Organization/Organization
-./testdelete Organization/Member
-./testdelete School/SchoolYear
-./testdelete Student/Student
-./testdelete Student/StudentRecord
-./testdelete Feature/Excel
-./testdelete Feature/PDF
-./testdelete Auth/PasswordReset
-./testdelete Auth/AngularToken
-./testdelete Template/MailTemplate
 
+
+./testdelete Student/StudentRecord
+./testdelete Template/MailTemplate
+~

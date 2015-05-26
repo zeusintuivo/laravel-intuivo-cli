@@ -1,0 +1,180 @@
+<?php namespace {{appName}}\Models\{{file}};
+
+use Illuminate\Database\Eloquent\Model;
+use {{appName}}\Models\BaseModel;
+
+use {{appName}}\Models\Traits\ModelDeletes;
+use {{appName}}\Models\Traits\ModelDeletesInterface;
+use Illuminate\Database\Eloquent\SoftDeletes;
+ 
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{file}} extends BaseModel implements ModelDeletesInterface {
+// class {{file}} extends Model implements ModelDeletesInterface {
+
+
+	protected $fillable = [
+		'{{field}}',
+	];
+
+    //
+    //
+    // SoftDeletes - Start 
+    //
+    //
+
+	use ModelDeletes;
+
+    protected $dates = ['deleted_at'];
+    
+    /**
+     * Explanation - Display of children Models/relations to cascade for softdeletes
+     * @author {{author}}
+     */
+	public static function children()
+	{
+		$r = array();
+		$r[] = "{{field}}";
+
+		return $r;
+	}
+
+    /**
+     * Explanation - Display of children Models/relations to cascade for softdeletes
+     * @author {{author}}
+     */
+	public static function childrenTables()
+	{
+		$r = array();
+		$r[] = "{{field}}";
+
+		return $r;
+	}
+
+
+	//
+	//
+	// Explanations
+	//
+	//
+
+	// Relationship Relations
+	/**
+     * Explanation - Display of children Models/relations to cascade for softdeletes
+     * @author {{author}}
+     */
+	public static function relationships()
+	{
+		$r = array();
+		$r[] = "Relationship Relations ";
+		$r[] = " One {{file}}:";
+		$r[] = "   - has one {{child}}";
+		$r[] = "   - many {{child}} < {{grandchild}}";
+		$r[] = "   - belongs to {{parent}} < {{grandchild}}";
+		$r[] = " ";
+		return $r;
+	}
+
+	/**
+     * Explanation - Display of fields used to link other foreign tables
+     * @author {{author}}
+     */
+	public static function foreignkeys()
+	{
+
+		$r = array();
+		$r[] = "{{field}}";
+
+		$p = array();
+		$p[] = "{{field}}";
+
+		$m = array();
+		$m['foreign - all'] = $p;
+		$m['foreign - params'] = $r;
+
+		return $m;
+
+	}
+
+	/**
+     * Explanation - Display of dropbox content that is meant to be a dropbox or select box
+     * @author {{author}}
+     */
+	public static function dropboxes()
+	{
+
+		$p = array();
+		$p[] = "{{field}}";
+
+		return $p;
+	}
+
+
+    //
+    //
+    // SoftDeletes - End 
+    //
+    //	
+
+
+
+	//
+	//
+	//
+	// Relationships
+	//
+	//
+
+
+	//Left as sample
+    /**
+     * Relationship - Belongs to a {{parent}}
+     * @author {{author}}
+     */
+    public function {{parentCamelLowerCased}} ()
+    {
+        return $this->belongsTo('{{appName}}\Models\{{dirParent}}\{{fileParent}}');
+    }
+
+
+	/**
+     * Relationship - Has many {{child}}
+     * @author {{author}}
+     */
+	public function {{childCamelLowerCased}} ()
+	{
+		return $this->hasMany('{{appName}}\Models\{{dirChild}}\{{fileChild}}','id','{{child_snake_cased}}_id');
+	}
+
+	/**
+     * Relationship - Has One {{child}}
+     * @author {{author}}
+     */
+	public function {{childCamelLowerCased}} ()
+	{
+		return $this->hasOne('{{appName}}\Models\{{dirChild}}\{{fileChild}}');
+	}
+
+	//
+	//
+	//
+	// Scopes
+	//
+	//
+
+
+
+
+	//
+	//
+	//
+	// Custom Queries
+	//
+	//
+
+
+} //end class

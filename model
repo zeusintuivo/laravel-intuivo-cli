@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-# @author Jesus Alcaraz <jesus@gammpartners.com>
+# @author Jesus Alcaraz <jesus@gammapartners.com>
 #
 # Procedural Programming to Create 
 # Models, Migrations, Controllers, and Tests, 
@@ -17,17 +17,27 @@
 
 # Before Loading anything Check Arguments Passed
 # Get argv 
+$valid_model_types=[ "nothing", "plain", "simple", "softdelete", "softdeleteparent", "softdeletechild", "pivot"];
 if (!isset($argv) || !isset($argv[1])) {
 	echo "
-	Sample Usage:    - expects only one Dir not more
-	    call model Person\PersonAddress
-	    call model Person/PersonAddress
-	    call model PersonAddress
-	    ";
+	Sample Usage:    - expects one or more arguments
+	    call model Person\PersonAddress [optional]
+	    call model Person/PersonAddress [optional]
+	    call model PersonAddress [optional]
+
+	    [optional] can be:
+
+	    " . implode("\n	    	- ", $valid_model_types) ."
+
+	    	- softdelete is default is ommited optional
+";
 
 	die(0);
 }
-
+$model_type="softdelete";  /// simple|softdelete
+if (isset($argv[2])) {
+	if (in_array($model_type, $valid_model_types))	$model_type = trim($argv[2]);
+}
 include('generatebase');
 
 #
@@ -39,15 +49,17 @@ include('generatebase');
 #
 #
 #
-
+comment($colors, "- Migration - ", "");
+say($colors, "", "");
+darken($colors, "", "");
 # Find migration file ad remove if an duplicated one
-
-$migration_file=@exec('ls database/migrations/*_'.$file_plural_snake.'_table.php');
+$migration_file = @exec('ls database/migrations/*_create_'.$file_plural_snake.'_table.php');
 if ( file_exists($migration_file)) {
 	$said = @exec('rm '.$migration_file);
 	$said = @exec('git rm '.$migration_file);
 	say($colors, "Migration Removed", $migration_file. "\n-". $said);
 }
+
 
 #
 #
@@ -59,29 +71,81 @@ if ( file_exists($migration_file)) {
 #
 # *Model is singular and the base for the other names
 
+comment($colors, "- Model - ", "$entity");
+darken($colors, "", "");
+//Write model and migration just to get a migration name out it 
+
 $said = exec('php "artisan" make:model Models/'.$entity);
 say($colors, "Model", $said);
+
 
 
 # Place author's name in the Model
 # sample test -> find app/Models -type f -print0 | xargs -0 sed -i 's/{{author}}/"{{author}}"/g'
 replace($colors, "app/Models/".$entity.".php", '{{author}}', $author);
 replace($colors, "app/Models/".$entity.".php", 'Created for PHIWeb', "Model created for ". $description);
+replace($colors, "app/Models/".$entity.".php", '{{description}}', "Model created for ". $description);
 replace($colors, "app/Models/".$entity.".php", '{{version}}', $version);
 replace($colors, "app/Models/".$entity.".php", '{{revision}}', $revision);
 
 
 #
+# ReWrite Model with our my model stub
+#
+comment($colors, "- ReModel - ", "$entity");
+darken($colors, "", "");
+$replace_array["namespace"] = $replace_array["appName"]."\\Models\\".$replace_array["dir"];
+
+$base_folder = "app/Models";
+$target_file = $entity.".php";
+$stub_file = "app/Stubs/Foundation/Console/stubs/model.$model_type.stub";
+
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " model for ");
+
+
+
+
+
 #
 #
-# Migration
+#
+# Migration - Delete migration if exists
 #
 #
+#
+comment($colors, "- ReMigration - ", "$migration_file ");
+darken($colors, "", "");
+#
+# Find migration. Erase. Keep the name
+#
+$migration_file = @exec('ls database/migrations/*_create_'.$file_plural_snake.'_table.php');
+
+if ( file_exists($migration_file)) {
+	$said = @exec('rm '.$migration_file);
+	$said = @exec('git rm '.$migration_file);
+	darken($colors, "Migration Removed", $migration_file. "\n-". $said);
+}
+
+
+
+#
+# ReWrite Migration with our my migartion stub
 #
 
-# Find migration file 
-$migration_file = @exec('ls database/migrations/*_'.$file_plural_snake.'_table.php');
+$migration_file = preg_replace('/database\/migrations/i', "", $migration_file);
 
+$replace_array["namespace"] = $replace_array["appName"]."\\migrations\\".$replace_array["dir"];
+
+$base_folder = "database/migrations";
+$target_file = $migration_file;
+$stub_file = "app/Stubs/Database/Migrations/stubs/create.$model_type.stub";
+
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " migration for ");
+
+
+
+
+/*
 say($colors, "Migration", $migration_file);
 
 # Place author's name in the Migration
@@ -91,6 +155,7 @@ replace($colors, $migration_file, '{{file}}', $file);
 replace($colors, $migration_file, '{{revision}}', $revision);
 replace($colors, $migration_file, '{{version}}', $version);
 replace($colors, $migration_file, 'Created for PHIWeb', "Migration created for ". $description);
+*/
 
 #
 #
@@ -100,6 +165,7 @@ replace($colors, $migration_file, 'Created for PHIWeb', "Migration created for "
 #
 #
 
+/*
 $said = exec('php "artisan" make:controller '.$entity.'Controller');
 say($colors, "Controller", $said);
 
@@ -109,16 +175,31 @@ replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{author}}',
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", 'Created for PHIWeb', "Controller created for ". $description);
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{revision}}', $revision);
 replace($colors, "app/Http/Controllers/".$entity."Controller.php", '{{version}}', $version);
+*/
+
+# 
+# Controller with our stub
+#
+comment($colors, "- Controller - ", "$migration_file ");
+darken($colors, "", "");
+$replace_array["namespace"] = $replace_array["appName"]."\\Http\\Controllers\\".$replace_array["dir"];
+
+$base_folder = "app/Http/Controllers";
+$target_file = $entity.'Controller.php';
+$stub_file = "app/Stubs/Routing/Console/stubs/controller.$model_type.stub";
+
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " controller for ");
 
 
 
 #
 #
 #
-# Request
+# Requests
 #
 #
 #
+/*
 $request_name = $dir.'/Create'.$file.'Request';
 
 $said = exec('php "artisan" make:request '.$request_name);
@@ -130,10 +211,21 @@ replace($colors, "app/Http/Requests/".$request_name.".php", '{{author}}', $autho
 replace($colors, "app/Http/Requests/".$request_name.".php", 'Created for PHIWeb', "Request created for Create ".$description);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
+*/
+
+#
+# Create Request with our stub
+#
+$replace_array["namespace"] = $replace_array["appName"]."\\Http\\Requests\\".$replace_array["dir"];
+
+$base_folder = "app/Http/Requests";
+$target_file = $dir.'/Create'.$file.'Request.php';
+$stub_file = "app/Stubs/Foundation/Console/stubs/request.$model_type.stub";
+
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " Create Request for ");
 
 
-
-
+/*
 $request_name = $dir.'/Delete'.$file.'Request';
 
 $said = exec('php "artisan" make:request '.$request_name);
@@ -145,7 +237,12 @@ replace($colors, "app/Http/Requests/".$request_name.".php", '{{author}}', $autho
 replace($colors, "app/Http/Requests/".$request_name.".php", 'Created for PHIWeb', "Request created for Delete ".$description);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $revision);
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
+*/
+$base_folder = "app/Http/Requests";
+$target_file = $dir.'/Delete'.$file.'Request.php';
+$stub_file = "app/Stubs/Foundation/Console/stubs/request.$model_type.stub";
 
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " Delete Request for ");
 
 
 
@@ -157,6 +254,9 @@ replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $vers
 #
 #
 #
+
+$replace_array["namespace"] = $replace_array["appName"]."\\database\\seeds\\".$replace_array["dir"];
+
 say($colors, "Seed", "Creating Seed");
 //Run Windows Command and ignore output to screen 
 $said = @exec('seedTemplate '.$entity);
@@ -169,6 +269,37 @@ say($colors, "Seed", $said);
 
 # Place author's name in the Seed takes place in the same script
 
+
+#
+#
+#
+#
+# Reports
+#
+#
+#
+$base_folder = "database/reports";
+$target_file = $filo.'_report.sql';
+@mkdir($base_folder);
+@mkdir($base_folder."/".$dir);
+$file_targeted = $base_folder."/".$target_file;
+exec("touch ".$file_targeted);
+
+
+#
+#
+#
+#
+# Stored Procedures
+#
+#
+#
+$base_folder = "database/sp";
+$target_file = 'usp_'.$filo.'.sql';
+@mkdir($base_folder);
+@mkdir($base_folder."/".$dir);
+$file_targeted = $base_folder."/".$target_file;
+exec("touch ".$file_targeted);
 
 
 
@@ -193,8 +324,10 @@ say($colors, "Seed", $said);
 #
 #
 $said=@exec("php 'testexists' $dir/$file");
-$said=@exec("php 'testmodel' $dir/$file");
-
+if ($model_type=='softdelete') {
+	$said=@exec("php 'testmodel' $dir/$file");
+	$said=@exec("php 'testdelete' $dir/$file");
+}
 
 #
 #
@@ -219,13 +352,13 @@ $said=@exec("php 'testmodel' $dir/$file");
 #
 #
 
-
+/*
 $base_folder = "tests/requests";
 $target_file = "basic_".$camelToUnderScoreFile."_request_test.php";
 $stub_file = "app/Stubs/Tests/requests/request_test.stub";
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
-
+*/
 
 
 
@@ -240,12 +373,13 @@ $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $tar
 #
 #
 
+/*
 $base_folder = "tests/migration";
 $target_file = "basic_".$camelToUnderScoreFile."_migration_test.php";
 $stub_file = "app/Stubs/Tests/migrations/migration_test.stub";;
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
-
+*/
 
 
 
@@ -261,12 +395,13 @@ $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $tar
 #
 #
 
+/*
 $base_folder = "tests/routes";
 $target_file = "basic_".$camelToUnderScoreFile."_route_test.php";
 $stub_file = "app/Stubs/Tests/routes/route_test.stub";;
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
-
+*/
 
 
 #
@@ -279,12 +414,13 @@ $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $tar
 #
 #
 
+/*
 $base_folder = "tests/views";
 $target_file = "basic_".$camelToUnderScoreFile."_view_test.php";
 $stub_file = "app/Stubs/Tests/views/view_test.stub";;
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
-
+*/
 
 
 
@@ -297,8 +433,8 @@ $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $tar
 #
 #
 #
-
+/*
 $commit_msg = ("Created ". $file. " Model, Controller, Request, Migration, Seeder, and Tests for View, Route, Migration, Model ( basic, create and delete ), Controller and Request");
 commitToGithub(	 $colors, $commit_msg );
-
+*/
 

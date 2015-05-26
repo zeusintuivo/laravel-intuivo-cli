@@ -3,20 +3,24 @@
 # set working directory as the scripts location during the execution of script 
 cd "$(dirname "$0")"
 
-echo "Recover .env"
+echo "Saving to ../ the file or dir: .env"
 cp  .env ../
 
-echo "Recover composer.lock"
+echo "Saving to ../ the file or dir: composer.lock"
 cp composer.lock ../
 
-echo "Recover composer.json"
+echo "Saving to ../ the file or dir: composer.json"
 cp composer.json ../
 
-echo "Recover bower_components"
+echo "Saving to ../ the file or dir: bower_components"
 cp -r bower_components ../
 
-echo "Recover vendor"
+echo "Saving to ../ the file or dir: vendor"
 cp -r vendor ../
 
-echo "Recover node_modules"
+echo "Saving to ../ the file or dir: node_modules"
 cp -r node_modules ../
+
+paplay boy.ogg 
+echo -e "\033[38;5;0;32m  \033[40m  GENERATED IN: \033[0m"
+trap times EXIT

@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-# @author Jesus Alcaraz <jesus@gammpartners.com>
+# @author Jesus Alcaraz <jesus@gammapartners.com>
 #
 # Procedural Programming to Create 
 # Models, Migrations, Controllers, and Tests, 
@@ -73,6 +73,6 @@ $base_folder = "tests/models";
 $target_file = "exists_".$camelToUnderScoreFile."_model_test.php";
 $stub_file = "app/Stubs/Tests/models/exists_model_test.stub";
 
-$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, $type_of_creation=" test for ");
 
 

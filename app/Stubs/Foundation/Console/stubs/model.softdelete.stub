@@ -1,0 +1,264 @@
+<?php namespace {{appName}}\Models\{{dir}};
+
+use Illuminate\Database\Eloquent\Model;
+use {{appName}}\Models\BaseModel;
+
+use {{appName}}\Models\Traits\ModelDeletes;
+use {{appName}}\Models\Traits\ModelDeletesInterface;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{file}} extends BaseModel implements ModelDeletesInterface {
+
+
+	protected $fillable = [
+		'{{field}}',
+	];
+
+    //
+    //
+    // SoftDeletes - Start 
+    //
+    //
+
+	use ModelDeletes;
+
+    protected $dates = ['deleted_at'];
+    
+    /**
+     * Explanation - Display of children Models/relations to cascade for softdeletes
+     * @author {{author}}
+     */
+	public static function children()
+	{
+		$r = array();
+		$r[] = "{{field}}";
+
+		return $r;
+	}
+
+    /**
+     * Explanation - Display of children Models/relations to cascade for softdeletes
+     * @author {{author}}
+     */
+	public static function childrenTables()
+	{
+		$r = array();
+		$r[] = "{{field}}";
+
+		return $r;
+	}
+
+
+	//
+	//
+	// Explanations
+	//
+	//
+
+	// Relationship Relations
+	/**
+     * Explanation - Display of children Models/relations to cascade for softdeletes
+     * @author {{author}}
+     */
+	public static function relationships()
+	{
+		$r = array();
+		$r[] = "Relationship Relations ";
+		$r[] = " One {{file}}:";
+		$r[] = "   - has one {{child}}";
+		$r[] = "   - many {{child}} < {{grandchild}}";
+		$r[] = "   - belongs to {{parent}} < {{grandchild}}";
+		$r[] = " ";
+		return $r;
+	}
+
+	/**
+     * Explanation - Display of fields used to link other foreign tables
+     * @author {{author}}
+     */
+	public static function foreignkeys()
+	{
+
+		$r = array();
+		$r[] = "{{field}}";
+
+		$p = array();
+		$p[] = "{{field}}";
+
+		$m = array();
+		$m['foreign - all'] = $p;
+		$m['foreign - params'] = $r;
+
+		return $m;
+
+	}
+
+	/**
+     * Explanation - Display of dropbox content that is meant to be a dropbox or select box
+     * @author {{author}}
+     */
+	public static function dropboxes()
+	{
+
+		$p = array();
+		$p[] = "{{field}}";
+
+		return $p;
+	}
+
+
+	//
+	//
+	//
+	// Cascading
+	//
+	//
+
+	/**
+     * Cascade - 
+     * @author {{author}}
+     */
+	public function {{childCamelLowerCased}}sCascade ()
+	{
+		return $this->hasMany('{{appName}}\Models\{{dirChild}}\{{fileChild}}','id','{{child_snake_cased}}_id');
+	}
+
+
+    //
+    //
+    // SoftDeletes - End 
+    //
+    //	
+
+
+
+	//
+	//
+	//
+	// Relationships
+	//
+	//
+
+
+	//Left as sample
+    /**
+     * Relationship - Belongs to a {{parent}}
+     * @author {{author}}
+     */
+    public function {{parentCamelLowerCased}} ()
+    {
+        return $this->belongsTo('{{appName}}\Models\{{dirParent}}\{{fileParent}}');
+    }
+
+
+	/**
+     * Relationship - Has many {{child}}
+     * @author {{author}}
+     */
+	public function {{childCamelLowerCased}}s ()
+	{
+		return $this->hasMany('{{appName}}\Models\{{dirChild}}\{{fileChild}}','id','{{child_snake_cased}}_id');
+	}
+
+	/**
+     * Relationship - Has One {{child}}
+     * @author {{author}}
+     */
+	public function {{childCamelLowerCased}} ()
+	{
+		return $this->hasOne('{{appName}}\Models\{{dirChild}}\{{fileChild}}');
+	}
+
+
+	//
+	//
+	//
+	// Scopes
+	//
+	//
+
+	/**
+     * Scope -
+     * @author {{author}}
+     */
+	public function scopeID ($query)
+	{
+		return $query->where('id', '>', 999);
+	}
+
+
+	//
+	//
+	//
+	// Builder
+	//
+	//
+
+	/**
+	 * Apply the scope to a given Eloquent query builder.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @author {{author}}
+  	 * @return void
+	 */
+	public function apply(Builder $builder, Model $model)
+	{
+	    $builder->whereNull($model->getQualifiedDeletedAtColumn());
+
+	    $this->extend($builder);
+	}
+
+
+	/**
+	 * Remove the scope from the given Eloquent query builder.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
+	 * @return void
+	 */
+	public function remove(Builder $builder, Model $model)
+	{
+	    $column = $model->getQualifiedDeletedAtColumn();
+
+	    $query = $builder->getQuery();
+
+	    foreach ((array) $query->wheres as $key => $where)
+	    {
+	        // If the where clause is a soft delete date constraint, we will remove it from
+	        // the query and reset the keys on the wheres. This allows this developer to
+	        // include deleted model in a relationship result set that is lazy loaded.
+	        if ($this->isSoftDeleteConstraint($where, $column))
+	        {
+	            unset($query->wheres[$key]);
+
+	            $query->wheres = array_values($query->wheres);
+	        }
+	    }
+	}
+
+	//
+	//
+	//
+	// Custom Queries
+	//
+	//
+
+ 
+	/**
+     * Custom Query -
+     * @author {{author}}
+     */
+    public function scopeFilterConditions($queryBuilder, $conditions = [ ], $column, $dir)
+    {
+        return self::getFilterQuery( $queryBuilder, $conditions, $column, $dir )
+            ->join( '{{filo}}_child', '{{file_plural_snake}}.id', '=', '{{filo}}_child.{{filo}}_id' );
+    }
+
+} //end class

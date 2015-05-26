@@ -9,6 +9,7 @@ sudo chmod +x branchUpdate.sh
 sudo chmod +x checkout
 sudo chmod +x commit 
 sudo chmod +x controller
+sudo chmod +x colors
 sudo chmod +x count 
 sudo chmod +x dbmigrate
 sudo chmod +x describe
@@ -16,6 +17,8 @@ sudo chmod +x describelist
 sudo chmod +x dump
 sudo chmod +x dumpin
 sudo chmod +x dumpout
+sudo chmod +x duplicatetosmall
+sudo chmod +x duplicatetovery
 sudo chmod +x filelastestchanges
 sudo chmod +x fileparticipation
 sudo chmod +x fix_linux_permissions.sh
@@ -36,6 +39,8 @@ sudo chmod +x migrate
 sudo chmod +x model
 sudo chmod +x mysql_connectors
 sudo chmod +x mysql_connector
+sudo chmod +x mysqlbackup
+sudo chmod +x mysqlrestore
 sudo chmod +x newbranch
 sudo chmod +x projectparticipation
 sudo chmod +x pull
@@ -55,6 +60,8 @@ sudo chmod +x showtables
 sudo chmod +x squashdb
 sudo chmod +x status
 sudo chmod +x replace
+sudo chmod +x restorefromvery
+sudo chmod +x restorefromsmall
 sudo chmod +x tinker
 sudo chmod +x testenv
 sudo chmod +x testexists

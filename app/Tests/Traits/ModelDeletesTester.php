@@ -74,19 +74,23 @@ trait ModelDeletesTester {
 		//test delete command to children
 		$id  = $d->id;
 		// dump($d->childrenTables);
+		// dd($d->childrenTables);
 		$parent_field_name=$d->getForeignKey();
 		
-		// $output->writeln("$parent_field_name");
+		$output->writeln(" \ $parent_field_name:$id ");
+		           	                        DB::setFetchMode(PDO::FETCH_ASSOC); //set results to array
 		foreach($d->childrenTables as $child) //scroll by children
 		{
+		$output->writeln("    + - - - $child");
 
         	$obj = $d["$child"];
 
            	//test it got deleted
 
-           	DB::setFetchMode(PDO::FETCH_ASSOC); //set results to array
             // $child_deleted_at_array=DB::table($child)->where('id',$id)->select('deleted_at')->get(['deleted_at']); 
-            $child_deleted_at_array=DB::table($child)->where($parent_field_name, $id)->get(); 
+        	// DB::table('med_log_comments')->where('med_log_id', 1194)->get()
+            $child_deleted_at_array=DB::table($child)->where($parent_field_name, $id)->get();   
+
             $count_results = sizeof($child_deleted_at_array);
             // dump( $count_results);
 
@@ -94,19 +98,18 @@ trait ModelDeletesTester {
             foreach($child_deleted_at_array as $k => $v) {
             	
             	$child_deleted_at=$v['deleted_at'];
-				// $output->writeln("\n".'<info> -  - - - child ('.($k+1).'):</info>'.$child);
+				$output->writeln("\n".'<info> -  - - - child ('.($k+1).'):</info>'.$child);
 				$output->writeln(".");
-	            DB::setFetchMode(PDO::FETCH_CLASS); //set results to array off , objects on
 	            
 	            // dump($child_deleted_at_array[0]['deleted_at']);
 	            //test it got deleted
-				// $output->writeln('<info> -  - - - has deleted_at </info>'.($child_deleted_at == null ? "null" : $child_deleted_at));
+				$output->writeln('<info> -  - - - has deleted_at </info>'.($child_deleted_at == null ? "null" : $child_deleted_at));
 	        	$test->assertEquals($date_deleted,$child_deleted_at); 
 
             }
 
 		} //end foreach 
-
+	                                DB::setFetchMode(PDO::FETCH_CLASS); //set results to array off , objects on
 	} ///end modelDeletesTesterWorker()
 
 }

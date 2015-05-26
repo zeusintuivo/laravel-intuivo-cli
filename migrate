@@ -6,4 +6,5 @@ cd "$(dirname "$0")"
 php "artisan" migrate  "$@";
 
 paplay boy.ogg 
+echo -e "\033[38;5;0;32m  \033[40m  GENERATED IN: \033[0m"
 trap times EXIT

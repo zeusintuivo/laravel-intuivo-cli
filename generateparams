@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-# @author Jesus Alcaraz <jesus@gammpartners.com>
+# @author Jesus Alcaraz <jesus@gammapartners.com>
 #
 # Procedural Programming to Create 
 # Models, Migrations, Controllers, and Tests, 
@@ -22,9 +22,9 @@ if (!isset($argv) || !isset($argv[1])) {
 	$argv[] = __FILE__ ;
 	$argv[] = "" ;
 
-}
+} 
 
-
+$said=@exec('phpunit /home/jesusgamma/Sites/ph20/tests/migration/Param/Param/params_seed_test.php');
 include('generatebase');
 
 
@@ -40,6 +40,7 @@ include('generatebase');
 
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Support\Facades\Capsule;
+use Illuminate\Database\Eloquent\Collection;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -152,9 +153,13 @@ $typeName='type';
 
 //echo $typeName;
 //say($colors, "res:", arrayByType()); 
+say($colors, "Seeded:", $said); 
 
 $output = new ConsoleOutput();
 
+#
+# Produce Mirror Tables from Params for each category name
+#
 foreach ($types as $key => $value) {
 		// DB::schema()->create('users', function($table)
 		// {
@@ -246,7 +251,140 @@ foreach ($types as $key => $value) {
   
  
 
-}
+} //end foreach
+
+ 
+      
+#
+# Produce mirror Param_Types Table 
+#
+$names = (new Collection(  DB::select('call  paramsAllTypes();') ))->lists('name','id');
+$types = (new Collection(  DB::select('call  paramsAllTypes();') ))->lists('type','id');
+$entities = (new Collection(  DB::select('call  paramsAllTypes();') ))->lists('entity','id');
+$extras = (new Collection(  DB::select('call  paramsAllTypes();') ))->lists('extra','id');
+$currenttable = 'param_types';
+# +--------+------+-------+--------------+
+# | id     | name | type  | entity       |
+# +--------+------+-------+--------------+
+
+		
+		$output->writeln('<info>'.$currenttable.' migration start</info>');
+
+
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+		DB::schema()->dropIfExists($currenttable);
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+		DB::schema()->create($currenttable, function(Blueprint $table)
+		{
+			$table->increments('id')->unsigned()->unique();
+			$table->string('name', 120)->index()->nullable();
+			$table->string('type', 120)->index()->nullable();
+			$table->string('entity', 120)->index()->nullable();
+				// $table->timestamps();		
+			});
+
+		$said=@exec("touch table_".$currenttable);
+
+		say($colors, "\n\ntouched table_$currenttable", $said);
+		$commit_msg = ("Created table ". $currenttable. " from params. ");
+		// commitToGithub( $colors, 	$commit_msg );
+
+
+		// $output->writeln('<info>'.$currenttable.' faker start </info>');
+		$output->writeln('<info>'.$currenttable.' direct statement </info>');
+
+
+		if (sizeof($names)>0) {
+				$currenttime = Carbon::now();
+		  	$sql = 'INSERT INTO `'.$currenttable.'`    
+						(`id`, `name`, `type`, `entity`) 
+						VALUES ';		
+		
+			foreach ($names as $key => $value) {
+
+				$sql .= '("'.$key.'", "'.$value.'", "'.$types[$key].'", "'.$entities[$key].'"),';
+
+			} //end foreach
+			$sql = rtrim($sql, ",");
+			$sql .= ";";
+			DB::statement($sql);
+			//
+		} //end if (sizeof($contents)>0) {
+
+		$said=@exec("rm table_".$currenttable);
+
+		say($colors, "\n\nremoved table_$currenttable", $said);
+      
+
+
+#
+# Produce mirror FOR Report for Daily Tally
+#
+$injury = (new Collection(  DB::select("CALL paramsByLongerName('injury');") ))->lists('display_name','id');
+$illness = (new Collection(  DB::select("CALL paramsByLongerName('illness');") ))->lists('display_name','id');
+$senthome = (new Collection(  DB::select("CALL paramsByLongerName('senthome');") ))->lists('display_name','id');
+
+# +--------+-----------------+---------------+---------------+---------------+---------------+-------------+---------------+--------+---------------------+---------------------+----------+
+# | id     | parent_param_id | param_type_id | view_group_id | display_name  | numeric_value | longer_name | display_order | active | created_at          | updated_at          | type     |
+# +--------+-----------------+---------------+---------------+---------------+---------------+-------------+---------------+--------+---------------------+---------------------+----------+
+
+$currenttable = 'param_report_dailies';
+
+		$output->writeln('<info>'.$currenttable.' migration start</info>');
+
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+		DB::schema()->dropIfExists($currenttable);
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+		DB::schema()->create($currenttable, function(Blueprint $table)
+		{
+			$table->increments('id')->unsigned()->unique();
+			$table->string('name', 120)->index()->nullable();
+			$table->string('type', 120)->index()->nullable();
+			$table->string('classification', 120)->index()->nullable();
+				// $table->timestamps();		
+			});
+
+		$said=@exec("touch table_".$currenttable);
+
+		say($colors, "\n\ntouched table_$currenttable", $said);
+		$commit_msg = ("Created table ". $currenttable. " from params. ");
+		// commitToGithub( $colors, 	$commit_msg );
+
+
+		// $output->writeln('<info>'.$currenttable.' faker start </info>');
+		$output->writeln('<info>'.$currenttable.' direct statement </info>');
+
+
+		if (sizeof($names)>0) {
+				$currenttime = Carbon::now();
+		  	$sql = 'INSERT INTO `'.$currenttable.'`    
+						(`id`, `name`, `type`, `classification`) 
+						VALUES ';		
+		
+			foreach ($injury as $key => $value) {
+
+				$sql .= '("'.$key.'", "'.$value.'", "'.$types[$key].'", "'.$extras[$key].'"),';
+
+			} //end foreach
+			foreach ($illness as $key => $value) {
+
+				$sql .= '("'.$key.'", "'.$value.'", "'.$types[$key].'", "'.$extras[$key].'"),';
+
+			} //end foreach			
+			foreach ($senthome as $key => $value) {
+
+				$sql .= '("'.$key.'", "'.$value.'", "'.$types[$key].'", "'.$extras[$key].'"),';
+
+			} //end foreach
+			$sql = rtrim($sql, ",");
+			$sql .= ";";
+			DB::statement($sql);
+			//
+		} //end if (sizeof($contents)>0) {
+
+		$said=@exec("rm table_".$currenttable);
+
+		say($colors, "\n\nremoved table_$currenttable", $said);
 
 $endtime = Carbon::now();
 

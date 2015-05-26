@@ -7,12 +7,12 @@
  * @revision {{revision}}
  */
 
-use PHIWeb\Models\{{dir}}\{{file}};
+use {{appName}}\Models\{{dir}}\{{file}};
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\Output;
 
-use PHIWeb\Tests\Traits\ModelDeletesTester;
+use {{appName}}\Tests\Traits\ModelDeletesTester;
 
 
 class Delete{{file}}Test extends TestCase {

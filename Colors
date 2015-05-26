@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-# @author Jesus Alcaraz <jesus@gammpartners.com>
+# @author Jesus Alcaraz <jesus@gammapartners.com>
 # Taken from http://www.if-not-true-then-false.com/2010/php-class-for-coloring-php-command-line-cli-scripts-output-php-output-colorizing-using-bash-shell-colors/
 
 /**
@@ -56,6 +56,23 @@ class Colors {
 		 
 		 // Check if given foreground color found
 		 if (isset($this->foreground_colors[$foreground_color])) {
+		 $colored_string .= "\033[38;5;" . $this->foreground_colors[$foreground_color] . "m";
+		 }
+		 // Check if given background color found
+		 if (isset($this->background_colors[$background_color])) {
+		 $colored_string .= "\033[" . $this->background_colors[$background_color] . "m";
+		 }
+		
+		 // Add string and end coloring
+		 $colored_string .=  $string . "\033[0m";
+		 
+		 return $colored_string;
+	 } 
+	public function getBlockedString($string, $foreground_color = null, $background_color = null) {
+		 $colored_string = "";
+		 
+		 // Check if given foreground color found
+		 if (isset($this->foreground_colors[$foreground_color])) {
 		 $colored_string .= "\033[" . $this->foreground_colors[$foreground_color] . "m";
 		 }
 		 // Check if given background color found
@@ -64,7 +81,7 @@ class Colors {
 		 }
 		 
 		 // Add string and end coloring
-		 $colored_string .=  $string . "\033[0m";
+		 // $colored_string .=  $string . "\033[0m";
 		 
 		 return $colored_string;
 	 }
@@ -79,8 +96,14 @@ class Colors {
 		return array_keys($this->background_colors);
 	 }
 }
-function say(Colors $colors, $coloredque, $que) {
+function say(Colors $colors, $coloredque, $que) {  // echo -e "\033[38;5;0;32m  \033[40m  HELLO: \033[0m"
 	echo $colors->getColoredString($coloredque.":", "green", "black") ." $que\n";
+}
+function darken(Colors $colors, $coloredque, $que) {
+	echo $colors->getBlockedString($coloredque.":", "dark_gray", "48;5;238") ." $que";
+}
+function comment(Colors $colors, $coloredque, $que) {
+	echo $colors->getColoredString($coloredque.":", "yellow", "48;5;226") ." $que\n";
 }
 function err(Colors $colors, $coloredque, $que) {
 	echo $colors->getColoredString($coloredque.":", "red", "black") ." $que\n";

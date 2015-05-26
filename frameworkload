@@ -3,29 +3,34 @@
 # set working directory as the scripts location during the execution of script 
 cd "$(dirname "$0")"
 
-echo "Recover .env"
+echo "Recover from <-- ../ the file or dir: .env"
 cp ../.env .
 
-echo "Recover composer.lock"
+echo "Recover from <-- ../ the file or dir: composer.lock"
 cp ../composer.lock .
 
-echo "Recover composer.json"
+echo "Recover from <-- ../ the file or dir: composer.json"
 cp ../composer.json .
 
-echo "Recover bower_components"
+echo "Recover from <-- ../ the file or dir: bower_components"
 cp -r ../bower_components .
 
-echo "Recover vendor"
+echo "Recover from <-- ../ the file or dir: vendor"
 cp -r ../vendor .
 
-echo "Recover node_modules"
+echo "Recover from <-- ../ the file or dir: node_modules"
 cp -r ../node_modules .
 
-echo "Recover directory for logs"
+echo "Recover from <-- ../ the file or dir: directory for logs"
 mkdir -p storage/logs
 
-echo "Recover directory for debugbar"
+echo "Recover from <-- ../ the file or dir: directory for debugbar"
 mkdir -p storage/debugbar
 
 echo "Finally Run composer-autoload"
 composer dump-autoload
+
+
+paplay boy.ogg 
+echo -e "\033[38;5;0;32m  \033[40m  GENERATED IN: \033[0m"
+trap times EXIT

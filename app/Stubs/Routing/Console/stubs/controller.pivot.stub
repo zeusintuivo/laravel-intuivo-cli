@@ -1,0 +1,88 @@
+<?php namespace {{namespace}};
+
+use {{rootNamespace}}Http\Requests;
+use {{rootNamespace}}Http\Controllers\Controller;
+use {{appName}}\Http\Controllers\BaseController;
+
+use Illuminate\Http\Request;
+
+use {{appName}}\Models\{{dir}}\{{file}};
+use {{appName}}\Http\Requests\{{dir}}\Create{{file}}Request;
+use {{appName}}\Http\Requests\{{dir}}\Delete{{file}}Request;
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{file}}Controller extends BaseController {
+// class {{file}}Controller extends Controller {
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 * @author {{author}}
+	 */
+	public function index()
+	{
+        //get the filtered collection
+        return {{file}}::with( $this->getWithArray() )
+            //Apply where's
+            ->filterConditions( $this->getConditionsArray(), $this->getSortBy(), $this->getSortDirection() )
+            //Pagination
+            ->paginate( $this->getItemsPerPage(), $this->getFieldsArray() );
+	}
+
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 * @author {{author}}
+	 */
+	public function store(Create{{file}}Request $request)
+	{
+        return {{file}}::create( $request->all() );
+	}
+
+    /**
+     * Display the specified resource.
+     *
+     * @return mixed
+	 * @author {{author}}
+     */
+    public function show($id)
+    {
+        return {{file}}::findOrFail( $id, $this->getFieldsArray() );
+    }
+
+    /**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 * @author {{author}}
+	 */
+	public function update($id, Create{{file}}Request $request)
+	{
+	    ${{file}} = {{file}}::findOrFail( $id );
+	    ${{file}} ->update( $request->all() );
+
+    return ${{file}};
+	}
+
+    /**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 * @author {{author}}
+	 */
+	public function destroy($id, Delete{{file}}Request $request)
+	{
+        return {{file}}::destroy( $id );
+	}
+
+} # end class

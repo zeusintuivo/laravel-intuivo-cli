@@ -125,13 +125,17 @@ trait ModelParams {
      * Param::byTypeLongerName('procedure_id');
      * Param::byTypeLongerName('procedure_id', 'type');
      *
+     * Produced SQL by Laravel 
+     *
+     * $longerName='category_id'; DB::table(DB::RAW('params a'))->select(['a.id', 'a.display_name', 'b.display_name as type'])->join(DB::RAW('params b'),'a.param_type_id', '=', 'b.id')->where('b.longer_name', [$longerName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->toSQL();
+     * select `a`.`id`, `a`.`display_name`, `b`.`display_name` as `type` from params a inner join params b on `a`.`param_type_id` = `b`.`id` where `b`.`longer_name` = ? and `a`.`active` = ? order by `a`.`param_type_id` asc, `a`.`display_order` asc
+     *
      * @author Jesus Alcaraz <jesus@gammapartners.com>
      * @version 1
      */
     public static function byTypeLongerName($longerName='type', $display_name_name = 'type', $longer_name_or_display_name = 'display_name'){
  
         //tester oneliner
-        //$longerName='category_id'; DB::table(DB::RAW('params a'))->select(['a.id', 'a.display_name', 'b.display_name as type'])->join(DB::RAW('params b'),'a.param_type_id', '=', 'b.id')->where('b.longer_name', [$longerName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->toSQL();
     	$thistable = static::getClassCallerName();
 
         return  DB::table(DB::RAW($thistable . ' a'))

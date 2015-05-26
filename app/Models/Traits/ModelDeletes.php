@@ -14,7 +14,7 @@ trait ModelDeletes {
 
 
     /**
-     * Explanation - Display of children Models/relations under MedLog Model
+     * Explanation - Display of children Models/relations to cascade for softdeletes
      * @author Jesus Alcaraz <jesus@gammapartners.com>
      */
     protected function getChildrenAttribute()
@@ -23,7 +23,7 @@ trait ModelDeletes {
     }
     
     /**
-     * Explanation - Display of children Models/relations under MedLog Model
+     * Explanation - Display of children Models/relations to cascade for softdeletes
      * @author Jesus Alcaraz <jesus@gammapartners.com>
      */
     protected function getChildrenTablesAttribute()
@@ -511,7 +511,7 @@ trait ModelDeletes {
     }
     // Relationship Relations
     /**
-     * Explanation - Display of children Models/relations under MedLog Model
+     * Explanation - Display of children Models/relations to cascade for softdeletes
      * @author Jesus Alcaraz <jesus@gammapartners.com>
      */
     protected function getRelationshipsAttribute()

@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
 git checkout "$@";

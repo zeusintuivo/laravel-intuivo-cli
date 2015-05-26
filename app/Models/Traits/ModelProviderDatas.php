@@ -3,9 +3,10 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use Illuminate\Database\Eloquent\Collection;
 use Carbon;
 use Faker;
-
+use DB;
 
 use PHIWeb\Models\Param\Location;
 use PHIWeb\Models\Param\Param;
@@ -37,6 +38,9 @@ trait ModelProviderDatas {
     #  
     # people  
     #  
+    private $student_ids        ;
+    private $staff_ids          ;
+
     private $people_id          ;
     private $people_ids         ;
     private $person_last_id     ;
@@ -148,8 +152,8 @@ trait ModelProviderDatas {
         $this->alert_type_ids               =(Param::arrayByTypeLongerName('alert_type_id'));
         $this->category_ids                 =(Param::arrayByTypeLongerName('category_id'));
         $this->daily_ids                    =(Param::arrayByTypeLongerName('daily_id'));
-        $this->dailylog_comment_type_ids    =(Param::arrayByTypeLongerName('dailylog_comment_type_id'));
-        $this->dailylog_comment_desc_ids    =(Param::arrayByTypeLongerName('dailylog_comment_type_id', 'type', 'longer_name'));
+        $this->daily_log_comment_type_ids    =(Param::arrayByTypeLongerName('daily_log_comment_type_id'));
+        $this->dailylog_comment_desc_ids    =(Param::arrayByTypeLongerName('daily_log_comment_type_id', 'type', 'longer_name'));
         $this->dose_ids                     =(Param::arrayByTypeLongerName('dose_id'));
         $this->dose_type_ids                =(Param::arrayByTypeLongerName('dose_type_id'));
         $this->end_schedules_ids            =(Param::arrayByTypeLongerName('end_schedules_id'));
@@ -208,6 +212,7 @@ trait ModelProviderDatas {
         $this->person_last_id    = last(Person::lists('id'));
         $this->person_first_id   = Person::first()->id;
 
+        //For nurse, doctor, developer, admin, user, 
         $this->user_ids = [1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011];
 
         //older than 39 
@@ -219,6 +224,8 @@ trait ModelProviderDatas {
         $this->principal_ids     =  $this->older_ids;
         
         //younger than 18 
+        $this->student_ids       = (new Collection(  DB::select('call  getStudents();') ))->lists('first_name','id');
+        $this->staff_ids         = (new Collection(  DB::select('call  getStaff();') ))->lists('first_name','id');
         $this->patient_ids       = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->lists('id');
         $this->patient_last_id   = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->orderBy('id','desc')->take(1)->lists('id')[0];
         $this->patient_first_id  = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->orderBy('id','asc')->take(1)->lists('id')[0];
@@ -258,9 +265,9 @@ trait ModelProviderDatas {
         //
         // DailyLog Load Arrays
         //
-        $this->vaccine_ids      = Vaccine::lists('id');
-        $this->vaccine_last_id  = last(Vaccine::lists('id'));
-        $this->vaccine_first_id = Vaccine::first()->id; 
+        $this->vaccine_ids      = VaccineLog::lists('id');
+        $this->vaccine_last_id  = last(VaccineLog::lists('id'));
+        $this->vaccine_first_id = VaccineLog::first()->id; 
     }
 
     private function pickLocations() {
@@ -284,7 +291,7 @@ trait ModelProviderDatas {
         $this->alert_type_id                  = array_rand($this->alert_type_ids);
         $this->category_id                    = array_rand($this->category_ids);
         $this->daily_id                       = array_rand($this->daily_ids);
-        $this->dailylog_comment_type_id       = array_rand($this->dailylog_comment_type_ids);
+        $this->daily_log_comment_type_id       = array_rand($this->daily_log_comment_type_ids);
         $this->dose_id                        = array_rand($this->dose_ids);
         $this->dose_type_id                   = array_rand($this->dose_type_ids);
         $this->end_schedules_id               = array_rand($this->end_schedules_ids);

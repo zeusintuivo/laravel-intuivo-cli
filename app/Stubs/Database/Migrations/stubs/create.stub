@@ -6,21 +6,21 @@ use Illuminate\Database\Migrations\Migration;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\Output;
 
-use PHIWeb\Models\Param\Location;
-use PHIWeb\Models\Param\Param;
-use PHIWeb\Models\Person\Person;
-use PHIWeb\Models\DailyLog\DailyLog;
-use PHIWeb\Models\{{dir}}\{{file}};
+use {{appName}}\Models\Traits\ModelProviderDatas;
+
+use {{appName}}\Models\{{dir}}\{{file}};
 
 /**
- * {{description}}
+ * Migration created for {{appName}}\Models\{{dir}}\{{file}}
  *
  * @author {{author}}
  * @version {{version}}
  */
-class {{class}} extends Migration {
+class Create{{file_plural}}Table  extends Migration {
 
-	private $rev = '6';
+	use ModelProviderDatas;
+
+	private $rev = '7';
 	private $currenttable = '{{table}}';
 
 
@@ -44,76 +44,135 @@ class {{class}} extends Migration {
 		{
 			$table->engine = 'InnoDB';
 			$table->increments('id')->unsigned()->unique();
+			$table->string('name');
+			//
+			//
+			// Reponsibilities
+			//
+			//
+
+			//student id person _id
+			$table->integer('patient_id')->unsigned()->nullable();
+			$table->foreign('patient_id')->references('id')->on('people');
+			$table->index(['patient_id', 'id']);
+
+			//nurse, teacher id, linked to a person
+			$table->integer('open_by_id')->unsigned()->nullable();
+			$table->foreign('open_by_id')->references('id')->on('people');
+			$table->timestamp("open_at");
+
+			//nurse, teacher id, linked to a person
+			$table->integer('closed_by_id')->unsigned()->nullable();
+			$table->foreign('closed_by_id')->references('id')->on('people');
+			$table->timestamp("closed_at");
+
+			//nurse, teacher id, linked to a person
+			$table->integer('printed_by_id')->unsigned()->nullable();
+			$table->foreign('printed_by_id')->references('id')->on('people');
+
+
 
 			$table->timestamps();
 			$table->softDeletes();
 		});
+	
+		 $enabled = true;		
+		     $max = env('SEED_MAX', 1200);
+		$start_id = env('SEED_START_ID', 1000); //Leave first 1000 for options
 
-	        $enabled = true;
-	        $max = 1100;
-        $start_id = 1000; //Leave first 1000 for options
+		DB::statement( 'ALTER TABLE `'.$this->currenttable.'`  AUTO_INCREMENT = '.$start_id.';');
 
 
-        if ($enabled) {
 
-                $output->writeln('<info></info>'.$this->currenttable.' faker start. Generating.:'.($max-$start_id).' fields ');
+		if ($enabled) {
+			$output->writeln('<info>'.$this->currenttable.' faker start. Generating.:'.($max-$start_id).' fields </info>');
 
-                $password = bcrypt('123456');
-                $currenttime = Carbon\Carbon::now();
+			$faker = Faker\Factory::create();
 
-                Eloquent::unguard(); //disable Model checks
+            Eloquent::unguard(); //disable Model checks
 
-                $faker = Faker\Factory::create();
+			#
+			# Foreign Values Load
+			#
 
-                $people_ids = Person::lists('id');
-    			$person_last_id = last(Person::lists('id'));
-				$person_first_id = Person::first()->id;
-                
-                $daily_log_ids = DailyLog::lists('id');
-       			$daily_log_last_id = last(DailyLog::lists('id'));
-				$daily_log_first_id = DailyLog::first()->id;
+            $this->requirePeople();
+            $this->requireParams();
 
-                //Create sample 100 records
-                foreach(range($start_id, $max) as $index) {
 
-					//Get a random number for a  person				
-					$person_id = rand($person_first_id, $person_last_id);
+			#
+			# Four {{file}} per patient
+ 			#
 
-					//Get a random number for a  dailyLog				
-					$daily_log_id = rand($daily_log_first_id, $daily_log_last_id);
-				
-					//Get a random number for a category_ids
-					$category_id = Param::seekParamRandomRecord(300010, 300018, 200000); //200000 is for category_ids
+			$max = $start_id + ( $this->patient_last_id - $this->patient_first_id );
 
-					//Get a random number for a status_id
-					$status_id = Param::seekParamRandomRecord(300100, 300105, 200100); //200100 is for status_id
-		
-					//Get a random number for a timeperiod_id
-					$timeperiod_id = Param::seekParamRandomRecord(300161, 300163, 200200); //200200 is for timeperiod_id
-		
-					//Get a random number for a location_id
-					$location_id = Param::seekParamRandomRecord(300190, 300192, 200300); //200200 is for location_id
-					
-					//Get a random number for a referred_to
-					$referred_to = Param::seekParamRandomRecord(300220, 300222, 200400); //200200 is for referred_to
+			$onlyone_default = 0; //inverse switch to set one record as default;
 
+			$index = $start_id;
+			for($r=0;$r<4;++$r){ //make at least 3 alets per patient
+				$output->writeln('<info>'.$this->currenttable.' faker start. Generating.:'.($max-$start_id).' fields </info>');
+				$counter = 0;
+				foreach($this->patient_ids as $patient_id) { //scroll all patient items(patient ids) to provide one to each
+					$counter++;
+					$index++;
+
+					#
+					# Foreign Values Pick
+					#
+
+	                $this->pickPeople();
+	                $this->pickParams();
+
+
+					# Override real value of with looping serial
+					$this->currenttime = Carbon\Carbon::now();
+
+                    #
+                    # Entity asignation
+                    #
 
                     {{file}}::create([
                             'id' => $index,
-                            'daily_log_id' => $daily_log_id,
-                          
-                            'person_id' =>  $person_id,
+							'name' =>             $faker->name,
+
+							//
+							//
+							// Reponsibilities
+							//
+							//
+							'open_by_id' =>    	            $this->open_by_id,
+							'open_at' =>       	            $this->open_at,
+
+							'closed_by_id' =>  	            $this->closed_by_id,
+							'closed_at' =>     	            $this->closed_at,
+
+							'printed_by_id' => 	            $this->printed_by_id,
+							'printed_at' =>    	            $this->printed_at,
+
+							'patient_id' =>    	            $patient_id,
+
  
                             'created_at' => $currenttime,
                             'updated_at' => $currenttime
                      ]);
 
 
-					//update Person Resolve
-					$person = Person::find($person_id);
-					$person->person_address_id = $index;
+					//update Parent Resolve
+					$person = Parent::find($patient_id);
+					$person->{{filo}}_id = $index;
 					$person->save();
-			}
+					#
+					# update next block
+					#
+					$start_id=$index;
+
+				}	//end for each loop
+
+				$onlyone_default++;
+				$start_id++;
+
+				//$start_id= $start_id+ ($person_last_id-$person_first_id)+1;
+				$max =  $start_id+ $counter;
+			} //end for loop
 
 			
 		} else {

@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-# @author Jesus Alcaraz <jesus@gammpartners.com>
+# @author Jesus Alcaraz <jesus@gammapartners.com>
 #
 # Procedural Programming dump sql from Laravel DB
 # 
@@ -40,7 +40,7 @@ $starttime = Carbon::now();
 
 
 echo "\n".'mysqldump -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' > '.$target_file ."\n\n";
-$said=shell_exec('mysqldump -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' > '.$target_file .' ');
+$said=shell_exec('mysqldump --routines -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' > '.$target_file .' ');
 echo "\n". $said. "\n";
 
 

@@ -1,0 +1,86 @@
+<?php namespace {{appName}}\Models\{{dir}};
+
+use Illuminate\Database\Eloquent\Model;
+use {{appName}}\Models\BaseModel;
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{class}} extends BaseModel {
+// class {{class}} extends Model {
+
+	protected $fillable = [
+
+     '{{field}}'   
+                  
+    ];
+
+
+
+	//
+	//
+	//
+	// Relationships -
+	//
+	//
+
+
+
+	/**
+     * Relationship - Has many {{child}}
+     * @author {{author}}
+     */
+	public function {{childCamelLowerCased}} ()
+	{
+		return $this->hasMany('{{appName}}\Models\{{dirChild}}\{{fileChild}}','id','{{child_snake_cased}}_id');
+	}
+
+ 
+	/**
+     * Relationship - Has many {{child}}
+     * @author {{author}}
+     */
+	public function {{childCamelLowerCased}}s ()
+	{
+		return $this->hasMany('{{appName}}\Models\{{dirChild}}\{{fileChild}}','id','{{child_snake_cased}}_id');
+	}
+
+	//
+	//
+	//
+	// Scopes
+	//
+	//
+
+
+	/**
+     * Scope -
+     * @author {{author}}
+     */
+	public function scopeID ($query)
+	{
+		return $query->where('id', '>', 999);
+	}
+
+
+	//
+	//
+	//
+	// Custom Queries
+	//
+	//
+ 
+	/**
+     * Custom Query -
+     * @author {{author}}
+     */
+    public function scopeFilterConditions($queryBuilder, $conditions = [ ], $column, $dir)
+    {
+        return self::getFilterQuery( $queryBuilder, $conditions, $column, $dir )
+            ->join( '{{filo}}_child', '{{file_plural_snake}}.id', '=', '{{filo}}_child.{{filo}}_id' );
+    }
+
+}

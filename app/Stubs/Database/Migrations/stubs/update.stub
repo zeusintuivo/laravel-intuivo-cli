@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\Output;
  * @author {{author}}
  * @version {{version}}
  */
-class {{class}} extends Migration {
+class Update{{file_plural}}Table  extends Migration {
 
 	private $rev = '6';
 	private $currenttable = '{{table}}';

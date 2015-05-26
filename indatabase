@@ -4,7 +4,7 @@
 cd "$(dirname "$0")"
 
 
-# @author Jesus Alcaraz <jesus@gammpartners.com>
+# @author Jesus Alcaraz <jesus@gammapartners.com>
 THISOUTPUT="$(php 'mysql_connectors')"
 THISCONNECTOR=""
 echo "mysql ${THISCONNECTOR}"

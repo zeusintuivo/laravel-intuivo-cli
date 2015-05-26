@@ -5,12 +5,12 @@
 interface ModelDeletesInterface
 {
     /**
-     * Explanation - Display of children Models/relations under MedLog Model
+     * Explanation - Display of children Models/relations to cascade for softdeletes
      * @author Jesus Alcaraz <jesus@gammapartners.com>
      */
     public static function children();
     /**
-     * Explanation - Display of children Models/relations under MedLog Model
+     * Explanation - Display of children Models/relations to cascade for softdeletes
      * @author Jesus Alcaraz <jesus@gammapartners.com>
      */
     public static function childrenTables();
@@ -37,7 +37,7 @@ interface ModelDeletesInterface
     public static function explain();
     // Relationship Relations
     /**
-     * Explanation - Display of children Models/relations under MedLog Model
+     * Explanation - Display of children Models/relations to cascade for softdeletes
      * @author Jesus Alcaraz <jesus@gammapartners.com>
      */
     public static function relationships();

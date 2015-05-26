@@ -1,6 +1,6 @@
 @ECHO OFF
 
-rem @author Jesus Alcaraz <jesus@gammpartners.com>
+rem @author Jesus Alcaraz <jesus@gammapartners.com>
 
 rem batch shell script
 

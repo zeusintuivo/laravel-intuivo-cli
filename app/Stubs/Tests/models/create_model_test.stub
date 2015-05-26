@@ -7,11 +7,11 @@
  * @revision 1
  */
 
-use PHIWeb\Models\{{dir}}\{{file}};
+use {{appName}}\Models\{{dir}}\{{file}};
 
-use PHIWeb\Models\Person\Person;
-use PHIWeb\Models\DailyLog\DailyLog;
-use PHIWeb\Models\Param\Param;
+use {{appName}}\Models\Person\Person;
+use {{appName}}\Models\DailyLog\DailyLog;
+use {{appName}}\Models\Param\Param;
 
 class Create{{file}}Test extends TestCase {
 

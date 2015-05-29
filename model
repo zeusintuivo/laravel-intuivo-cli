@@ -18,6 +18,7 @@
 # Before Loading anything Check Arguments Passed
 # Get argv 
 $valid_model_types=[ "nothing", "plain", "simple", "softdelete", "softdeleteparent", "softdeletechild", "pivot"];
+$model_type="softdelete";  /// simple|softdelete
 if (!isset($argv) || !isset($argv[1])) {
 	echo "
 	Sample Usage:    - expects one or more arguments
@@ -29,12 +30,11 @@ if (!isset($argv) || !isset($argv[1])) {
 
 	    " . implode("\n	    	- ", $valid_model_types) ."
 
-	    	- softdelete is default is ommited optional
+	    	- ".$model_type." is default is ommited optional
 ";
 
 	die(0);
 }
-$model_type="softdelete";  /// simple|softdelete
 if (isset($argv[2])) {
 	if (in_array($model_type, $valid_model_types))	$model_type = trim($argv[2]);
 }

@@ -24,7 +24,7 @@ if (!isset($argv) || !isset($argv[1])) {
 $table = $argv[1];
 
 # construct query "select count(id) from  people order by id  desc limit 1;
-$sql = "select count(id) from  $table order by id  desc limit 1;";
+$sql = "select count(id) from  $table ;";
 
 # construct command to execute
 $command = 'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "'.$sql.'"';

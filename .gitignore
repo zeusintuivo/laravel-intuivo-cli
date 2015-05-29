@@ -21,4 +21,5 @@ composer.json
 composer.lock
 ssh-agent.exe.stackdump
 het2_rev5-6-small.sql
+het2_rev5-6-very-small.sql
 testerrors

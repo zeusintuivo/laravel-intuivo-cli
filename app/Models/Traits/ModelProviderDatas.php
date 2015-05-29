@@ -13,6 +13,7 @@ use PHIWeb\Models\Param\Param;
 use PHIWeb\Models\Person\Person;
 use PHIWeb\Models\DailyLog\DailyLog;
 use PHIWeb\Models\Organization\School;
+use PHIWeb\Models\School\SchoolYear;
 use PHIWeb\Models\Organization\Insurance;
 use PHIWeb\Models\Immunization\VaccineLog;
 
@@ -81,6 +82,8 @@ trait ModelProviderDatas {
     #
     private $school_id          ;
     private $school_ids         ;
+    private $school_year_id     ;
+    private $school_year_ids    ;
 
     #
     # DailyLogs
@@ -93,10 +96,10 @@ trait ModelProviderDatas {
     #
     # MedLogs
     #
-    private $med_log_id       ;
-    private $med_log_ids      ;
-    private $med_log_last_id  ;
-    private $med_log_first_id ;
+    private $med_log_id         ;
+    private $med_log_ids        ;
+    private $med_log_last_id    ;
+    private $med_log_first_id   ;
 
     #
     # Insurance
@@ -109,10 +112,10 @@ trait ModelProviderDatas {
     #
     # Vaccines
     #
-    private $vaccine_id       ;
-    private $vaccine_ids      ;
-    private $vaccine_last_id  ;
-    private $vaccine_first_id ;
+    private $vaccine_id         ;
+    private $vaccine_ids        ;
+    private $vaccine_last_id    ;
+    private $vaccine_first_id   ;
 
     # 
     # other
@@ -152,7 +155,7 @@ trait ModelProviderDatas {
         $this->alert_type_ids               =(Param::arrayByTypeLongerName('alert_type_id'));
         $this->category_ids                 =(Param::arrayByTypeLongerName('category_id'));
         $this->daily_ids                    =(Param::arrayByTypeLongerName('daily_id'));
-        $this->daily_log_comment_type_ids    =(Param::arrayByTypeLongerName('daily_log_comment_type_id'));
+        $this->daily_log_comment_type_ids   =(Param::arrayByTypeLongerName('daily_log_comment_type_id'));
         $this->dailylog_comment_desc_ids    =(Param::arrayByTypeLongerName('daily_log_comment_type_id', 'type', 'longer_name'));
         $this->dose_ids                     =(Param::arrayByTypeLongerName('dose_id'));
         $this->dose_type_ids                =(Param::arrayByTypeLongerName('dose_type_id'));
@@ -235,6 +238,10 @@ trait ModelProviderDatas {
 
     private function requireSchools() {
         $this->school_ids        = School::lists('id');   
+    }
+
+    private function requireSchoolYears() {
+        $this->school_year_ids        = SchoolYear::lists('id');   
     }
 
     private function requireDailyLogs() {
@@ -374,6 +381,9 @@ trait ModelProviderDatas {
     }
     private function pickSchools() {
         $this->school_id     =  $this->faker->randomElement($this->school_ids);   
+    }        
+    private function pickSchoolYears() {
+        $this->school_year_id     =  $this->faker->randomElement($this->school_year_ids);   
     }    
     private function pickDailyLogs() {
         $this->daily_log_id     =  $this->faker->randomElement($this->daily_log_ids);  

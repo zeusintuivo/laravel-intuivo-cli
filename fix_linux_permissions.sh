@@ -9,7 +9,7 @@ sudo chmod +x branchUpdate.sh
 sudo chmod +x checkout
 sudo chmod +x commit 
 sudo chmod +x controller
-sudo chmod +x colors
+sudo chmod +x colorlist
 sudo chmod +x count 
 sudo chmod +x dbmigrate
 sudo chmod +x describe
@@ -29,6 +29,7 @@ sudo chmod +x frameworksave
 sudo chmod +x generateparams
 sudo chmod +x generatelocations
 sudo chmod +x indatabase
+sudo chmod +x last
 sudo chmod +x list
 sudo chmod +x load_env
 sudo chmod +x load_all_sps

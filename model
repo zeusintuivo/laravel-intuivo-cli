@@ -28,16 +28,27 @@ if (!isset($argv) || !isset($argv[1])) {
 
 	    [optional] can be:
 
-	    " . implode("\n	    	- ", $valid_model_types) ."
+	    	- " . implode("\n	    	- ", $valid_model_types) ."
 
 	    	- ".$model_type." is default is ommited optional
 ";
 
 	die(0);
 }
-if (isset($argv[2])) {
-	if (in_array($model_type, $valid_model_types))	$model_type = trim($argv[2]);
+if (!isset($argv) || !isset($argv[1])) {
+		die($USAGE."\n");
 }
+if (isset($argv[1]) ) {
+	$model_type = trim($argv[1]);
+
+	if (!in_array($model_type , $model_types)) {
+		echo  "\n \033[38;5;196m  -- Error Unknown Usage: ".$model_type ."\n";
+		echo  " \033[38;5;226m ";
+		die($USAGE."\n");
+	}
+}
+
+
 include('generatebase');
 
 #

@@ -174,10 +174,14 @@ $author="$name <$email>";
 //
 //
 //
-$argv[1] = changeSlash($argv[1] );
+if (isset($argv) && isset($argv[1])) { 
+	$argv[1] = changeSlash($argv[1] );
 
-// Pass Argument "Person/PersonThing" to $entity variable
-$entity = $argv[1];
+	// Pass Argument "Person/PersonThing" to $entity variable
+	$entity = $argv[1];
+} else { 
+	$entity = "";
+} 
 
 //
 //
@@ -194,10 +198,14 @@ $dir = ""; //for the mkdirs in the controllers, and tests
 $file_plural = ""; //plural for the migrations 
 $file_plural_snake = ""; //plural snake for the migrations 
 
-if (stripos($argv[1], "/") > 0) {
+if (isset($argv) && isset($argv[1]) && stripos($argv[1], "/") > 0) {
 	$file_exploded = explode("/", $argv[1]);
 	$file = $file_exploded[1];
 	$dir = $file_exploded[0];
+} else {
+	$file_exploded  = array();
+	$file = "";
+	$dir ="";
 }
 
 $file_plural=Pluralizer::plural($file);

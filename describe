@@ -31,9 +31,19 @@ done <<< "$THISOUTPUT"
 #    echo "-- $THISCONNECTOR --"
 #exit
 
+THISOUTPUT="$(php 'mysql_table')"
+THISSCHEMA=""
+
+while read -r line; do
+    #echo "... $line ..."
+    THISSCHEMA=$line
+done <<< "$THISOUTPUT"
+#    echo "-- $THISCONNECTOR --"
+#exit
 
 
-THISSQL="SELECT column_name FROM information_schema.columns WHERE table_name='${TABLE}';";
+
+THISSQL="SELECT column_name FROM information_schema.columns WHERE table_name='${TABLE}' AND table_schema='${THISSCHEMA}';";
 
 
 

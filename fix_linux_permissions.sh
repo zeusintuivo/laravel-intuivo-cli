@@ -26,6 +26,7 @@ sudo chmod +x find
 sudo chmod +x forcepull
 sudo chmod +x frameworkload
 sudo chmod +x frameworksave
+sudo chmod +x generateinserts
 sudo chmod +x generateparams
 sudo chmod +x generatelocations
 sudo chmod +x indatabase
@@ -33,6 +34,7 @@ sudo chmod +x last
 sudo chmod +x list
 sudo chmod +x load_env
 sudo chmod +x load_all_sps
+sudo chmod +x load_insert
 sudo chmod +x makeseeds
 sudo chmod +x master
 sudo chmod +x merge
@@ -58,6 +60,7 @@ sudo chmod +x select
 sudo chmod +x serve
 sudo chmod +x seek
 sudo chmod +x showtables
+sudo chmod +x showtableslist
 sudo chmod +x squashdb
 sudo chmod +x status
 sudo chmod +x replace

@@ -162,6 +162,8 @@ trait ModelProviderDatas {
         $this->end_schedules_ids            =(Param::arrayByTypeLongerName('end_schedules_id'));
         $this->frequency_ids                =(Param::arrayByTypeLongerName('frequency_id'));
         $this->grade_ids                    =(Param::arrayByTypeLongerName('grade_id'));
+        $this->group_ids                    =(Param::arrayByTypeLongerName('group_id'));
+        $this->group_type_ids               =(Param::arrayByTypeLongerName('group_type_id'));
         $this->guardian_type_ids            =(Param::arrayByTypeLongerName('guardian_type_id'));
         $this->homeroom_ids                 =(Param::arrayByTypeLongerName('homeroom_id'));
         $this->insurance_type_ids           =(Param::arrayByTypeLongerName('insurance_type_id'));
@@ -227,13 +229,19 @@ trait ModelProviderDatas {
         $this->principal_ids     =  $this->older_ids;
         
         //younger than 18 
-        $this->student_ids       = (new Collection(  DB::select('call  getStudents();') ))->lists('first_name','id');
-        $this->staff_ids         = (new Collection(  DB::select('call  getStaff();') ))->lists('first_name','id');
         $this->patient_ids       = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->lists('id');
         $this->patient_last_id   = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->orderBy('id','desc')->take(1)->lists('id')[0];
         $this->patient_first_id  = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->orderBy('id','asc')->take(1)->lists('id')[0];
 
 
+    }
+
+    private function requireStudents() {
+        $this->student_ids       = (new Collection(  DB::select('call  getStudents();') ))->lists('first_name','id');
+    }
+    
+    private function requireStaff() {
+        $this->staff_ids       = (new Collection(  DB::select('call  getStaff();') ))->lists('first_name','id');
     }
 
     private function requireSchools() {
@@ -304,6 +312,8 @@ trait ModelProviderDatas {
         $this->end_schedules_id               = array_rand($this->end_schedules_ids);
         $this->frequency_id                   = array_rand($this->frequency_ids);
         $this->grade_id                       = array_rand($this->grade_ids);
+        $this->group_id                       = array_rand($this->group_ids);
+        $this->group_type_id                  = array_rand($this->group_type_ids);
         $this->guardian_type_id               = array_rand($this->guardian_type_ids);
         $this->homeroom_id                    = array_rand($this->homeroom_ids);
         $this->insurance_type_id              = array_rand($this->insurance_type_ids);

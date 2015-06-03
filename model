@@ -18,9 +18,8 @@
 # Before Loading anything Check Arguments Passed
 # Get argv 
 $valid_model_types=[ "nothing", "plain", "simple", "softdelete", "softdeleteparent", "softdeletechild", "pivot"];
-$model_type="softdelete";  /// simple|softdelete
-if (!isset($argv) || !isset($argv[1])) {
-	echo "
+$model_type=$valid_model_types[3];  /// simple|softdelete
+$USAGE = " \033[38;5;226m 
 	Sample Usage:    - expects one or more arguments
 	    call model Person\PersonAddress [optional]
 	    call model Person/PersonAddress [optional]
@@ -31,20 +30,16 @@ if (!isset($argv) || !isset($argv[1])) {
 	    	- " . implode("\n	    	- ", $valid_model_types) ."
 
 	    	- ".$model_type." is default is ommited optional
-";
-
-	die(0);
-}
+\n";
 if (!isset($argv) || !isset($argv[1])) {
-		die($USAGE."\n");
+		die($USAGE);
 }
-if (isset($argv[1]) ) {
-	$model_type = trim($argv[1]);
+if (isset($argv[2]) ) {
+	$model_type = trim($argv[2]);
 
 	if (!in_array($model_type , $model_types)) {
 		echo  "\n \033[38;5;196m  -- Error Unknown Usage: ".$model_type ."\n";
-		echo  " \033[38;5;226m ";
-		die($USAGE."\n");
+		die($USAGE);
 	}
 }
 

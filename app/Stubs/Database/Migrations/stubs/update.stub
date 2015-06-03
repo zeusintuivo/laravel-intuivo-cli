@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use PHIWeb\PHIWebMigration;
+use PHIWeb\ExtendedBlueprint;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\Output;
@@ -12,9 +14,9 @@ use Symfony\Component\Console\Output\Output;
  * @author {{author}}
  * @version {{version}}
  */
-class Update{{file_plural}}Table  extends Migration {
+class Update{{file_plural}}Table  extends PHIWebMigration {
 
-	private $rev = '6';
+	private $rev = '{{version}}';
 	private $currenttable = '{{table}}';
 
 	/**
@@ -25,12 +27,15 @@ class Update{{file_plural}}Table  extends Migration {
 	 */
 	public function up()
 	{
+		parent::up();
 		$output = new ConsoleOutput();
 
         $output->writeln('<info>'.$this->currenttable.'</info> migration start.');
 
-		Schema::create($this->currenttable, function(Blueprint $table)
+		// then create tables 
+		$this->schema->create($this->currenttable, function(ExtendedBlueprint $table)
 		{
+ 
 			//
 		});
 	}

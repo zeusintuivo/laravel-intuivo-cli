@@ -154,7 +154,7 @@ class {{file}} extends BaseModel implements ModelDeletesInterface {
      */
     public function {{parentCamelLowerCased}} ()
     {
-        return $this->belongsTo('{{appName}}\Models\{{dirParent}}\{{fileParent}}');
+        return $this->belongsTo('{{appName}}\Models\{{dirParent}}\{{fileParent}}', $link_keyname_inside_this_table = '{{child_snake_cased}}_id', $outside_referenced_key_in_the_other_table = 'id');
     }
 
 

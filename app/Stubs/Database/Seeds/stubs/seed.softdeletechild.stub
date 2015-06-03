@@ -1,0 +1,185 @@
+<?php
+
+use Illuminate\Database\Seeder;
+
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+use {{appName}}\Models\Traits\ModelProviderDatas;
+use {{appName}}\Models\PHIWebSeeder;
+use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Database\Migrations\Migration;
+use {{appName}}\Models\Param\Location;
+use {{appName}}\Models\Param\Param;
+use {{appName}}\Models\Person\Person;
+
+use {{appName}}\Models\{{dir}}\{{file}};
+
+/**
+ * Created Seeder Creator of Fake Records for {{dir}}/{{file}};
+ *
+ * @author {{author}}
+ * @revision {{revision}}
+ */
+class {{file}}Seeder extends PHIWebSeeder {
+
+	use ModelProviderDatas;
+
+	private $currenttable = '';
+
+	/**
+	 * Run the database seeds.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function run()
+	{
+		$output = new ConsoleOutput();
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
+		Model::unguard();//disable Model checks 
+
+		{{file}}::truncate();
+
+		$e =  new {{file}}();
+		$this->currenttable =  $e->getTable();
+	
+
+		 $enabled = true;		
+		     $max = env('SEED_MAX', 1200);
+		$start_id = env('SEED_START_ID', 1000); //Leave first 1000 for options
+
+		DB::statement( 'ALTER TABLE `'.$this->currenttable.'`  AUTO_INCREMENT = '.$start_id.';');
+
+
+
+		if ($enabled) {
+			$output->writeln('<info>'.$this->currenttable.' faker start. Generating.:'.($max-$start_id).' fields </info>');
+
+			$faker = Faker\Factory::create();
+
+            Eloquent::unguard(); //disable Model checks
+
+			#
+			# Foreign Values Load
+			#
+
+            $this->requirePeople();
+            $this->requireStudents();
+            $this->requireStaff();
+            $this->requireParams();
+			$this->requireLocations();
+			$this->requireSchools();
+			$this->requireDailyLogs();
+			$this->requireMedLogs();
+			$this->requireInsurances();
+			$this->requireVaccines();
+
+			#
+			# Four {{file}} per patient
+ 			#
+
+			$max = $start_id + ( $this->patient_last_id - $this->patient_first_id );
+
+			$onlyone_default = 0; //inverse switch to set one record as default;
+
+			$index = $start_id;
+			for($r=0;$r<4;++$r){ //make at least 3 alets per patient
+				$output->writeln('<info>'.$this->currenttable.' faker start. Generating.:'.($max-$start_id).' fields </info>');
+				$counter = 0;
+				foreach($this->patient_ids as $patient_id) { //scroll all patient items(patient ids) to provide one to each
+					foreach($this->params_list as $param_id => $param_name) {
+						$counter++;
+						$index++;
+
+						#
+						# Foreign Values Pick
+						#
+
+				        $this->pickPeople();
+				        $this->pickStudents();
+				        $this->pickStaff();
+			            $this->pickParams();
+						$this->pickLocations();
+						$this->pickSchools();
+						$this->pickDailyLogs();
+						$this->pickMedLogs();
+						$this->pickInsurances();
+						$this->pickVaccines();
+
+
+						# Override real value of with looping serial
+						$this->currenttime = Carbon\Carbon::now();
+
+	                    #
+	                    # Entity asignation
+	                    #
+
+	                    {{file}}::create([
+	                            'id' => $index,
+								'name' =>             $faker->name,
+
+								//
+								//
+								// Reponsibilities
+								//
+								//
+								'open_by_id' =>    	            $this->open_by_id,
+								'open_at' =>       	            $this->open_at,
+
+								'closed_by_id' =>  	            $this->closed_by_id,
+								'closed_at' =>     	            $this->closed_at,
+
+								'printed_by_id' => 	            $this->printed_by_id,
+								'printed_at' =>    	            $this->printed_at,
+
+								'patient_id' =>    	            $patient_id,
+								
+								'param_id' => 					$param_id,     //Student id
+	 
+	                            'created_at' => 				$this->currenttime,
+	                            'updated_at' =>					$this->currenttime
+	                     ]);
+
+
+						# update Parent Resolve
+						${{parent}} = {{parent}}::find($patient_id);
+						${{parent}}->{{filo}}_id = $index;
+						${{parent}}->save();
+		
+						#
+						# update next block
+						#
+						$start_id=$index;
+
+					}	//end for each loop
+				}	//end for each loop
+
+				$onlyone_default++;
+				$start_id++;
+
+				//$start_id= $start_id+ ($person_last_id-$person_first_id)+1;
+				$max =  $start_id+ $counter;
+			} //end for loop
+
+
+			
+		} else {
+            
+            $output->writeln('<info>'.$this->currenttable.' direct statement </info>');
+			DB::statement( "
+
+
+
+			;");
+
+		}//end if enabled
+	
+		DB::statement( 'ALTER TABLE `'.$this->currenttable.'`  AUTO_INCREMENT = '.($max + 1).';');
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
+	} //end run()
+
+} //end class

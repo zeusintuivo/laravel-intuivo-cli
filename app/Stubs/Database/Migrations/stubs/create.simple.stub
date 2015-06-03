@@ -2,11 +2,11 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use PHIWeb\PHIWebMigration;
+use PHIWeb\ExtendedBlueprint;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\Output;
-
-use {{appName}}\Models\Traits\ModelProviderDatas;
 
 use {{appName}}\Models\{{dir}}\{{file}};
 
@@ -16,14 +16,10 @@ use {{appName}}\Models\{{dir}}\{{file}};
  * @author {{author}}
  * @version {{version}}
  */
-class Create{{file_plural}}Table  extends Migration {
+class Create{{file_plural}}Table  extends PHIWebMigration {
 
-	use ModelProviderDatas;
-
-	private $rev = '7';
+	private $rev = '{{version}}';
 	private $currenttable = '{{table}}';
-
-
 	/**
 	 * Run the migrations.
 	 *
@@ -32,16 +28,17 @@ class Create{{file_plural}}Table  extends Migration {
 	 */
 	public function up()
 	{
+		parent::up();
 
 		$output = new ConsoleOutput();
 
         $output->writeln('<info>'.$this->currenttable.'</info> migration start.');
 
-		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-		Schema::dropIfExists($this->currenttable);
-		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-		Schema::create($this->currenttable, function(Blueprint $table)
+        $this->down();
+		// then create tables 
+		$this->schema->create($this->currenttable, function(ExtendedBlueprint $table)
 		{
+ 
 			$table->engine = 'InnoDB';
 			$table->increments('id')->unsigned()->unique();
 			$table->string('name');
@@ -70,8 +67,6 @@ class Create{{file_plural}}Table  extends Migration {
 			$table->integer('printed_by_id')->unsigned()->nullable();
 			$table->foreign('printed_by_id')->references('id')->on('people');
 
-
-
 			$table->timestamps();
 			$table->softDeletes();
 		});
@@ -81,8 +76,6 @@ class Create{{file_plural}}Table  extends Migration {
 		$start_id = env('SEED_START_ID', 1000); //Leave first 1000 for options
 
 		DB::statement( 'ALTER TABLE `'.$this->currenttable.'`  AUTO_INCREMENT = '.$start_id.';');
-
-
 
 		if ($enabled) {
 			$output->writeln('<info>'.$this->currenttable.' faker start. Generating.:'.($max-$start_id).' fields </info>');
@@ -97,8 +90,6 @@ class Create{{file_plural}}Table  extends Migration {
 
             $this->requirePeople();
             $this->requireParams();
-
-
 			#
 			# Four {{file}} per patient
  			#
@@ -121,8 +112,6 @@ class Create{{file_plural}}Table  extends Migration {
 
 	                $this->pickPeople();
 	                $this->pickParams();
-
-
 					# Override real value of with looping serial
 					$this->currenttime = Carbon\Carbon::now();
 
@@ -154,10 +143,8 @@ class Create{{file_plural}}Table  extends Migration {
                             'created_at' => $currenttime,
                             'updated_at' => $currenttime
                      ]);
-
-
 					//update Parent Resolve
-					$person = Parent::find($patient_id);
+					$person = {{parent}}::find($patient_id);
 					$person->{{filo}}_id = $index;
 					$person->save();
 					
@@ -165,8 +152,6 @@ class Create{{file_plural}}Table  extends Migration {
 					# update next block
 					#
 					$start_id=$index;
-
-
 				}	//end for each loop
 
 				$onlyone_default++;
@@ -182,16 +167,12 @@ class Create{{file_plural}}Table  extends Migration {
             $output->writeln('<info>'.$this->currenttable.' direct statement </info>');
 			DB::statement( "
 
-
-
 			;");
 
 		}//end if enabled
 
 	
 		DB::statement( 'ALTER TABLE `'.$this->currenttable.'`  AUTO_INCREMENT = '.($max + 1).';');
-
-
 	}
 
 	/**

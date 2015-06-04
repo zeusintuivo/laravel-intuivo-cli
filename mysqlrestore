@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# 
+# Restore  all data into root from a created tar file  
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
+
+#bash shell script check input argument
+if [ -z "$1" ]
+  then
+  	echo " "
+    echo "Missing 1st argument "
+    echo " "
+	echo "Sample Usage:    - expects one argument "
+	echo " "
+	echo "    mysqlrestore  /media/usb/mysq-backup-YYYY-MM-DD.tgz "
+	echo "    mysqlrestore  /media/external/mysq-backup-YYYY-MM-DD.tgz "
+	echo "    mysqlrestore  /media/external_device/mysq-backup-YYYY-MM-DD.tgz "
+	echo "    ";
+	exit
+fi
+
+
+FROMFILE="$1";
+sudo service mysql stop
+sudo tar -C / --same-owner -xvzpf $FROMFILE
+sudo service mysql start

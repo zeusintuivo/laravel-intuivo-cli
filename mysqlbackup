@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# 
+# Back up all data from mysql directory into target 
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
+
+#bash shell script check input argument
+if [ -z "$1" ]
+  then
+  	echo " "
+    echo "Missing 1st argument "
+    echo " "
+	echo "Sample Usage:    - expects one argument "
+	echo " "
+	echo "    mysqlbackup  /media/usb "
+	echo "    mysqlbackup  /media/external "
+	echo "    mysqlbackup  /media/external_device "
+	echo "    ";
+	exit
+fi
+
+
+WHERETO="$1";
+sudo service mysql stop
+sudo tar -cpzf $WHERETO/mysq-backup-$(date +%F).tgz /var/lib/mysql
+sudo service mysql start

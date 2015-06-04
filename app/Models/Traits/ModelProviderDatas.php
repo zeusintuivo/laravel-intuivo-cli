@@ -25,6 +25,7 @@ use PHIWeb\Models\Immunization\VaccineLog;
  */
 trait ModelProviderDatas {
 
+
     #
     #  Declare Locations Random
     #
@@ -174,6 +175,13 @@ trait ModelProviderDatas {
         $this->medication_category_ids      =(Param::arrayByTypeLongerName('medication_category_id'));
         $this->medication_name_ids          =(Param::arrayByTypeLongerName('medication_name_id'));
         $this->medication_type_ids          =(Param::arrayByTypeLongerName('medication_type_id'));
+        
+        $this->health_alert_condition_ids   =(Param::arrayByTypeLongerName('health_alert_condition_id'));
+        $this->allergy_alert_condition_ids  =(Param::arrayByTypeLongerName('allergy_alert_condition_id'));
+        $this->chronic_alert_condition_ids  =(Param::arrayByTypeLongerName('chronic_alert_condition_id'));
+        $this->home_alert_condition_ids     =(Param::arrayByTypeLongerName('home_alert_condition_id'));
+        $this->academic_alert_condition_ids =(Param::arrayByTypeLongerName('academic_alert_condition_id')); 
+        
         $this->month_ids                    =(Param::arrayByTypeLongerName('month_id'));
         $this->nature_of_injury_ids         =(Param::arrayByTypeLongerName('nature_of_injury_id'));
         $this->new_category_ids             =(Param::arrayByTypeLongerName('new_category_id'));
@@ -306,7 +314,14 @@ trait ModelProviderDatas {
         $this->alert_type_id                  = array_rand($this->alert_type_ids);
         $this->category_id                    = array_rand($this->category_ids);
         $this->daily_id                       = array_rand($this->daily_ids);
-        $this->daily_log_comment_type_id       = array_rand($this->daily_log_comment_type_ids);
+        $this->daily_log_comment_type_id      = array_rand($this->daily_log_comment_type_ids);
+        
+        $this->health_alert_condition_id      = array_rand($this->health_alert_condition_ids);
+        $this->allergy_alert_condition_id     = array_rand($this->allergy_alert_condition_ids);
+        $this->chronic_alert_condition_id     = array_rand($this->chronic_alert_condition_ids);
+        $this->home_alert_condition_id        = array_rand($this->home_alert_condition_ids);
+        $this->academic_alert_condition_id    = array_rand($this->academic_alert_condition_ids);       
+
         $this->dose_id                        = array_rand($this->dose_ids);
         $this->dose_type_id                   = array_rand($this->dose_type_ids);
         $this->end_schedules_id               = array_rand($this->end_schedules_ids);
@@ -391,6 +406,12 @@ trait ModelProviderDatas {
     }
     private function pickSchools() {
         $this->school_id     =  $this->faker->randomElement($this->school_ids);   
+    }        
+    private function pickStudents() {
+        $this->student_id     =  $this->faker->randomElement($this->student_ids);   
+    }           
+    private function pickStaff() {
+        $this->staff_id     =  $this->faker->randomElement($this->staff_ids);   
     }        
     private function pickSchoolYears() {
         $this->school_year_id     =  $this->faker->randomElement($this->school_year_ids);   

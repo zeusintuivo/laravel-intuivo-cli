@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# 
+# Back to restore back into het2
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
+
+sudo rm -rf /var/lib/mysql/het2
+sudo mv /var/lib/mysql/het2_small /var/lib/mysql/het2
+sudo chown -R mysql:mysql /var/lib/mysql/het2
+sudo cp -rf /var/lib/mysql/het2 /var/lib/mysql/het2_small
+sudo chown -R mysql:mysql /var/lib/mysql/het2_small
+
+sudo ls -la /var/lib/mysql
+sudo ls -la /var/lib/mysql/het2
+
+echo -e "\033[38;5;0;32m  \033[40m  GENERATED IN: \033[0m"
+trap times EXIT
+paplay boy.ogg 

@@ -2,7 +2,7 @@
 
 use Closure;
 
-class {{class}} {
+class {{file}} {
 
 	/**
 	 * Handle an incoming request.

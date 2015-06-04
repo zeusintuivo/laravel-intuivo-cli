@@ -22,6 +22,15 @@ $said = exec('git commit -am "Updating branch '.$updatemecurrentbranch.' with Ma
 echo $said ."\n";
 echo "\n";
 
+
+#pull
+echo "\n";
+echo "=== Pull ===";
+echo "\n";
+$said = exec('./pull');
+echo $said ."\n";
+echo "\n";
+
 #push 
 echo "\n";
 echo "=== Push origin $updatemecurrentbranch ===\n";

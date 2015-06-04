@@ -370,7 +370,8 @@ function generateFromStub(Array $replace_array, $base_folder, $stub_file, $targe
 	# Create dirs
 	#
 	@mkdir($base_folder);
-	@mkdir($base_folder."/".$dir);
+	if ( $type_of_creation != " migration for ")  @mkdir($base_folder."/".$dir);
+	
 	if ( $type_of_creation == " test for ") {    
 		#
 		# Tests get an extra level because one model, or controller, has to be tested in different ways

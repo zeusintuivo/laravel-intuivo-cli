@@ -2,11 +2,34 @@
 
 use {{rootNamespace}}Http\Requests;
 use {{rootNamespace}}Http\Controllers\Controller;
+use {{appName}}\Http\Controllers\BaseController;
 
 use Illuminate\Http\Request;
 
-class {{class}} extends Controller {
+use {{appName}}\Models\{{dir}}\{{file}};
+use {{appName}}\Http\Requests\{{dir}}\Create{{file}}Request;
+use {{appName}}\Http\Requests\{{dir}}\Delete{{file}}Request;
 
-	//
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{file}}Controller extends BaseController {
+// class {{file}}Controller extends Controller {
 
-}
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 * @version {{version}}
+	 */
+	public function index()
+	{
+		//
+	}
+
+
+
+} # end class

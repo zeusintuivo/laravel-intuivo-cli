@@ -2,11 +2,102 @@
 
 use {{rootNamespace}}Http\Requests;
 use {{rootNamespace}}Http\Controllers\Controller;
+use {{appName}}\Http\Controllers\BaseController;
 
 use Illuminate\Http\Request;
 
-class {{class}} extends Controller {
+use {{appName}}\Models\{{dir}}\{{file}};
+use {{appName}}\Http\Requests\{{dir}}\Create{{file}}Request;
+use {{appName}}\Http\Requests\{{dir}}\Delete{{file}}Request;
 
-	//
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{file}}Controller extends BaseController {
+// class {{file}}Controller extends Controller {
 
-}
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 * @version {{version}}
+	 */
+	public function index()
+	{
+		//
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 * @version {{version}}
+	 */
+	public function create()
+	{
+		//
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 * @version {{version}}
+	 */
+	public function store()
+	{
+		//
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 * @version {{version}}
+	 */
+	public function show($id)
+	{
+		//
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 * @version {{version}}
+	 */
+	public function edit($id)
+	{
+		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 * @version {{version}}
+	 */
+	public function update($id)
+	{
+		//
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 * @version {{version}}
+	 */
+	public function destroy($id)
+	{
+		//
+	}
+
+} # end class

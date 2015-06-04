@@ -1,0 +1,43 @@
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
+# Procedural Programming count the records(show the last id) of a table
+# 
+#
+
+include('load_env');
+# Before Loading anything Check Arguments Passed
+# Get argv 
+if (!isset($argv) || !isset($argv[1])) {
+	#get script name
+	$me=array_pop(explode(DIRECTORY_SEPARATOR,__FILE__));
+
+	echo "
+	Sample Usage:    
+	    php $me tablename
+	    ";
+	$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "show tables;"');
+	echo "\n". $said. "\n";
+	die(0);
+}
+$table = $argv[1];
+
+# construct query "select count(id) from  people order by id  desc limit 1;
+$sql = "select id from  $table order by id  desc limit 1;";
+
+# construct command to execute
+$command = 'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' -e "'.$sql.'"';
+
+# display what this does
+echo "\033[36m \n ".$sql . "\n " . $command ."\n\n";
+
+echo "\033[33m "; 
+$said=shell_exec($command );
+echo "\033[31m "; 
+echo "\n". $said. "\n";
+
+
+
+   
+

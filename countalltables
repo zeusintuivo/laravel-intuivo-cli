@@ -1,0 +1,185 @@
+#!/usr/bin/env php
+<?php
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
+# Procedural Programming to Create 
+# Load an insert statement and add it to the migration
+# 
+#
+
+
+//
+//
+//
+// Step 1 Check Arguments
+//
+//
+//
+
+# Before Loading anything Check Arguments Passed
+# Get argv 
+			//
+			// Read all table names from table                          ++++ READ TABLE FIELDS
+			// 
+
+			$table_list=@shell_exec('./showtableslist');
+			$db_targets = array();
+			foreach ( explode("\n", $table_list) as $value) {
+				$trim_value = trim($value);
+				if (in_array(substr($trim_value , 0,8 ), ["","~", "column_n", "Warning:", "Tables_i"])) {
+					//
+					// ignore list this Tables_in_het2
+					//
+				} else {
+					$db_targets[] = $trim_value;
+				}
+			}
+
+
+
+include('generatebase');
+
+
+
+
+#
+# Technique using countlist calls  - START  -DEPRECATED
+# 
+#					// dd($db_targets);
+#
+#					$count_tables_array = array();
+#					foreach ($db_targets as $table_key => $table_name) {
+#								//
+#								// Read all table names from table                          ++++ READ TABLE FIELDS
+#								// 
+#								say($colors, "Count:",'./countlist '.$table_name);
+#								$count_list=@shell_exec('./countlist '.$table_name);
+#					// dump($count_list);
+#								foreach ( explode("\n", $count_list) as $count_value) {
+#									$trim_value = trim($count_value);
+#									// dump($trim_value);
+#									if (in_array(substr($trim_value , 0,8 ), ["", "#!/usr/b", "~", "column_n", "Warning:", "Tables_i", "count(id"])) {
+#										//
+#										// ignore list this Tables_in_het2
+#										//
+#									} else {
+#										$count_tables_array[$table_name] = $trim_value;
+#									}
+#								
+#								}
+#
+#					}
+#					dd($count_tables_array);
+#
+#
+# Technique using countlist calls  - END
+#
+#
+# Creation Start
+#
+#
+#
+#
+
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Facades\Capsule;
+use Illuminate\Database\Eloquent\Collection;
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+use PHIWeb\Models\Param\Param;
+use PHIWeb\Models\Param\Location;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+// use PDO;
+
+
+$DB = new DB;
+
+$DB->addConnection([
+    'driver'    => 'mysql',
+    'host'      => $DB_HOST,
+    'database'  => $DB_DATABASE,
+    'username'  => $DB_USERNAME,
+    'password'  => $DB_PASSWORD,
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
+]);
+
+// Set the event dispatcher used by Eloquent models... (optional)
+use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
+$DB->setEventDispatcher(new Dispatcher(new Container));
+
+// Make this DB instance available globally via static methods... (optional)
+$DB->setAsGlobal();
+
+// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
+$DB->bootEloquent();
+
+$output = new ConsoleOutput();
+say($colors, "Start:", '');; 
+
+$starttime = Carbon::now();
+
+#
+# START
+#
+
+
+#
+# Technique calling the DATABASE - START  
+# 
+
+#testunit
+												// $table_name = 'people';
+												// $sql = "select count(*) as conteo from  $table_name ;";
+												// $i = (new Collection(  DB::select($sql )[0]))->first();
+												//->passed
+
+#Determine the longest
+# Seems like you should use an array_map()
+ // Convert array to an array of string lengths
+$lengths = array_map('strlen', $db_targets);
+
+												  // TEST results
+												  // Show min and max string length
+												  // echo "The shortest is " . min($lengths) .
+												  // ". The longest is " . max($lengths);
+												  // ->passed
+$max =  max($lengths);
+
+
+$count_tables_array = array();
+
+foreach ($db_targets as $table_key => $table_name) {
+	$sql = "SELECT COALESCE(count(*),0) AS `conteo` FROM `$table_name`;";
+	$i = (new Collection(  DB::select($sql )[0]))->first();
+	$count_tables_array[ str_pad($table_name, $max , ".", STR_PAD_RIGHT) ] = $i;
+} //end foreach
+
+dump($count_tables_array);
+
+
+
+
+
+
+# 
+# END
+#
+
+$endtime = Carbon::now();
+
+say($colors, "\n\nGenerated on ", $endtime->formatLocalized('%A %d %B %Y'));
+say($colors, "Generated in ", $endtime->diffInMinutes($starttime) . ' minutes');
+say($colors, "Generated in ", $endtime->diffInSeconds($starttime) . ' seconds');
+$said=@exec(" paplay boy.ogg ");
+
+#11 minutes Generations Time 2015 May 15
+// dump($types);

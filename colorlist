@@ -1,0 +1,8 @@
+#!/bin/bash
+# ref http://unix.stackexchange.com/questions/124407/what-color-codes-can-i-use-in-my-ps1-prompt
+color=16;
+
+while [ $color -lt 245 ]; do
+    echo -e "$color: \\033[38;5;${color}mhello\\033[48;5;${color}mworld\\033[0m echo -e \"\\\\033[38;5;${color}m FOREGROUND   \"; echo -e \"\\\\033[48;5;${color}m BACKGROUND   \""
+    ((color++));
+done  

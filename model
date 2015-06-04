@@ -36,15 +36,15 @@ if (!isset($argv) || !isset($argv[1])) {
 }
 if (isset($argv[2]) ) {
 	$model_type = trim($argv[2]);
+}
+include('generatebase');
 
-	if (!in_array($model_type , $model_types)) {
-		echo  "\n \033[38;5;196m  -- Error Unknown Usage: ".$model_type ."\n";
-		die($USAGE);
-	}
+if (!in_array($model_type , $valid_model_types)) {
+	echo  "\n \033[38;5;196m  -- Error Unknown Usage: ".$model_type ."\n";
+	die($USAGE);
 }
 
 
-include('generatebase');
 
 #
 #
@@ -138,7 +138,7 @@ if ( file_exists($migration_file)) {
 # ReWrite Migration with our my migartion stub
 #
 
-$migration_file = preg_replace('/database\/migrations/i', "", $migration_file);
+$migration_file = preg_replace('/database\/migrations\//i', "", $migration_file);
 
 $replace_array["namespace"] = $replace_array["appName"]."\\migrations\\".$replace_array["dir"];
 
@@ -226,7 +226,7 @@ $replace_array["namespace"] = $replace_array["appName"]."\\Http\\Requests\\".$re
 
 $base_folder = "app/Http/Requests";
 $target_file = $dir.'/Create'.$file.'Request.php';
-$stub_file = "app/Stubs/Foundation/Console/stubs/request.$model_type.stub";
+$stub_file = "app/Stubs/Foundation/Console/stubs/request-create.$model_type.stub";
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " Create Request for ");
 
@@ -246,7 +246,7 @@ replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $vers
 */
 $base_folder = "app/Http/Requests";
 $target_file = $dir.'/Delete'.$file.'Request.php';
-$stub_file = "app/Stubs/Foundation/Console/stubs/request.$model_type.stub";
+$stub_file = "app/Stubs/Foundation/Console/stubs/request-delete.$model_type.stub";
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " Delete Request for ");
 
@@ -261,6 +261,14 @@ $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $tar
 #
 #
 
+
+$base_folder = "database/seeds";
+$target_file = $entity.'Seeder.php';
+$stub_file = "app/Stubs/Database/Seeds/stubs/seed.$model_type.stub";
+
+$file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " seed for ");
+
+/*
 $replace_array["namespace"] = $replace_array["appName"]."\\database\\seeds\\".$replace_array["dir"];
 
 say($colors, "Seed", "Creating Seed");
@@ -272,7 +280,7 @@ if ($said=="") {
 
 } 
 say($colors, "Seed", $said);
-
+*/
 # Place author's name in the Seed takes place in the same script
 
 
@@ -285,7 +293,7 @@ say($colors, "Seed", $said);
 #
 #
 $base_folder = "database/reports";
-$target_file = $filo.'_report.sql';
+$target_file =  $dir . '/'. $filo.'_report.sql';
 @mkdir($base_folder);
 @mkdir($base_folder."/".$dir);
 $file_targeted = $base_folder."/".$target_file;
@@ -301,7 +309,9 @@ exec("touch ".$file_targeted);
 #
 #
 $base_folder = "database/sp";
-$target_file = 'usp_'.$filo.'.sql';
+$target_file =  $dir.'/usp_'.$filo.'.sql';
+
+
 @mkdir($base_folder);
 @mkdir($base_folder."/".$dir);
 $file_targeted = $base_folder."/".$target_file;

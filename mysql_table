@@ -1,0 +1,25 @@
+<?php
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
+# Procedural Programming to ECHO the Connection string into console 
+# 
+#
+
+include('load_env');
+
+# construct command to execute
+$command = $DB_DATABASE;
+
+#Colors reference
+#Light Gray 0;37 
+#Dark Gray 1;30
+#Light Blue 1;34
+#Light Green 1;32
+#Light Cyan 1;36
+#Light Red 1;31
+#Light Purple 1;35
+#Yellow 1;33
+#White 1;37
+
+# display what this does
+echo $command;

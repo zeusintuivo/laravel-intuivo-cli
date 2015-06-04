@@ -262,4 +262,6 @@ class {{file}} extends BaseModel implements ModelDeletesInterface {
             ->join( '{{filo}}_child', '{{file_plural_snake}}.id', '=', '{{filo}}_child.{{filo}}_id' );
     }
 
-} //end class
+
+
+} # end class

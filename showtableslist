@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+
+#bash shell script check input argument
+# if [ -z "$1" ]
+#   then
+#   	echo " "
+#     echo "Missing 1st argument "
+#     echo " "
+# 	echo "Sample Usage:    - expects one arguments "
+# 	echo " "
+# 	echo "    showtables  "
+# 	echo "    ";
+# 	./showtables;
+# 	exit
+# fi
+
+
+# TABLE="$1";
+
+# set working directory as the scripts location during the execution of script 
+cd "$(dirname "$0")"
+
+
+THISOUTPUT="$(php 'mysql_connectors')"
+THISCONNECTOR=""
+
+while read -r line; do
+    #echo "... $line ..."
+    THISCONNECTOR=$line
+done <<< "$THISOUTPUT"
+#    echo "-- $THISCONNECTOR --"
+#exit
+
+
+THISSQL="SHOW TABLES;";
+
+
+red=`tput setaf 1`
+cyan=`tput setaf 6`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+
+# display what this does
+# echo "${cyan} mysql  ${THISCONNECTOR} -e '${THISSQL}'";
+
+# echo "${green}  "; 
+echo "~"; 
+
+mysql  $THISCONNECTOR -e "$THISSQL"
+
+echo "~"; 
+
+
+

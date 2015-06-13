@@ -39,8 +39,8 @@ use Carbon\Carbon;
 $starttime = Carbon::now();
 
 
-echo "\n".'mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' < '.$target_file ."\n\n";
-$said=shell_exec('mysql -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' < '.$target_file .' ');
+echo "\n".'mysql -A -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' < '.$target_file ."\n\n";
+$said=shell_exec('mysql -A -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' '.$DB_DATABASE.' < '.$target_file .' ');
 echo "\n". $said. "\n";
 
 $endtime = Carbon::now();

@@ -23,7 +23,7 @@ if (!isset($argv) || !isset($argv[1])) {
 	$argv[] = "" ;
 
 } 
-
+// $sql = DB::unprepared(File::get($script_name));
 $said=@exec('phpunit /home/jesusgamma/Sites/ph20/tests/migration/Param/Param/params_seed_test.php');
 include('generatebase');
 
@@ -192,6 +192,7 @@ foreach ($types as $key => $value) {
 			$table->string('display_name', 120)->index()->nullable();//EXAMPLE TEXAS. DISPLAY is TX Description is TEXAS
 			$table->integer('numeric_value')->default(0);//PARAMS like Roles will have a numeric value to Address which is more valueable
 			
+			$table->string('shorter_name', 5)->index()->nullable(); //EXAMPLE TX, US, OR 
 			$table->string('longer_name', 255)->index()->nullable(); //EXAMPLE TEXAS. DISPLAY is TX Description is TEXAS
 		
 			$table->integer('display_order'); //Order number is in relationship to its type only 
@@ -216,14 +217,14 @@ foreach ($types as $key => $value) {
 		//   	$contents = DB::table(DB::RAW('params a'))->select(['a.active', 'a.display_order', 'a.longer_name', 'a.numeric_value', 'a.display_name', 'a.view_group_id', 'a.param_type_id', 'a.parent_param_id', 'a.id', 'b.display_name as type'])->join(DB::RAW('params b'),'a.param_type_id', '=', 'b.id')->where('b.display_name', [$typeName])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->get();   //restuls in this order results  6 => "view"
 
 		$keyType=$key; 
-		$contents = DB::table(DB::RAW('params a'))->select(['a.active', 'a.display_order', 'a.longer_name', 'a.numeric_value', 'a.display_name', 'a.view_group_id', 'a.param_type_id', 'a.parent_param_id', 'a.id'])->where('a.param_type_id', [$keyType])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->get();   //restuls in this order results  6 => "view"
+		$contents = DB::table(DB::RAW('params a'))->select(['a.active', 'a.display_order', 'a.shorter_name', 'a.longer_name', 'a.numeric_value', 'a.display_name', 'a.view_group_id', 'a.param_type_id', 'a.parent_param_id', 'a.id'])->where('a.param_type_id', [$keyType])->where('a.active', ['1'])->orderBy('a.param_type_id')->orderBy('a.display_order')->get();   //restuls in this order results  6 => "view"
 
 		if (sizeof($contents)>0) {
 			//
 			//
 			$currenttime = Carbon::now();
 		  	$sql = 'INSERT INTO `'.$currenttable.'`    
-						(`id`, `parent_param_id`, `param_type_id`, `view_group_id`,  `display_name`, `numeric_value`, `longer_name`, `display_order`, `active`, `created_at`, `updated_at`) 
+						(`id`, `parent_param_id`, `param_type_id`, `view_group_id`,  `display_name`, `numeric_value`, `shorter_name`, `longer_name`, `display_order`, `active`, `created_at`, `updated_at`) 
 						VALUES ';		
 		    foreach ($contents as $content_key => $content_value) {
 				//dump($content_key); #object number
@@ -235,7 +236,7 @@ foreach ($types as $key => $value) {
 				  // VALUES 
 				  
 				  // (411601, 1400, 202252, "", "by Occurrences", 0, "by Occurrences", 2, "1", "2015-05-14 22:02:29", "2015-05-14 22:02:29");
-		 		$sql .= '("'.$content_value['id'].'", "'.$content_value['parent_param_id'].'", "'.$content_value['param_type_id'].'", "'.$content_value['view_group_id'].'", "'.$content_value['display_name'].'", "'.$content_value['numeric_value'].'", "'.$content_value['longer_name'].'", '.$content_value['display_order'].', "'.$content_value['active'].'", "'.$currenttime.'", "'.$currenttime.'"),';
+		 		$sql .= '("'.$content_value['id'].'", "'.$content_value['parent_param_id'].'", "'.$content_value['param_type_id'].'", "'.$content_value['view_group_id'].'", "'.$content_value['display_name'].'", "'.$content_value['numeric_value'].'", "'.$content_value['shorter_name'].'", "'.$content_value['longer_name'].'", '.$content_value['display_order'].', "'.$content_value['active'].'", "'.$currenttime.'", "'.$currenttime.'"),';
 					// dump($sql);
 			}
 			$sql = rtrim($sql, ",");
@@ -246,7 +247,7 @@ foreach ($types as $key => $value) {
 		
 		$said=@exec("rm table_".$currenttable);
 
-		say($colors, "\n\nremoved table_$currenttable", $said);
+		say($colors, "\n\nremoved table_$currenttable", '');
 
   
  

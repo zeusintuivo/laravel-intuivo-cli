@@ -16,11 +16,11 @@ while read -r line; do
 done <<< "$THISOUTPUT"
     # echo "-- $THISCONNECTOR --"
 #exit
-echo "find . -name '*.sql' | awk '{ print \"source\",$0 }' | mysql ${THISCONNECTOR}  --batch "
+echo "find database/sp/  -name '*.sql' | awk '{ print \"source\",\$0 }' | mysql ${THISCONNECTOR}  --batch "
 # mysql $THISCONNECTOR
 
 
-cd database/sp
-find . -name '*.sql' | awk '{ print "source",$0 }' | mysql $THISCONNECTOR --batch
-cd ..
-cd ..
+# cd database/sp
+find database/sp/ -name '*.sql' | awk '{ print "source",$0 }' | mysql -A $THISCONNECTOR --batch
+# cd ..
+# cd ..

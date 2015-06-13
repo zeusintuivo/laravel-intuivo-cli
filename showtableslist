@@ -34,8 +34,17 @@ done <<< "$THISOUTPUT"
 #exit
 
 
-THISSQL="SHOW TABLES;";
+THISOUTPUT="$(php 'mysql_table')"
+THISSCHEMA=""
 
+while read -r line; do
+    #echo "... $line ..."
+    THISSCHEMA=$line
+done <<< "$THISOUTPUT"
+
+
+# THISSQL="SHOW TABLES;";
+THISSQL="SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA='${THISSCHEMA}';";
 
 red=`tput setaf 1`
 cyan=`tput setaf 6`
@@ -49,7 +58,7 @@ reset=`tput sgr0`
 # echo "${green}  "; 
 echo "~"; 
 
-mysql  $THISCONNECTOR -e "$THISSQL"
+mysql -A $THISCONNECTOR -B -s -e "$THISSQL"
 
 echo "~"; 
 

@@ -72,6 +72,6 @@ echo "${cyan} mysql  ${THISCONNECTOR} -e '${THISSQL}'";
 
 echo "${green}  "; 
 
-mysql  $THISCONNECTOR -e "$THISSQL"
+mysql -A $THISCONNECTOR -e "$THISSQL"
 
 

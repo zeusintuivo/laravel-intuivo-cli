@@ -23,6 +23,7 @@ sudo chmod +x filelastestchanges
 sudo chmod +x fileparticipation
 sudo chmod +x fix_linux_permissions.sh
 sudo chmod +x find
+sudo chmod +x findinfile
 sudo chmod +x forcepull
 sudo chmod +x frameworkload
 sudo chmod +x frameworksave
@@ -64,6 +65,7 @@ sudo chmod +x showtableslist
 sudo chmod +x squashdb
 sudo chmod +x status
 sudo chmod +x replace
+sudo chmod +x replaceinfile
 sudo chmod +x restorefromvery
 sudo chmod +x restorefromsmall
 sudo chmod +x tinker

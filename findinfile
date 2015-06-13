@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
+#bash shell script check input argument
+if [ -z "$1" ]
+  then
+  	echo " "
+    echo "Missing 1st argument "
+    echo " "
+	echo "Sample Usage:    - expects two  arguments"
+	echo " "
+	echo "    ./findinfile   seek-this       file_to_find_in"
+	echo "    ";
+	exit
+fi
+if [ -z "$2" ]
+  then
+    echo "Missing 2nd argument "
+    echo " "
+	echo "Sample Usage:    - expects two arguments "
+	echo " "
+	echo "    ./findinfile    seek_this      file_to_find_in    "
+	echo "    ";
+	exit
+fi
+
+
+SEEKING="$1";
+FILE="$2";
+
+#echo $0=./replace
+
+echo "Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ack "
+echo "Finding $SEEKING " 
+echo " "
+ack  --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs --ignore-dir=app/Stubs "$SEEKING" "$FILE"
+echo " "

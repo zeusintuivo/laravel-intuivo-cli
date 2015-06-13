@@ -385,16 +385,17 @@ trait ModelProviderDatas {
         $this->closed_by_id  = $this->faker->randomElement($this->user_ids);
         $this->printed_by_id = $this->faker->randomElement($this->user_ids);
         
-        $this->open_at       = $this->faker->dateTimeBetween($startDate = '-1 years',  $endDate = 'now');
-        $this->closed_at     = $this->faker->dateTimeBetween($startDate = '-3 months', $endDate = 'now');
-        $this->printed_at    = $this->faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now');
+        // $d->toDateTimeString());    
+        $this->open_at       = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-1 years',  $endDate = 'now')))->first());
+        $this->closed_at     = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-3 months',  $endDate = 'now')))->first());
+        $this->printed_at    = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-6 months',  $endDate = 'now')))->first());
 
         $this->provider_id   = $this->faker->randomElement($this->user_ids);
         $this->principal_id  = $this->faker->randomElement($this->older_ids);
         
         $this->given_by_id   = $this->faker->randomElement($this->user_ids);
         $this->given_by      = Person::find($this->given_by_id);
-        $this->given_at      = $this->faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now');
+        $this->given_at      = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-1 months',  $endDate = 'now')))->first());
         $this->words         = explode(" ", $this->given_by->first_name." ".$this->given_by->last_name);
         $this->acronym       = "";
         //acronym

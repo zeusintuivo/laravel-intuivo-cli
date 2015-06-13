@@ -50,7 +50,7 @@ if(!file_exists($DBSQL) ) {
 		echo  " \033[38;5;226m ";
 		die($USAGE."\n");
 }
-
+echo  "\n \033[38;5;196m  -- generating inserts from: ".$DBSQL." to: ".$db_target ."\n";
 include('generatebase');
 
 
@@ -135,11 +135,12 @@ $output = new ConsoleOutput();
 #
 # Produce Mirror Tables from Params for each category name
 #
-//CReate dirs incase they don't exist
+//Create dirs incase they don't exist
 
 if(!file_exists("database/inserts/".$db_target) ) {
 	mkdir("database/inserts/".$db_target);
 }
+
 foreach ($table_array as $key => $value) {
 		// DB::schema()->create('users', function($table)
 		// {
@@ -153,21 +154,98 @@ foreach ($table_array as $key => $value) {
 	say($colors, "Tablefile:", 'database/inserts/'.$db_target.'/'.$currenttable.'.sql'); 	
 		say($colors, "\t\t\t".'cat ../het2_rev5-6-'.$db_target.'.sql  | grep "INSERT INTO \`'.$currenttable.'\` VALUES " > ', 'database/inserts/'.$db_target.'/'.$currenttable.'.sql');
 		say($colors, "\t\t\t".'cat ../het2_rev5-6-'.$db_target.'.sql  | grep "INSERT INTO \`'.$currenttable.'\` VALUES "| cut -c-100 ;','');
-		$said=@exec('cat ../het2_rev5-6-'.$db_target.'.sql  | grep "INSERT INTO \`'.$currenttable.'\` VALUES " | cut -c-100');
-
+		// $said=@exec('cat ../het2_rev5-6-'.$db_target.'.sql  | grep "INSERT INTO \`'.$currenttable.'\` VALUES " | cut -c-100');
+		// $said=@exec('cat ../het2_rev5-6-'.$db_target.'.sql  | grep "INSERT INTO \`'.$currenttable.'\` VALUES " | cut -c-100');
+		#  cat ../het2_rev5-6-small.sql  | grep "INSERT INTO" | cut -c-100
 		$target_sql_file = 'database/inserts/'.$db_target.'/'.$currenttable.'.sql';
 		$said=@exec('touch '. $target_sql_file);
 
 		$said=@exec('echo "\n SET FOREIGN_KEY_CHECKS = 0; \n"   >'. $target_sql_file);
-		$said=@exec('echo "\n TRUNCATE `'.$currenttable.'`; \n"   >'. $target_sql_file);
+		$said=@exec('echo "\n TRUNCATE '.$currenttable.'; \n"   >>'. $target_sql_file);
 		
-		$said=@exec('cat ../het2_rev5-6-'.$db_target.'.sql  | grep "INSERT INTO \`'.$currenttable.'\` VALUES " > '. $target_sql_file);
-		$said=@exec('echo "\n SET FOREIGN_KEY_CHECKS = 1; \n"   >'. $target_sql_file);
+		$said=@exec('cat ../het2_rev5-6-'.$db_target.'.sql  | grep "INSERT INTO \`'.$currenttable.'\` VALUES " >> '. $target_sql_file);
+		$said=@exec('echo "\n SET FOREIGN_KEY_CHECKS = 1; \n"   >>'. $target_sql_file);
 
 		
 		say($colors, "   inserted:", $said); 
 
-} //end foearch 
+} //end foreach 
+
+
+
+#
+# Produce Mirror Create Statements
+# 
+
+if(!file_exists("database/creates") ) {
+	mkdir("database/creates");
+}
+if(!file_exists("database/creates/".$db_target) ) {
+	mkdir("database/creates/".$db_target);
+}
+foreach ($table_array as $key => $value) {
+		// DB::schema()->create('users', function($table)
+		// {
+		//     $table->increments('id');
+		//     $table->string('email')->unique(); "
+		//     $table->timestamps();
+		// });
+
+		$currenttable = $value;    // '.$currenttable.'
+		$sql = "'SHOW CREATE TABLE `$currenttable`'";
+		#cat ../het2_rev5-6-very-small.sql  | grep "INSERT INTO \`daily_log_progress_comments\` VALUES " > database/creates/very/daily_log_comments.sql
+	    
+		$target_sql_file = 'database/creates/'.$db_target.'/'.$currenttable.'.sql';
+	    say($colors, "Tablefile:", $target_sql_file); 	
+		
+		#  cat ../het2_rev5-6-small.sql  | grep "CREATE " | cut -c-100 
+		# 'SHOW CREATE TABLE people;' > "people_create.sql"
+		# mysql -A -uroot -ptoor het2 -e 'SHOW CREATE TABLE people;' > "people_create.sql"
+
+		$said=@exec('touch '. $target_sql_file);
+
+		$said=@exec('echo "\n SET FOREIGN_KEY_CHECKS = 0; \n"   >'. $target_sql_file);
+		$said=@exec('echo "\n DROP TABLE IF EXISTS  \`'.$currenttable.'\`; \n"   >>'. $target_sql_file);
+		$said=@exec('mysql -A -u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -D'.$DB_DATABASE.' -e '.$sql.' >> '. $target_sql_file);
+		$said=@exec('echo "; \n SET FOREIGN_KEY_CHECKS = 1; \n"   >>'. $target_sql_file);
+
+		//Clean extra fields
+		# Protect Name
+		# ./replaceinfile  '`vaccine_types' '`protected_vaccine_types' database/creates/small/vaccine_types.sql   
+		$said=@exec("./replaceinfile  '`$currenttable' '`protected_$currenttable' $target_sql_file");
+		say($colors, "\t"."./replaceinfile  '`$currenttable' '`protected_$currenttable' $target_sql_file",'');
+
+		    
+		# Delete Name
+		# ./replaceinfile  'vaccine_types' ' ' database/creates/small/vaccine_types.sql
+		$said=@exec("./replaceinfile  '$currenttable' ' ' $target_sql_file");
+		
+		# Recover Name
+		# ./replaceinfile  '`protected_ ' '`protected_vaccine_types' database/creates/small/vaccine_types.sql
+		$said=@exec("./replaceinfile  '`protected_ ' '`$currenttable' $target_sql_file");
+		
+		# Remove Headers Table	Create Table
+		# ./replaceinfile  'Table	Create Table' '`protected_vaccine_types' database/creates/small/vaccine_types.sql
+		$said=@exec("./replaceinfile  'Table	Create Table' ' ' $target_sql_file");
+
+		# Change \n to real new lines
+		# ./replaceinfile  '\\n' "\n" database/creates/small/vaccine_types.sql
+		$said=@exec("./replaceinfile  '\\\\n' \"\\n\" $target_sql_file");
+
+
+		# Indent create correctly
+		# ./replaceinfile  '\tCREATE' " CREATE" database/creates/small/academic_alert_conditions.sql
+		$said=@exec("./replaceinfile  '\\tCREATE' \"CREATE\" $target_sql_file");
+
+
+
+		// $said=@shell_exec("cat $target_sql_file");	
+	 	// 	say($colors, "Cat:", $said); 	
+ 		// 	dd("die");
+		say($colors, "   inserted create stmnt:", $said); 
+
+} //end foreach 
+ 
 
 $endtime = Carbon::now();
 

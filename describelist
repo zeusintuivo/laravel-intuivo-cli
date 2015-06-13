@@ -31,9 +31,15 @@ done <<< "$THISOUTPUT"
 #    echo "-- $THISCONNECTOR --"
 #exit
 
+THISOUTPUT="$(php 'mysql_table')"
+THISSCHEMA=""
 
+while read -r line; do
+    #echo "... $line ..."
+    THISSCHEMA=$line
+done <<< "$THISOUTPUT"
 
-THISSQL="SELECT column_name FROM information_schema.columns WHERE table_name='${TABLE}';";
+THISSQL="SELECT column_name FROM information_schema.columns WHERE table_name='${TABLE}' AND table_schema='${THISSCHEMA}';";
 
 
 # No coloring for this
@@ -42,7 +48,7 @@ THISSQL="SELECT column_name FROM information_schema.columns WHERE table_name='${
 
 echo "~"; 
 
-mysql  $THISCONNECTOR -B -e "$THISSQL"
+mysql -A  $THISCONNECTOR -B -s -e "$THISSQL"
 
 echo "~"; 
 

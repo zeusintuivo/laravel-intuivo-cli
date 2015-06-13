@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+#bash shell script check input argument
+if [ -z "$1" ]
+  then
+  	echo " "
+    echo "Missing 1st argument "
+    echo " "
+	echo "Sample Usage:    - expects three arguments "
+	echo " "
+	echo "    ./replace   seek_this      replaced_it_with    file_to_replace_in"
+	echo "    ";
+	exit
+fi
+
+if [ -z "$2" ]
+  then
+    echo "Missing 2nd argument "
+    echo " "
+	echo "Sample Usage:    - expects three arguments "
+	echo " "
+	echo "    ./replace   seek_this      replaced_it_with    file_to_replace_in"
+	echo "    ";
+	exit
+fi
+
+if [ -z "$3" ]
+  then
+    echo "Missing 3rd argument "
+    echo " "
+	echo "Sample Usage:    - expects three arguments "
+	echo " "
+	echo "    ./replace   seek_this      replaced_it_with    file_to_replace_in"
+	echo "    ";
+	exit
+fi
+
+SEEKING="$1";
+IMPLACING="$2";
+FILE="$3";
+
+#echo $0=./replace
+
+
+red=`tput setaf 1`
+cyan=`tput setaf 6`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+echo "   ";
+echo "${reset} ${green} Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ack "
+echo "${reset} ${green} Replacing ${reset} $SEEKING ${green} for ${reset} $IMPLACING  ${green} with Sed." 
+echo "${green} ${red} WARNING INSIDE WINDOWS Sed locks you out of your file, and the solution is that you have to recreate it."
+echo "   ";
+echo "${cyan}  ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
+echo "   ";
+ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs "$SEEKING" "$FILE" --print0 | xargs -0 sed  -i  -e s/"$SEEKING"/"$IMPLACING"/g 
+#echo "    ";

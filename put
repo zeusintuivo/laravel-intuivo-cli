@@ -9,13 +9,13 @@ cd "$(dirname "$0")"
 
 #add
 echo
-echo "=== Add . ===";
+echo -e "\\033[38;5;93m === Add . === \\033[38;5;123m ";
 echo
 git add .;
 
 #status
 echo
-echo "=== Status ===";
+echo -e "\\033[38;5;93m === Status === \\033[38;5;123m";
 echo
 git status;
 echo
@@ -23,21 +23,21 @@ echo
 #commit
 OPTIONS="$@";
 echo
-echo "=== commit -am $OPTIONS ===";
+echo -e "\\033[38;5;93m === commit -am $OPTIONS === \\033[38;5;123m";
 echo
 git commit -am "$OPTIONS";
 echo
 
 #pull
 echo
-echo "=== Pull ===";
+echo -e "\\033[38;5;93m === Pull === \\033[38;5;123m";
 echo
 php "pull"  
 echo
 
 #push 
 echo
-echo "=== Push ===";
+echo -e "\\033[38;5;93m === Push === \\033[38;5;123m";
 echo
 php "push"
 echo

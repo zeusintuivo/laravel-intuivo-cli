@@ -2,13 +2,21 @@
 <?php
 # @author Jesus Alcaraz <jesus@gammapartners.com>
 #
-
 $updatemecurrentbranch = exec('git rev-parse --abbrev-ref HEAD');
 
+# Before Loading anything Check Arguments Passed
+# Get argv 
+
+if (!isset($argv) || !isset($argv[1])  ) {
+	$msg = 'Updating branch '.$updatemecurrentbranch.' with Master branch. Adding and commiting beforehand.';
+} else {
+	$argv[0] = "update ";
+	$msg = implode(" ", $argv);
+}
 
 #add
 echo "\n";
-echo "=== Add . ===\n";
+echo "\033[38;5;27m === Add .  ===\n \033[38;5;214m";
 echo "\n";
 $said = exec('git add . ');
 echo $said ."\n";
@@ -16,16 +24,16 @@ echo "\n";
 
 #commit
 echo "\n";
-echo "=== commit -am 'Updating branch $updatemecurrentbranch with Master branch. Adding and commiting beforehand.' ===\n";
+echo "\033[38;5;27m === commit -am ".'"'. $msg . '"'. "   ===\n \033[38;5;214m";
 echo "\n";
-$said = exec('git commit -am "Updating branch '.$updatemecurrentbranch.' with Master branch. Adding and commiting beforehand."');
+$said = exec('git commit -am "'.$msg .'"' );
 echo $said ."\n";
 echo "\n";
 
 
 #pull
 echo "\n";
-echo "=== Pull ===";
+echo "\033[38;5;27m === Pull  ===\n \033[38;5;214m";
 echo "\n";
 $said = exec('./pull');
 echo $said ."\n";
@@ -33,7 +41,7 @@ echo "\n";
 
 #push 
 echo "\n";
-echo "=== Push origin $updatemecurrentbranch ===\n";
+echo "\033[38;5;27m === Push origin $updatemecurrentbranch  ===\n \033[38;5;214m";
 echo "\n";
 $said = exec('git push origin '.$updatemecurrentbranch);
 echo $said ."\n";
@@ -41,7 +49,7 @@ echo "\n";
 
 #master
 echo "\n";
-echo "=== Master ===\n";
+echo "\033[38;5;27m === Master  ===\n \033[38;5;214m";
 echo "\n";
 $said = exec('./master');
 echo $said ."\n";
@@ -49,7 +57,7 @@ echo "\n";
 
 #pull
 echo "\n";
-echo "=== Pull ===";
+echo "\033[38;5;27m === Pull  ===\n \033[38;5;214m";
 echo "\n";
 $said = exec('./pull');
 echo $said ."\n";
@@ -57,7 +65,7 @@ echo "\n";
 
 #branch
 echo "\n";
-echo "=== Branch back $updatemecurrentbranch ===\n";
+echo "\033[38;5;27m === Branch back $updatemecurrentbranch  ===\n \033[38;5;214m";
 echo "\n";
 $said = exec('./branch '.$updatemecurrentbranch);
 echo $said ."\n";
@@ -65,7 +73,7 @@ echo "\n";
 
 #merge
 echo "\n";
-echo "=== Merge Master Here ===";
+echo "\033[38;5;27m === Merge Master Here  ===\n \033[38;5;214m";
 echo "\n";
 $said = exec('./merge master');
 echo $said ."\n";

@@ -137,6 +137,10 @@ $output = new ConsoleOutput();
 #
 //Create dirs incase they don't exist
 
+if(!file_exists("database/inserts") ) {
+	mkdir("database/inserts");
+}
+
 if(!file_exists("database/inserts/".$db_target) ) {
 	mkdir("database/inserts/".$db_target);
 }

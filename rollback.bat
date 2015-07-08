@@ -1,3 +1,2 @@
 @ECHO OFF
-
-php 'artisan' "migrate:rollback"
+php "artisan" "migrate:rollback"

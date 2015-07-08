@@ -2,6 +2,7 @@
 
 sudo chmod +x add 
 sudo chmod +x artisan
+sudo chmod +x artisan.sh
 sudo chmod +x autoload
 sudo chmod +x branch
 sudo chmod +x branches
@@ -11,7 +12,10 @@ sudo chmod +x commit
 sudo chmod +x controller
 sudo chmod +x colorlist
 sudo chmod +x count 
+sudo chmod +x countlist 
+sudo chmod +x countalltables 
 sudo chmod +x dbmigrate
+sudo chmod +x delete
 sudo chmod +x describe
 sudo chmod +x describelist
 sudo chmod +x dump
@@ -23,6 +27,7 @@ sudo chmod +x filelastestchanges
 sudo chmod +x fileparticipation
 sudo chmod +x fix_linux_permissions.sh
 sudo chmod +x find
+sudo chmod +x finish
 sudo chmod +x findinfile
 sudo chmod +x forcepull
 sudo chmod +x frameworkload
@@ -36,6 +41,7 @@ sudo chmod +x list
 sudo chmod +x load_env
 sudo chmod +x load_all_sps
 sudo chmod +x load_insert
+sudo chmod +x locate
 sudo chmod +x makeseeds
 sudo chmod +x master
 sudo chmod +x merge

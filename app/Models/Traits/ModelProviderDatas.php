@@ -155,6 +155,7 @@ trait ModelProviderDatas {
         //
         $this->alert_type_ids               =(Param::arrayByTypeLongerName('alert_type_id'));
         $this->category_ids                 =(Param::arrayByTypeLongerName('category_id'));
+        $this->bmi_status_ids               =(Param::arrayByTypeLongerName('bmi_status_id'));
         $this->daily_ids                    =(Param::arrayByTypeLongerName('daily_id'));
         $this->daily_log_comment_type_ids   =(Param::arrayByTypeLongerName('daily_log_comment_type_id'));
         $this->dailylog_comment_desc_ids    =(Param::arrayByTypeLongerName('daily_log_comment_type_id', 'type', 'longer_name'));
@@ -221,25 +222,25 @@ trait ModelProviderDatas {
         //
         // Person Load Arrays
         //
-        $this->people_ids        = Person::lists('id');
-        $this->person_last_id    = last(Person::lists('id'));
-        $this->person_first_id   = Person::first()->id;
+        $this->people_ids        = Person::select('id')->where('id','>',2000)->orderBy('id','asc')->take(1000)->lists('id');
+        $this->person_last_id    = last($this->people_ids);
+        $this->person_first_id   = $this->people_ids[0];
 
         //For nurse, doctor, developer, admin, user, 
         $this->user_ids = [1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011];
 
         //older than 39 
-        $this->older_ids         = Person::where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',999)->lists('id');
-        $this->provider_last_id  = Person::where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',999)->orderBy('id','desc')->take(1)->lists('id')[0];
-        $this->provider_first_id = Person::where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',999)->orderBy('id','asc')->take(1)->lists('id')[0];
+        $this->older_ids         = Person::select('id')->where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',2000)->take(1000)->lists('id');
+        $this->provider_last_id  = Person::select('id')->where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',2000)->orderBy('id','desc')->take(1)->lists('id')[0];
+        $this->provider_first_id = Person::select('id')->where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',2000)->orderBy('id','asc')->take(1)->lists('id')[0];
         
         $this->given_by_ids      =  $this->older_ids;
         $this->principal_ids     =  $this->older_ids;
-        
+                     
         //younger than 18 
-        $this->patient_ids       = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->lists('id');
-        $this->patient_last_id   = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->orderBy('id','desc')->take(1)->lists('id')[0];
-        $this->patient_first_id  = Person::where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',999)->orderBy('id','asc')->take(1)->lists('id')[0];
+        $this->patient_ids       = Person::select('id')->where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',2000)->take(1000)->lists('id');
+        $this->patient_last_id   = Person::select('id')->where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',2000)->orderBy('id','desc')->take(1)->lists('id')[0];
+        $this->patient_first_id  = Person::select('id')->where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',2000)->orderBy('id','asc')->take(1)->lists('id')[0];
 
 
     }
@@ -312,6 +313,7 @@ trait ModelProviderDatas {
         //  Params Random Pick One
         //
         $this->alert_type_id                  = array_rand($this->alert_type_ids);
+        $this->bmi_status_id                  = array_rand($this->bmi_status_ids);
         $this->category_id                    = array_rand($this->category_ids);
         $this->daily_id                       = array_rand($this->daily_ids);
         $this->daily_log_comment_type_id      = array_rand($this->daily_log_comment_type_ids);
@@ -386,7 +388,7 @@ trait ModelProviderDatas {
         $this->printed_by_id = $this->faker->randomElement($this->user_ids);
         
         // $d->toDateTimeString());    
-        $this->open_at       = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-1 years',  $endDate = 'now')))->first());
+        $this->open_at       = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-1 years',   $endDate = 'now')))->first());
         $this->closed_at     = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-3 months',  $endDate = 'now')))->first());
         $this->printed_at    = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-6 months',  $endDate = 'now')))->first());
 

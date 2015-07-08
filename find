@@ -19,8 +19,20 @@ SEEKING="$1";
 
 #echo $0=./replace
 
-echo "Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ack "
-echo "Finding $SEEKING " 
-echo " "
-ack  --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs --ignore-dir=app/Stubs "$SEEKING" 
-echo " "
+
+red=`tput setaf 1`
+cyan=`tput setaf 6`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+echo "   ";
+# echo "${reset} ${green} Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ack  "
+echo "${reset} ${green} Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ag --Silver Searcher- "
+# echo "${reset} ${green} Finding ${reset} $SEEKING ${green}  with Ack." 
+echo "${reset} ${green} Finding ${reset} $SEEKING ${green}  with Ag." 
+echo "   ";
+echo "${cyan}  ag  --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" "
+# echo "${cyan}  ack  --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" "
+echo "   ";
+               ag  --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs --ignore-dir=app/Stubs "$SEEKING" 
+               # ack  --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs --ignore-dir=app/Stubs "$SEEKING" 

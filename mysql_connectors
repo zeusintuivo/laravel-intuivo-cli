@@ -8,7 +8,7 @@
 include('load_env');
 
 # construct command to execute
-$command = '-u'.$DB_USERNAME.' -p'.$DB_PASSWORD.' -D'.$DB_DATABASE;
+$command = '-u '.$DB_USERNAME.' -p'.$DB_PASSWORD.' -D '.$DB_DATABASE;
 
 #Colors reference
 #Light Gray 0;37 

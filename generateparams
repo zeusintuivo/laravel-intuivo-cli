@@ -24,7 +24,7 @@ if (!isset($argv) || !isset($argv[1])) {
 
 } 
 // $sql = DB::unprepared(File::get($script_name));
-$said=@exec('phpunit /home/jesusgamma/Sites/ph20/tests/migration/Param/Param/params_seed_test.php');
+$said=@exec('phpunit tests/migration/Param/Param/params_seed_test.php');
 include('generatebase');
 
 
@@ -190,9 +190,9 @@ foreach ($types as $key => $value) {
 			// $table->foreign('view_group_id')->references('id')->on('params');
 			
 			$table->string('display_name', 120)->index()->nullable();//EXAMPLE TEXAS. DISPLAY is TX Description is TEXAS
-			$table->integer('numeric_value')->default(0);//PARAMS like Roles will have a numeric value to Address which is more valueable
+			$table->integer('numeric_value')->unsigned()->default(0);//PARAMS like Roles will have a numeric value to Address which is more valueable
 			
-			$table->string('shorter_name', 5)->index()->nullable(); //EXAMPLE TX, US, OR 
+			$table->string('shorter_name', 7)->index()->nullable(); //EXAMPLE TX, US, OR 
 			$table->string('longer_name', 255)->index()->nullable(); //EXAMPLE TEXAS. DISPLAY is TX Description is TEXAS
 		
 			$table->integer('display_order'); //Order number is in relationship to its type only 

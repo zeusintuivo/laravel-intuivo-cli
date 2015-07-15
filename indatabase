@@ -22,6 +22,9 @@ command -v mysql >/dev/null 2>&1 || { echo >&2 "I require mysql but it's not ins
 #    altsql $THISCONNECTOR;
 #    exit 0;
 #fi
+
+
+
 if hash rlwrap 2>/dev/null; then
 	echo "
 	rlwrap -a -p'RED' --prompt-colour='1;34' mysql -A ${THISCONNECTOR} --prompt=\"\\o/\\w \r:\\m\\P \\u[\\d]>\\_ \n\"

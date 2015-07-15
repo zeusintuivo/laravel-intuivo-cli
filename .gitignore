@@ -4,6 +4,7 @@
 /.idea
 /.settings
 /.trace
+/.edi
 /storage/logs
 /storage/debugbar
 /database/inserts
@@ -13,6 +14,7 @@ bower_components/
 .idea/
 .settings/
 .trace/
+.edi/
 storage/logs/
 storage/debugbar/
 database/inserts/

@@ -29,49 +29,49 @@ trait ModelProviderDatas {
     #
     #  Declare Locations Random
     #
-    private $countries          ;    
-    private $states             ;       
-    private $counties           ;     
-    private $cities             ;       
-    private $providences        ;  
+    private $countries          ;
+    private $states             ;
+    private $counties           ;
+    private $cities             ;
+    private $providences        ;
     private $jurisdictions      ;
-    private $districts          ;    
-   
-    #  
-    # people  
-    #  
+    private $districts          ;
+
+    #
+    # people
+    #
     private $student_ids        ;
     private $staff_ids          ;
 
     private $people_id          ;
     private $people_ids         ;
     private $person_last_id     ;
-    private $person_first_id    ;    
-  
+    private $person_first_id    ;
+
     private $open_by_id         ;
     private $open_at            ;
     private $closed_by_id       ;
     private $closed_at          ;
     private $printed_by_id      ;
     private $printed_at         ;
-  
-    #older than 39   
+
+    #older than 39
     private $user_ids           ;
     private $older_ids          ;
-  
+
     private $principal_id       ;
     private $principal_ids      ;
-  
+
     private $provider_id        ;
     private $provider_last_id   ;
     private $provider_first_id  ;
-      
+
     private $given_by_id        ;
     private $given_by           ;
     private $acronym            ;
     private $given_at           ;
-      
-    #younger than 18  
+
+    #younger than 18
     private $patient_id         ;
     private $patient_ids        ;
     private $patient_last_id    ;
@@ -118,7 +118,7 @@ trait ModelProviderDatas {
     private $vaccine_last_id    ;
     private $vaccine_first_id   ;
 
-    # 
+    #
     # other
     #
     private $password           ;
@@ -176,13 +176,13 @@ trait ModelProviderDatas {
         $this->medication_category_ids      =(Param::arrayByTypeLongerName('medication_category_id'));
         $this->medication_name_ids          =(Param::arrayByTypeLongerName('medication_name_id'));
         $this->medication_type_ids          =(Param::arrayByTypeLongerName('medication_type_id'));
-        
+
         $this->health_alert_condition_ids   =(Param::arrayByTypeLongerName('health_alert_condition_id'));
         $this->allergy_alert_condition_ids  =(Param::arrayByTypeLongerName('allergy_alert_condition_id'));
         $this->chronic_alert_condition_ids  =(Param::arrayByTypeLongerName('chronic_alert_condition_id'));
         $this->home_alert_condition_ids     =(Param::arrayByTypeLongerName('home_alert_condition_id'));
-        $this->academic_alert_condition_ids =(Param::arrayByTypeLongerName('academic_alert_condition_id')); 
-        
+        $this->academic_alert_condition_ids =(Param::arrayByTypeLongerName('academic_alert_condition_id'));
+
         $this->month_ids                    =(Param::arrayByTypeLongerName('month_id'));
         $this->nature_of_injury_ids         =(Param::arrayByTypeLongerName('nature_of_injury_id'));
         $this->new_category_ids             =(Param::arrayByTypeLongerName('new_category_id'));
@@ -214,7 +214,7 @@ trait ModelProviderDatas {
         $this->user_type_ids                =(Param::arrayByTypeLongerName('user_type_id'));
         $this->vaccine_log_comment_type_ids =(Param::arrayByTypeLongerName('vaccine_log_comment_type_id'));
         $this->vaccine_type_ids             =(Param::arrayByTypeLongerName('vaccine_type_id'));
-        $this->weekday_ids                  =(Param::arrayByTypeLongerName('weekday_id')); 
+        $this->weekday_ids                  =(Param::arrayByTypeLongerName('weekday_id'));
 
     }
 
@@ -222,25 +222,25 @@ trait ModelProviderDatas {
         //
         // Person Load Arrays
         //
-        $this->people_ids        = Person::select('id')->where('id','>',2000)->orderBy('id','asc')->take(1000)->lists('id');
+        $this->people_ids        = Person::select('id')->where('id','>',1013)->orderBy('id','asc')->take(1000)->lists('id');
         $this->person_last_id    = last($this->people_ids);
         $this->person_first_id   = $this->people_ids[0];
 
-        //For nurse, doctor, developer, admin, user, 
+        //For nurse, doctor, developer, admin, user,
         $this->user_ids = [1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011];
 
-        //older than 39 
-        $this->older_ids         = Person::select('id')->where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',2000)->take(1000)->lists('id');
-        $this->provider_last_id  = Person::select('id')->where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',2000)->orderBy('id','desc')->take(1)->lists('id')[0];
-        $this->provider_first_id = Person::select('id')->where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',2000)->orderBy('id','asc')->take(1)->lists('id')[0];
-        
+        //older than 39
+        $this->older_ids         = Person::select('id')->where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',1013)->take(1000)->lists('id');
+        $this->provider_last_id  = Person::select('id')->where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',1013)->orderBy('id','desc')->take(1)->lists('id')[0];
+        $this->provider_first_id = Person::select('id')->where('dob','<', Carbon\Carbon::createFromDate(1975, 5, 21))->where('id','>',1013)->orderBy('id','asc')->take(1)->lists('id')[0];
+
         $this->given_by_ids      =  $this->older_ids;
         $this->principal_ids     =  $this->older_ids;
-                     
-        //younger than 18 
-        $this->patient_ids       = Person::select('id')->where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',2000)->take(1000)->lists('id');
-        $this->patient_last_id   = Person::select('id')->where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',2000)->orderBy('id','desc')->take(1)->lists('id')[0];
-        $this->patient_first_id  = Person::select('id')->where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',2000)->orderBy('id','asc')->take(1)->lists('id')[0];
+
+        //younger than 18
+        $this->patient_ids       = Person::select('id')->where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',1013)->take(1000)->lists('id');
+        $this->patient_last_id   = Person::select('id')->where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',1013)->orderBy('id','desc')->take(1)->lists('id')[0];
+        $this->patient_first_id  = Person::select('id')->where('dob','>', Carbon\Carbon::createFromDate(1996, 5, 21))->where('id','>',1013)->orderBy('id','asc')->take(1)->lists('id')[0];
 
 
     }
@@ -248,17 +248,17 @@ trait ModelProviderDatas {
     private function requireStudents() {
         $this->student_ids       = (new Collection(  DB::select('call  getStudents();') ))->lists('first_name','id');
     }
-    
+
     private function requireStaff() {
         $this->staff_ids       = (new Collection(  DB::select('call  getStaff();') ))->lists('first_name','id');
     }
 
     private function requireSchools() {
-        $this->school_ids        = School::lists('id');   
+        $this->school_ids        = School::lists('id');
     }
 
     private function requireSchoolYears() {
-        $this->school_year_ids        = SchoolYear::lists('id');   
+        $this->school_year_ids        = SchoolYear::lists('id');
     }
 
     private function requireDailyLogs() {
@@ -267,7 +267,7 @@ trait ModelProviderDatas {
         //
         $this->daily_log_ids      = DailyLog::lists('id');
         $this->daily_log_last_id  = last(DailyLog::lists('id'));
-        $this->daily_log_first_id = DailyLog::first()->id; 
+        $this->daily_log_first_id = DailyLog::first()->id;
     }
     private function requireMedLogs() {
         //
@@ -275,7 +275,7 @@ trait ModelProviderDatas {
         //
         $this->med_log_ids      = MedLog::lists('id');
         $this->med_log_last_id  = last(MedLog::lists('id'));
-        $this->med_log_first_id = MedLog::first()->id; 
+        $this->med_log_first_id = MedLog::first()->id;
     }
     private function requireInsurances() {
         //
@@ -283,7 +283,7 @@ trait ModelProviderDatas {
         //
         $this->insurance_ids      = Insurance::lists('id');
         $this->insurance_last_id  = last(Insurance::lists('id'));
-        $this->insurance_first_id = Insurance::first()->id; 
+        $this->insurance_first_id = Insurance::first()->id;
     }
     private function requireVaccines() {
         //
@@ -291,7 +291,7 @@ trait ModelProviderDatas {
         //
         $this->vaccine_ids      = VaccineLog::lists('id');
         $this->vaccine_last_id  = last(VaccineLog::lists('id'));
-        $this->vaccine_first_id = VaccineLog::first()->id; 
+        $this->vaccine_first_id = VaccineLog::first()->id;
     }
 
     private function pickLocations() {
@@ -302,7 +302,7 @@ trait ModelProviderDatas {
         $this->state_id           = array_rand( $this->states );
         $this->county_id          = array_rand( $this->counties );
         $this->city_id            = array_rand( $this->cities );
-        //TODO for now these are null 
+        //TODO for now these are null
         // $this->providence_id   = array_rand( $this->providences);
         // $this->jurisdiction_id = array_rand( $this->jurisdictions);
         $this->district_id        = array_rand( $this->districts);
@@ -317,12 +317,12 @@ trait ModelProviderDatas {
         $this->category_id                    = array_rand($this->category_ids);
         $this->daily_id                       = array_rand($this->daily_ids);
         $this->daily_log_comment_type_id      = array_rand($this->daily_log_comment_type_ids);
-        
+
         $this->health_alert_condition_id      = array_rand($this->health_alert_condition_ids);
         $this->allergy_alert_condition_id     = array_rand($this->allergy_alert_condition_ids);
         $this->chronic_alert_condition_id     = array_rand($this->chronic_alert_condition_ids);
         $this->home_alert_condition_id        = array_rand($this->home_alert_condition_ids);
-        $this->academic_alert_condition_id    = array_rand($this->academic_alert_condition_ids);       
+        $this->academic_alert_condition_id    = array_rand($this->academic_alert_condition_ids);
 
         $this->dose_id                        = array_rand($this->dose_ids);
         $this->dose_type_id                   = array_rand($this->dose_type_ids);
@@ -373,28 +373,28 @@ trait ModelProviderDatas {
         $this->vaccine_log_comment_type_id    = array_rand($this->vaccine_log_comment_type_ids);
         $this->vaccine_type_id                = array_rand($this->vaccine_type_ids);
         $this->weekday_id                     = array_rand($this->weekday_ids);
- 
-    } 
+
+    }
     private function pickPeople() {
         //
         //  People Random Pick One
         //
 
-        //Get a random number for a  person             
+        //Get a random number for a  person
         $this->patient_id    = $this->faker->randomElement($this->patient_ids);
 
         $this->open_by_id    = $this->faker->randomElement($this->user_ids);
         $this->closed_by_id  = $this->faker->randomElement($this->user_ids);
         $this->printed_by_id = $this->faker->randomElement($this->user_ids);
-        
-        // $d->toDateTimeString());    
+
+        // $d->toDateTimeString());
         $this->open_at       = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-1 years',   $endDate = 'now')))->first());
         $this->closed_at     = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-3 months',  $endDate = 'now')))->first());
         $this->printed_at    = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-6 months',  $endDate = 'now')))->first());
 
         $this->provider_id   = $this->faker->randomElement($this->user_ids);
         $this->principal_id  = $this->faker->randomElement($this->older_ids);
-        
+
         $this->given_by_id   = $this->faker->randomElement($this->user_ids);
         $this->given_by      = Person::find($this->given_by_id);
         $this->given_at      = Carbon\Carbon::parse((new Collection(  $this->faker->dateTimeBetween($startDate = '-1 months',  $endDate = 'now')))->first());
@@ -408,31 +408,31 @@ trait ModelProviderDatas {
 
     }
     private function pickSchools() {
-        $this->school_id     =  $this->faker->randomElement($this->school_ids);   
-    }        
+        $this->school_id     =  $this->faker->randomElement($this->school_ids);
+    }
     private function pickStudents() {
-        $this->student_id     =  $this->faker->randomElement($this->student_ids);   
-    }           
+        $this->student_id     =  $this->faker->randomElement($this->student_ids);
+    }
     private function pickStaff() {
-        $this->staff_id     =  $this->faker->randomElement($this->staff_ids);   
-    }        
+        $this->staff_id     =  $this->faker->randomElement($this->staff_ids);
+    }
     private function pickSchoolYears() {
-        $this->school_year_id     =  $this->faker->randomElement($this->school_year_ids);   
-    }    
+        $this->school_year_id     =  $this->faker->randomElement($this->school_year_ids);
+    }
     private function pickDailyLogs() {
-        $this->daily_log_id     =  $this->faker->randomElement($this->daily_log_ids);  
+        $this->daily_log_id     =  $this->faker->randomElement($this->daily_log_ids);
 
-    }  
+    }
     private function pickMedLogs() {
-        $this->med_log_id     =  $this->faker->randomElement($this->med_log_ids);  
+        $this->med_log_id     =  $this->faker->randomElement($this->med_log_ids);
 
-    }   
+    }
     private function pickInsurances() {
-        $this->insurance_id     =  $this->faker->randomElement($this->insurance_ids);  
+        $this->insurance_id     =  $this->faker->randomElement($this->insurance_ids);
 
-    }   
+    }
     private function pickVaccines() {
-        $this->vaccine_id     =  $this->faker->randomElement($this->vaccine_ids);  
+        $this->vaccine_id     =  $this->faker->randomElement($this->vaccine_ids);
 
     }
 } //end trait

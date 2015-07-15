@@ -23,6 +23,7 @@ sudo chmod +x dumpin
 sudo chmod +x dumpout
 sudo chmod +x duplicatetosmall
 sudo chmod +x duplicatetovery
+sudo chmod +x filecount
 sudo chmod +x filelastestchanges
 sudo chmod +x fileparticipation
 sudo chmod +x fix_linux_permissions.sh

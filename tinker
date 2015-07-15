@@ -1,6 +1,102 @@
 #!/usr/bin/env bash
 
 # set working directory as the scripts location during the execution of script 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")";
+
+echo "use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+use Illuminate\Database\Eloquent\Collection;
+use Carbon;
+use Faker;
+use DB;
+
+use PHIWeb\Models\Param\Location;
+use PHIWeb\Models\Param\Param;
+use PHIWeb\Models\Person\Person;
+use PHIWeb\Models\DailyLog\DailyLog;
+use PHIWeb\Models\Organization\School;
+use PHIWeb\Models\School\SchoolYear;
+use PHIWeb\Models\Organization\Insurance;
+use PHIWeb\Models\Immunization\VaccineLog;
+
+use PHIWeb\Models\News\NewsComment;
+use PHIWeb\Models\News\NewsThread;
+use PHIWeb\Models\News\NewsGroup;
+use PHIWeb\Models\News\NewsCategory;
+
+
+use PHIWeb\Models\DailyLog\DailyLog;
+use PHIWeb\Models\DailyLog\DailyLogProgress;
+use PHIWeb\Models\DailyLog\DailyLogStatus;
+use PHIWeb\Models\DailyLog\DailyLogProgressComment;
+use PHIWeb\Models\DailyLog\DailyLogNotif;
+use PHIWeb\Models\DailyLog\DailyLogComment;
+
+
+use PHIWeb\Models\Immunization\VaccineLogComment;
+use PHIWeb\Models\Immunization\VaccineLog;
+
+use PHIWeb\Models\Screen\ScreenHearing;
+use PHIWeb\Models\Screen\ScreenCustom;
+use PHIWeb\Models\Screen\ScreenVision;
+use PHIWeb\Models\Screen\ScreenBmi;
+use PHIWeb\Models\Screen\ScreenScoliosis;
+
+
+use PHIWeb\Models\Person\Person;
+use PHIWeb\Models\Person\PersonEmergencyContact;
+use PHIWeb\Models\Person\PersonInsurance;
+use PHIWeb\Models\Person\PersonRole;
+use PHIWeb\Models\Person\PersonRelative;
+use PHIWeb\Models\Person\PersonPhoto;
+use PHIWeb\Models\Person\PersonAlert;
+use PHIWeb\Models\Person\PersonAddress;
+use PHIWeb\Models\Person\PersonGuardian;
+use PHIWeb\Models\Person\PersonPhone;
+
+
+use PHIWeb\Models\MedLog\MedLogProgress;
+use PHIWeb\Models\MedLog\MedLogComment;
+use PHIWeb\Models\MedLog\MedLog;
+use PHIWeb\Models\MedLog\MedLogMedsGiven;
+use PHIWeb\Models\MedLog\MedLogProgressComment;
+use PHIWeb\Models\MedLog\MedLogScheduleTime;
+use PHIWeb\Models\MedLog\MedLogSchedule;
+
+use PHIWeb\Models\Logger\Logger;
+use PHIWeb\Models\Logger\LoggerComment;
+
+use PHIWeb\Models\Param\InformationSchema;
+use PHIWeb\Models\Param\ExternBmiPercentile;
+use PHIWeb\Models\Param\Location;
+use PHIWeb\Models\Param\Param;
+use PHIWeb\Models\Param\Template;
+use PHIWeb\Models\Param\Role;
+
+
+use PHIWeb\Models\Todo;
+
+use PHIWeb\Models\Organization\School;
+
+use PHIWeb\Models\Organization\InsuranceAddress;
+use PHIWeb\Models\Organization\Insurance;
+
+use PHIWeb\Models\Organization\PEClass;
+use PHIWeb\Models\Organization\Jurisdiction;
+
+use PHIWeb\Models\Organization\OrganizationAddress;
+use PHIWeb\Models\Organization\Organization;
+use PHIWeb\Models\Organization\Member;
+use PHIWeb\Models\School\SchoolYear;
+use PHIWeb\Models\Student\Student;
+use PHIWeb\Models\Student\StudentRecord;
+use PHIWeb\Models\Feature\Excel;
+use PHIWeb\Models\Feature\PDF;
+use PHIWeb\Models\Auth\PasswordReset;
+use PHIWeb\Models\Auth\AngularToken;
+use PHIWeb\Models\Template\MailTemplate;";
+
 
 php "artisan" tinker
+

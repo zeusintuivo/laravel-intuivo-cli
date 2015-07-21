@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # cat testerrors | xclip 
 # cat testerrors | xsel &

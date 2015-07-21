@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 #bash shell script check input argument
 if [ -z "$1" ]

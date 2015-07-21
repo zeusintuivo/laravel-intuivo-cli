@@ -17,13 +17,18 @@
 
 # Before Loading anything Check Arguments Passed
 # Get argv 
-$valid_model_types=[ "nothing", "plain", "simple", "softdelete", "softdeleteparent", "softdeletechild", "pivot"];
+$valid_model_types=[ "nothing", "plain", "simple", "report", "softdelete", "softdeleteparent", "softdeletechild", "pivot"];
 $model_type=$valid_model_types[3];  /// simple|softdelete
 $USAGE = " \033[38;5;226m 
 	Sample Usage:    - expects one or more arguments
 	    call model Person\PersonAddress [optional]
 	    call model Person/PersonAddress [optional]
 	    call model PersonAddress [optional]
+
+	    For reports
+	            model/  modelname                          type    who 
+	    model DailyLog/DailyLog_1015_Report_HealthStudents report staff
+	  ./model DailyLog/DailyLog_1015_Report_HealthStudents report staff
 
 	    [optional] can be:
 
@@ -36,6 +41,11 @@ if (!isset($argv) || !isset($argv[1])) {
 }
 if (isset($argv[2]) ) {
 	$model_type = trim($argv[2]);
+}
+$who = "{{WHO}}";
+
+if (isset($argv[3]) ) {
+	$who = trim($argv[3]);
 }
 include('generatebase');
 
@@ -438,6 +448,137 @@ $stub_file = "app/Stubs/Tests/views/view_test.stub";;
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors);
 */
 
+
+#
+#
+#
+#
+# Trace Folders
+#
+#
+#
+#
+if ($this_is_a_report==1) {
+
+	#controller base
+	$controller_base=".trace/".$filo_number."/-controller-/";
+	$model_base=$controller_base.$file."_Controller.php/method\ @\ ctrlr_".$filo_number."_".$who."_".$unique_report_name_snake."/-model-/";
+	$report_base=$model_base.$file.".php/method\ @\ 1.model_".$filo_number."_".$who."_".$unique_report_name_snake."/-db-/CALL\ final_rpt_".$filo_number."_".$who."_".$unique_report_name_snake;
+
+	# intial folder
+	$command="mkdir -p ".$report_base;
+	$said=@exec('echo "'.$command.'" > .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	$said=@exec($command);
+
+
+
+	# file inside folder so git considers it
+	$command="touch ".$report_base."/result";
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	$said=@exec($command);
+
+
+	# read sp name assinged report
+	$command="find database/sp -name \"".$filo_number."*.*\"";
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	$sp_file=@exec($command);
+
+	$arr = explode("/", $sp_file);
+	// dump($arr);
+	$dordir = $arr[2]."/". $arr[3];
+
+	$command="mkdir -p .trace/".$filo_number."/-sql-/";
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	$said=@exec($command);
+
+	#link report loader sql
+	$target_command = $sp_file;
+		// if (file_exists($target_command)) unlink($target_command);
+	$linkname_command = ".trace/".$filo_number."/-sql-/".$filo_number."_loader.sql";
+
+    $command=("ln -s -T $target_command $linkname_command");
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	// if (!file_exists($linkname_command)) $said=@exec($command);
+	if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
+	
+	#
+	#
+	# 
+	# link report sql work folder
+	#
+	#
+	#
+	$target_command = "database/reports/done/".$dordir."/".$unique_report_name;
+		// if (file_exists($target_command)) unlink($target_command);
+	$linkname_command = ".trace/".$filo_number."/-sql-/sql_work_".$unique_report_name;
+    $command=("ln -s -T $target_command $linkname_command");
+	// symlink($target_command, $linkname_command);
+
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	// if (!file_exists($linkname_command))   $said=@exec($command);
+	if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
+
+	#link controller 
+	$command=("find app/Http/Controllers/ -name \"*".$filo_number."*.*\"");
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	$controller_file=@exec($command);
+	
+	$target_command = "../../../".$controller_file;
+		// if (file_exists($target_command)) unlink($target_command);
+	$linkname_command = $filo_number."_controller.php";
+	$said=@exec('echo "cd '.$controller_base.'" >> .trace_gen');
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo "'.str_repeat("cd ..;", sizeof(explode("/", $controller_base))-1).'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	
+	$current_dir = getcwd();
+	chdir($controller_base);
+	$command=("ln -s -T $target_command $linkname_command");
+	if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
+	// if (!file_exists($linkname_command))  $said=@exec($command);
+	chdir($current_dir);
+
+	#
+	#
+	#
+	#
+	# link model 
+	#
+	#
+	#
+	#
+	$command=("find app/Models/ -name \"*".$filo_number."*.*\"");
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	$model_file=@exec($command);
+
+
+	$target_command = "../../../../../../".$model_file;
+		// if (file_exists($target_command)) unlink($target_command);
+	$linkname_command = $model_base.$filo_number."_model.php";
+	// $said=@exec('echo "cd '.$model_base.'" >> .trace_gen');
+	$command=("ln -s -T $target_command $linkname_command");
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	// $said=@exec('echo "'.str_repeat("cd ..;", sizeof(explode("/", $model_base))-1).'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+
+	// $current_dir = getcwd();
+	// dump($model_base);
+	// chdir($model_base);
+	// $said=@exec('cd '.$model_base);
+	// dd("die");
+    // if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
+	if (!file_exists($linkname_command))  $said=@exec($command);
+	// chdir($current_dir);
+
+}
 
 
 #

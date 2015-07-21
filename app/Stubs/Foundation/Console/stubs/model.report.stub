@@ -1,0 +1,37 @@
+<?php namespace {{appName}}\Models\{{dir}};
+
+use Illuminate\Database\Eloquent\Model;
+
+use DB;
+use Carbon\Carbon;
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{class}} extends Model {
+
+	 /**
+     * TEST URLS: {{dir}}/{{filo}}/date/{{curdate}}//
+     */
+ 
+
+    protected $table = "table_name_{{file_plural_snake}}_changeme";
+
+
+    /**
+     * 
+     * @author {{author}}
+     */
+    public static function model_{{filo_number}}_{{who}}_{{unique_report_name_snake}}($school_id, $school_year_id)
+    {
+    
+        $query = DB::select("CALL final_rpt_{{filo_number}}_{{who}}_{{unique_report_name_snake}}($school_id, $school_year_id);");
+
+        return $query;
+
+    }   
+
+} # end class

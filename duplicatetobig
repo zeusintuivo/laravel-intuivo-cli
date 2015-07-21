@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # 
 # Back to clone using file system, with su user
 # @author Jesus Alcaraz <jesus@gammapartners.com>

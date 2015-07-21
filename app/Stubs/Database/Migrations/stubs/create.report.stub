@@ -1,0 +1,61 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+use PHIWeb\PHIWebMigration;
+use PHIWeb\ExtendedBlueprint;
+
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\Output;
+
+use {{appName}}\Models\{{dir}}\{{file}};
+
+/**
+ * {{description}}
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class Alter{{file_plural}}_Table  extends PHIWebMigration {
+
+	private $rev = '{{version}}';
+	private $currenttable = '{{table}}';
+	/**
+	 * Run the migrations.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function up()
+	{
+		parent::up();
+		
+		$output = new ConsoleOutput();
+
+        $output->writeln('<info>'.$this->currenttable.'</info> migration start.');
+
+		//
+        $this->down();
+		// then create tables 
+		$this->schema->create($this->currenttable, function(ExtendedBlueprint $table)
+		{
+ 
+			//
+		});
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @author {{author}}
+	 * @return void
+	 */
+	public function down()
+	{
+		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+		Schema::dropIfExists($this->currenttable);
+		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+	}
+
+}

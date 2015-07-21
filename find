@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # @author Jesus Alcaraz <jesus@gammapartners.com>
 #
 #bash shell script check input argument

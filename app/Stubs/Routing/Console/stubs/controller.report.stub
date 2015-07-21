@@ -1,0 +1,77 @@
+<?php namespace {{namespace}};
+
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+
+use {{rootNamespace}}Http\Requests;
+use {{rootNamespace}}Http\Controllers\Controller;
+use {{appName}}\Http\Controllers\BaseController;
+
+use Illuminate\Http\Request;
+
+use {{appName}}\Models\{{dir}}\{{file}};
+use {{appName}}\Http\Requests\{{dir}}\Create{{file}}_Request;
+use {{appName}}\Http\Requests\{{dir}}\Delete{{file}}_Request;
+
+use PHIWeb\Http\Controllers\Controller;
+use PHIWeb\Http\Controllers\ReportController;
+
+use PHIWeb\Models\School\SchoolYear;
+use PHIWeb\Models\Organization\School;
+
+/**
+ * {{description}}
+ *
+ * Controller created for PHIWeb
+ *
+ * @route ... reports/{{filo_dir}}/{{filo}}/
+ * @url   ... http://localhost:8000/reports/{{filo_dir}}/{{filo}}/date/{{curdate}}/
+ * @url   ... http://localhost/reports/{{filo_dir}}/{{filo}}/date/{{curdate}}//
+ *
+ * @test  ... reports/{{filo_dir}}/{{filo}}/date/{{curdate}}/
+ *
+ * @author {{author}}
+ * @version {{version}}
+ */
+class {{file}}_Controller extends ReportController {
+
+
+   /**
+     * @route ... reports/{{filo_dir}}/{{unique_report_name}}
+     * @test  ... reports/{{filo_dir}}/{{unique_report_name}}/{{curdate}}/
+     *
+     * @author {{author}}
+     */
+    public function ctrlr_{{filo_number}}_{{who}}_{{unique_report_name_snake}}($date)
+    {
+
+    	
+        $this->getSessionSchoolIDAndYearID();
+        $school_id=$this->school_id; 
+        $school_year_id=$this->school_year_id;
+
+
+        // $school_id =  1001;
+        // $school_year_id = 1000;
+        // $date = date("Y-m-d"); 
+
+        $r = new {{file}}();
+
+        $res = array();
+        $res['description'] = "{{filo_number}} Report {{unique_report_name}} For {{who}} For final_rpt_{{filo_number}}_{{who}}_{{unique_report_name}}.";
+        $res['school_name'] = School::nameByID($school_id);
+        $res['school_year_name'] = SchoolYear::nameByID($school_year_id);
+
+        $res['unique_report_name']  = $r-> model_{{filo_number}}_{{who}}_{{unique_report_name_snake}}($school_id, $school_year_id);
+
+
+        return $res;
+    }
+
+
+} # end class

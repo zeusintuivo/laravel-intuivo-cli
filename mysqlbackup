@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # 
 # Back up all data from mysql directory into target 
 # @author Jesus Alcaraz <jesus@gammapartners.com>

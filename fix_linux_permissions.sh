@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 sudo chmod +x add 
 sudo chmod +x artisan

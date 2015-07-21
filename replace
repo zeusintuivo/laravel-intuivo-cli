@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 #bash shell script check input argument
 if [ -z "$1" ]
@@ -43,8 +43,16 @@ echo "${reset} ${green} Replacing ${reset} $SEEKING ${green} for ${reset} $IMPLA
 echo "${green} ${red} WARNING INSIDE WINDOWS Sed locks you out of your file, and the solution is that you have to recreate the file again."
 echo "   ";
 # echo "${cyan}  ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
-echo "${cyan}  ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
 echo "   ";
 # ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s/"$SEEKING"/"$IMPLACING"/g 
+if [[ $SEEKING == *"/"* ]]
+then
+echo "${cyan}  ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s\"${SEEKING}\"\"${IMPLACING}\"g"
+               ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s"$SEEKING""$IMPLACING"g 
+else
+echo "${cyan}  ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
                ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s/"$SEEKING"/"$IMPLACING"/g 
-#echo "    ";
+fi
+#echo "    ";.
+#./replace /usr/bin/env\ bash  /bin/bash
+#

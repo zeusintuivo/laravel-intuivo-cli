@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # 
 # Restore  all data into root from a created tar file  
 # @author Jesus Alcaraz <jesus@gammapartners.com>

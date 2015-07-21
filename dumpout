@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # @author Jesus Alcaraz <jesus@gammapartners.com>
 #
 # set working directory as the scripts location during the execution of script 

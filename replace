@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
 #bash shell script check input argument
 if [ -z "$1" ]
   then
@@ -24,34 +25,153 @@ if [ -z "$2" ]
 	exit
 fi
 
+bld="\e[1m"     # Bold text.
+bdr="\e[1;31m"  # Bold red text.
+bdg="\e[1;32m"  # Bold green text.
+bdy="\e[1;33m"  # Bold yellow text.
+off="\e[0m"     # Turn off ansi colors.
+
+
+msg_red () {
+    printf "\n${bdr}%s ${off}%s\n" "$@"
+}
+
+
+trap '{ msg_red " KEYBOARD INTERRUPT."; exit 130; }' INT
+
+red=`tput setaf 1`
+cyan=`tput setaf 6`
+yellow=`tput setaf 3`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+SEEKER="./ack";
+IGNORE_COMMAND="ignore";
+
+
+if command -v ag >/dev/null 2>&1; then
+	{
+
+    #msg_green " ag INSTALLED."
+    SEEKER="ag";
+	}
+else 
+	{
+
+	#msg_red " NEED TO INSTALL ag."
+    #msg_red " ENTER SUDO PASSOWRD AND PRESS ENTER."
+	#sudo apt-get install silversearcher-ag -fy 
+	
+	if command -v ack >/dev/null 2>&1; then
+		{
+
+	    #msg_green " ack INSTALLED."
+		SEEKER="ack";
+		}
+	else 
+		{
+
+		#msg_red " NEED TO INSTALL ack."
+    	#msg_red " ENTER SUDO PASSOWRD AND PRESS ENTER."
+		#sudo apt-get install ack-grep -fy 
+
+		ls ./ack  | egrep 'ack' &>/dev/null
+		if [ $? == 0 ]; then
+			{
+
+		    #msg_green " ack INSTALLED."
+			SEEKER="./ack";
+			}
+		else 
+			{
+
+			#msg_red " NEED TO INSTALL ./ack "
+	    	#msg_red " ENTER SUDO PASSOWRD AND PRESS ENTER."
+			# cp ~/bin/ack . 
+
+			if command -v grep >/dev/null 2>&1; then
+				{
+
+			    #msg_green " grep INSTALLED."
+			    SEEKER="grep";
+			    IGNORE_COMMAND="exclude";
+				}
+			else 
+				{
+
+				echo "${green} ${red} CANNOT SEARCH ....MISSING SEARCHER ACK OR  AG OR ./ACK NOR  GREP  ";
+				exit 1;
+		    	#msg_red " NEED TO INSTALL grep."
+				}	
+	 
+			fi
+			}
+		fi
+		}
+	fi
+	}
+fi
+
+REPLACER="sed";
+sed --help | egrep 'sed' &>/dev/null
+if [ $? == 0 ]; then
+	{
+    #msg_green " sed INSTALLED."
+    REPLACER="sed";
+	}
+else 
+	{
+
+	echo "${green} ${red} CANNOT REPLACE ...SED IS MISSING ";
+	exit 1;
+	#msg_red " NEED TO INSTALL sed."
+	}	
+fi
+
 SEEKING="$1";
 IMPLACING="$2";
 
 #echo $0=./replace
 
 
-red=`tput setaf 1`
-cyan=`tput setaf 6`
-green=`tput setaf 2`
-reset=`tput sgr0`
 
 echo "   ";
 # echo "${reset} ${green} Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ack "
-echo "${reset} ${green} Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ag -Silver Searcher- "
+echo "${reset} ${green} Seek ignoring vendor, bower_components, node_modules, storage/debugbar, app/Stub and storage/logs with ${SEEKER} -- "
 # echo "${reset} ${green} Replacing ${reset} $SEEKING ${green} for ${reset} $IMPLACING  ${green} with Sed." 
-echo "${reset} ${green} Replacing ${reset} $SEEKING ${green} for ${reset} $IMPLACING  ${green} with Ag and Sed." 
+echo "${reset} ${green} Replacing ${reset} $SEEKING ${green} for ${reset} $IMPLACING  ${green} with  ${SEEKER} and ${REPLACER}." 
 echo "${green} ${red} WARNING INSIDE WINDOWS Sed locks you out of your file, and the solution is that you have to recreate the file again."
 echo "   ";
 # echo "${cyan}  ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
-echo "   ";
+# echo "${cyan}  ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
+# echo "${cyan}  grep -l --exclude-dir=vendor --exclude-dir=bower_components  --exclude-dir=node_modules --exclude-dir=storage/debugbar  --exclude-dir=storage/logs  --exclude-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
 # ack -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s/"$SEEKING"/"$IMPLACING"/g 
+# ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s/"$SEEKING"/"$IMPLACING"/g 
+# grep -l --exclude-dir=vendor --exclude-dir=bower_components  --exclude-dir=node_modules --exclude-dir=storage/debugbar  --exclude-dir=storage/logs  --exclude-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s/"$SEEKING"/"$IMPLACING"/g 
+
+
+echo " FINDING FIRST:   ";
+echo "${cyan}   ${SEEKER}  --${IGNORE_COMMAND}-dir=vendor --${IGNORE_COMMAND}-dir=bower_components  --${IGNORE_COMMAND}-dir=node_modules --${IGNORE_COMMAND}-dir=storage/debugbar  --${IGNORE_COMMAND}-dir=storage/logs  --${IGNORE_COMMAND}-dir=app/Stubs \"${SEEKING}\" "
+echo "${yellow} ";
+                ${SEEKER}  --${IGNORE_COMMAND}-dir=vendor --${IGNORE_COMMAND}-dir=bower_components  --${IGNORE_COMMAND}-dir=node_modules --${IGNORE_COMMAND}-dir=storage/debugbar  --${IGNORE_COMMAND}-dir=storage/logs  --${IGNORE_COMMAND}-dir=app/Stubs "$SEEKING" 
+                ${SEEKER}  --${IGNORE_COMMAND}-dir=vendor --${IGNORE_COMMAND}-dir=bower_components  --${IGNORE_COMMAND}-dir=node_modules --${IGNORE_COMMAND}-dir=storage/debugbar  --${IGNORE_COMMAND}-dir=storage/logs  --${IGNORE_COMMAND}-dir=app/Stubs "$SEEKING" | egrep "$SEEKING" &>/dev/null
+
+if [ $? == 0 ]; then
+	echo "${green} FOUND !"
+else
+	echo "${red} SORRY NO OCCURENCES FOUND !"
+	exit 0;
+fi	
+
+echo " REPLACING NOW :   ";
+
 if [[ $SEEKING == *"/"* ]]
 then
-echo "${cyan}  ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s\"${SEEKING}\"\"${IMPLACING}\"g"
-               ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s"$SEEKING""$IMPLACING"g 
+echo "${cyan}   ${SEEKER} -l --${IGNORE_COMMAND}-dir=vendor --${IGNORE_COMMAND}-dir=bower_components  --${IGNORE_COMMAND}-dir=node_modules --${IGNORE_COMMAND}-dir=storage/debugbar  --${IGNORE_COMMAND}-dir=storage/logs  --${IGNORE_COMMAND}-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 ${REPLACER}  -i  -e s\"${SEEKING}\"\"${IMPLACING}\"g"
+                ${SEEKER} -l --${IGNORE_COMMAND}-dir=vendor --${IGNORE_COMMAND}-dir=bower_components  --${IGNORE_COMMAND}-dir=node_modules --${IGNORE_COMMAND}-dir=storage/debugbar  --${IGNORE_COMMAND}-dir=storage/logs  --${IGNORE_COMMAND}-dir=app/Stubs "$SEEKING" --print0 | xargs -0 ${REPLACER}  -i  -e s"$SEEKING""$IMPLACING"g 
 else
-echo "${cyan}  ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 sed  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
-               ag -l --ignore-dir=vendor --ignore-dir=bower_components  --ignore-dir=node_modules --ignore-dir=storage/debugbar  --ignore-dir=storage/logs  --ignore-dir=app/Stubs "$SEEKING" --print0 | xargs -0 sed  -i  -e s/"$SEEKING"/"$IMPLACING"/g 
+echo "${cyan}   ${SEEKER} -l --${IGNORE_COMMAND}-dir=vendor --${IGNORE_COMMAND}-dir=bower_components  --${IGNORE_COMMAND}-dir=node_modules --${IGNORE_COMMAND}-dir=storage/debugbar  --${IGNORE_COMMAND}-dir=storage/logs  --${IGNORE_COMMAND}-dir=app/Stubs \"${SEEKING}\" --print0 | xargs -0 ${REPLACER}  -i  -e s/\"${SEEKING}\"/\"${IMPLACING}\"/g"
+                ${SEEKER} -l --${IGNORE_COMMAND}-dir=vendor --${IGNORE_COMMAND}-dir=bower_components  --${IGNORE_COMMAND}-dir=node_modules --${IGNORE_COMMAND}-dir=storage/debugbar  --${IGNORE_COMMAND}-dir=storage/logs  --${IGNORE_COMMAND}-dir=app/Stubs "$SEEKING" --print0 | xargs -0 ${REPLACER}  -i  -e s/"$SEEKING"/"$IMPLACING"/g 
 fi
 #echo "    ";.
 #./replace /usr/bin/env\ bash  /bin/bash

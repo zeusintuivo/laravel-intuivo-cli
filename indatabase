@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# @author Jesus Alcaraz <jesus@gammapartners.com>
+#
 # set working directory as the scripts location during the execution of script 
 cd "$(dirname "$0")"
 

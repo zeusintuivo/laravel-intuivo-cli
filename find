@@ -31,8 +31,10 @@ trap '{ msg_red " KEYBOARD INTERRUPT."; exit 130; }' INT
 if command -v ag >/dev/null 2>&1; then
   {
 
+
     #msg_green " ag INSTALLED."
-    SEEKER="ag";
+    # -s  is for case sensitive 
+    SEEKER="ag -s ";
   }
 else 
   {

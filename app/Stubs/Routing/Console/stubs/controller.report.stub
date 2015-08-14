@@ -12,13 +12,10 @@ use {{rootNamespace}}Http\Requests;
 use {{rootNamespace}}Http\Controllers\Controller;
 use {{appName}}\Http\Controllers\BaseController;
 
-use Illuminate\Http\Request;
-
 use {{appName}}\Models\{{dir}}\{{file}};
 use {{appName}}\Http\Requests\{{dir}}\Create{{file}}_Request;
 use {{appName}}\Http\Requests\{{dir}}\Delete{{file}}_Request;
 
-use PHIWeb\Http\Controllers\Controller;
 use PHIWeb\Http\Controllers\ReportController;
 
 use PHIWeb\Models\School\SchoolYear;
@@ -31,7 +28,7 @@ use PHIWeb\Models\Organization\School;
  *
  * @route ... reports/{{filo_dir}}/{{filo}}/
  * @url   ... http://localhost:8000/reports/{{filo_dir}}/{{filo}}/date/{{curdate}}/
- * @url   ... http://localhost/reports/{{filo_dir}}/{{filo}}/date/{{curdate}}//
+ * @url   ... http://localhost/reports/{{filo_dir}}/{{filo}}/date/{{curdate}}/
  *
  * @test  ... reports/{{filo_dir}}/{{filo}}/date/{{curdate}}/
  *

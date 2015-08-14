@@ -42,6 +42,11 @@ use PHIWeb\Models\Screen\ScreenCustom;
 use PHIWeb\Models\Screen\ScreenVision;
 use PHIWeb\Models\Screen\ScreenBmi;
 use PHIWeb\Models\Screen\ScreenScoliosis;
+use PHIWeb\Models\Screen\ScreenPhysical;
+use PHIWeb\Models\Screen\ScreenDental;
+use PHIWeb\Models\Screen\ScreenDHSP;
+use PHIWeb\Models\Screen\ScreenProgressNotes;
+use PHIWeb\Models\Screen\ScreenProgressNoteComments;
 
 
 use PHIWeb\Models\Person\Person;

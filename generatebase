@@ -213,16 +213,22 @@ $file_plural_snake_migration_name =  camelToUnderScore($file_plural);
 
 
 //NaME CHANGE TEST
-// echo "file:". $file."\n";
-// echo "dir:". $dir. "\n";
-// echo "file_plural:". $file_plural. "\n";
-// echo $file_plural_snake. "\n";
+echo "file:". $file."\n";
+echo "dir:". $dir. "\n";
+echo "file_plural:". $file_plural. "\n";
+echo $file_plural_snake. "\n";
 
 $filo = Str::snake($file);
 $filo_dir = Str::snake($dir);
-// echo "filo:". $filo ."\n";
-preg_match_all('!\d+!', $file, $arr);
-$filo_number = $arr[0][0];
+echo "filo:". $filo ."\n";
+
+if (!empty($file)) {
+
+	preg_match_all('!\d+!', $file, $arr);
+	$filo_number = $arr[0][0];
+} else {
+	$filo_number = 0;
+}
 
 $unique_report_name = "";
 $unique_report_name_snake = "";
@@ -426,6 +432,7 @@ function generateFromStub(Array $replace_array, $base_folder, $stub_file, $targe
 	#
 	# Write  file 
 	#
+	dump("WRITING: $file_targeted ");
 	file_put_contents($file_targeted, $template);
 
 

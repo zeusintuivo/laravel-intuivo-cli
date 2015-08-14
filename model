@@ -27,7 +27,7 @@ $USAGE = " \033[38;5;226m
 
 	    For reports
 	            model/  modelname                          type    who 
-	    model DailyLog/DailyLog_1015_Report_HealthStudents report staff
+	    model DailyLog/DailyLog_1015_Report_HealthStudents report students
 	  ./model DailyLog/DailyLog_1015_Report_HealthStudents report staff
 
 	    [optional] can be:
@@ -201,7 +201,12 @@ darken($colors, "", "");
 $replace_array["namespace"] = $replace_array["appName"]."\\Http\\Controllers\\".$replace_array["dir"];
 
 $base_folder = "app/Http/Controllers";
-$target_file = $entity.'Controller.php';
+if ($this_is_a_report==1) {
+	$target_file = $entity.'_Controller.php';
+} else {
+	$target_file = $entity.'Controller.php';
+		
+}
 $stub_file = "app/Stubs/Routing/Console/stubs/controller.$model_type.stub";
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " controller for ");
@@ -235,11 +240,15 @@ replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $vers
 $replace_array["namespace"] = $replace_array["appName"]."\\Http\\Requests\\".$replace_array["dir"];
 
 $base_folder = "app/Http/Requests";
-$target_file = $dir.'/Create'.$file.'Request.php';
+if ($this_is_a_report==1) {
+	$target_file = $dir.'/Create'.$file.'_Request.php';
+} else {
+	$target_file = $dir.'/Create'.$file.'Request.php';
+		
+}
 $stub_file = "app/Stubs/Foundation/Console/stubs/request-create.$model_type.stub";
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " Create Request for ");
-
 
 /*
 $request_name = $dir.'/Delete'.$file.'Request';
@@ -255,7 +264,12 @@ replace($colors, "app/Http/Requests/".$request_name.".php", '{{revision}}', $rev
 replace($colors, "app/Http/Requests/".$request_name.".php", '{{version}}', $version);
 */
 $base_folder = "app/Http/Requests";
-$target_file = $dir.'/Delete'.$file.'Request.php';
+if ($this_is_a_report==1) {
+	$target_file = $dir.'/Delete'.$file.'_Request.php';
+} else {
+	$target_file = $dir.'/Delete'.$file.'Request.php';
+		
+}
 $stub_file = "app/Stubs/Foundation/Console/stubs/request-delete.$model_type.stub";
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " Delete Request for ");
@@ -277,6 +291,7 @@ $target_file = $entity.'Seeder.php';
 $stub_file = "app/Stubs/Database/Seeds/stubs/seed.$model_type.stub";
 
 $file_targeted = generateFromStub($replace_array, $base_folder, $stub_file, $target_file, $dir, $file, $colors, " seed for ");
+
 
 /*
 $replace_array["namespace"] = $replace_array["appName"]."\\database\\seeds\\".$replace_array["dir"];
@@ -302,6 +317,7 @@ say($colors, "Seed", $said);
 #
 #
 #
+
 $base_folder = "database/reports";
 $target_file =  $dir . '/'. $filo.'_report.sql';
 @mkdir($base_folder);
@@ -463,6 +479,7 @@ if ($this_is_a_report==1) {
 	#controller base
 	$controller_base=".trace/".$filo_number."/-controller-/";
 	$model_base=$controller_base.$file."_Controller.php/method\ @\ ctrlr_".$filo_number."_".$who."_".$unique_report_name_snake."/-model-/";
+	$model_based=$controller_base.$file."_Controller.php/method @ ctrlr_".$filo_number."_".$who."_".$unique_report_name_snake."/-model-/";
 	$report_base=$model_base.$file.".php/method\ @\ 1.model_".$filo_number."_".$who."_".$unique_report_name_snake."/-db-/CALL\ final_rpt_".$filo_number."_".$who."_".$unique_report_name_snake;
 
 	# intial folder
@@ -470,6 +487,8 @@ if ($this_is_a_report==1) {
 	$said=@exec('echo "'.$command.'" > .trace_gen');
 	$said=@exec('echo " " >> .trace_gen');
 	$said=@exec($command);
+
+
 
 
 
@@ -495,16 +514,19 @@ if ($this_is_a_report==1) {
 	$said=@exec('echo " " >> .trace_gen');
 	$said=@exec($command);
 
+
 	#link report loader sql
 	$target_command = $sp_file;
 		// if (file_exists($target_command)) unlink($target_command);
 	$linkname_command = ".trace/".$filo_number."/-sql-/".$filo_number."_loader.sql";
 
-    $command=("ln -s -T $target_command $linkname_command");
+    $command=("ln -s -T ../../../$target_command $linkname_command");
 	$said=@exec('echo "'.$command.'" >> .trace_gen');
 	$said=@exec('echo " " >> .trace_gen');
-	// if (!file_exists($linkname_command)) $said=@exec($command);
-	if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
+	unlink($linkname_command);
+	say($colors, "loader sql", $linkname_command);
+	if (!file_exists($linkname_command)) $said=@shell_exec($command);
+	// if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
 	
 	#
 	#
@@ -516,16 +538,19 @@ if ($this_is_a_report==1) {
 	$target_command = "database/reports/done/".$dordir."/".$unique_report_name;
 		// if (file_exists($target_command)) unlink($target_command);
 	$linkname_command = ".trace/".$filo_number."/-sql-/sql_work_".$unique_report_name;
-    $command=("ln -s -T $target_command $linkname_command");
+    $command=("ln -s -T ../../../$target_command $linkname_command");
 	// symlink($target_command, $linkname_command);
 
 	$said=@exec('echo "'.$command.'" >> .trace_gen');
 	$said=@exec('echo " " >> .trace_gen');
-	// if (!file_exists($linkname_command))   $said=@exec($command);
-	if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
+	unlink($linkname_command);
+	say($colors, "sql work folder", $linkname_command);
+	if (!file_exists($linkname_command))   $said=@shell_exec($command);
+	// if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
 
 	#link controller 
 	$command=("find app/Http/Controllers/ -name \"*".$filo_number."*.*\"");
+	
 	$said=@exec('echo "'.$command.'" >> .trace_gen');
 	$said=@exec('echo " " >> .trace_gen');
 	$controller_file=@exec($command);
@@ -541,8 +566,14 @@ if ($this_is_a_report==1) {
 	$current_dir = getcwd();
 	chdir($controller_base);
 	$command=("ln -s -T $target_command $linkname_command");
-	if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
-	// if (!file_exists($linkname_command))  $said=@exec($command);
+
+	$said=@exec('echo "#Controller: " >> .trace_gen');
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	unlink($linkname_command);
+	say($colors, "controller", $linkname_command);
+	// if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
+	if (!file_exists($linkname_command))  $said=@shell_exec($command);
 	chdir($current_dir);
 
 	#
@@ -554,15 +585,36 @@ if ($this_is_a_report==1) {
 	#
 	#
 	#
-	$command=("find app/Models/ -name \"*".$filo_number."*.*\"");
+	$said=@exec('echo "#Model: " >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
 	$said=@exec('echo "'.$command.'" >> .trace_gen');
 	$said=@exec('echo " " >> .trace_gen');
+	
+
+	$command=("find app/Models/ -name \"*".$filo_number."*.*\"");
 	$model_file=@exec($command);
+	
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	$said=@exec('echo "cd '.$model_base.'" >> .trace_gen');
+	$said=@exec('echo "'.str_repeat("cd ..;", sizeof(explode("/", $model_base))-1).'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+	
+	$current_dir = getcwd();
+	say($colors, "curdir", $current_dir);
+	// $model_based = preg_replace("\\ ",  "", $model_base);
+	say($colors, "model_base", $model_base);
+	say($colors, "model_based", $model_based);
+
+	chdir($model_based);
 
 
 	$target_command = "../../../../../../".$model_file;
 		// if (file_exists($target_command)) unlink($target_command);
-	$linkname_command = $model_base.$filo_number."_model.php";
+	$linkname_command = $filo_number."_model.php";
+	say($colors, "model", $linkname_command);
+	unlink($linkname_command);
+
 	// $said=@exec('echo "cd '.$model_base.'" >> .trace_gen');
 	$command=("ln -s -T $target_command $linkname_command");
 	$said=@exec('echo "'.$command.'" >> .trace_gen');
@@ -576,7 +628,15 @@ if ($this_is_a_report==1) {
 	// dd("die");
     // if (!file_exists($linkname_command))  symlink($target_command, $linkname_command);
 	if (!file_exists($linkname_command))  $said=@exec($command);
-	// chdir($current_dir);
+	chdir($current_dir);
+
+	$command=("tree .trace/".$filo_number);
+	say($colors, "tree", $command);
+	$said=@shell_exec($command);
+	
+	$said=@exec('echo "'.$command.'" >> .trace_gen');
+	$said=@exec('echo " " >> .trace_gen');
+
 
 }
 

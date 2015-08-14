@@ -3,8 +3,8 @@
 /bower_components
 /.idea
 /.settings
-/.trace
 /.edi
+/.trace
 /storage/logs
 /storage/debugbar
 /database/inserts
@@ -13,8 +13,8 @@ node_modules/
 bower_components/
 .idea/
 .settings/
-.trace/
 .edi/
+.trace/
 storage/logs/
 storage/debugbar/
 database/inserts/

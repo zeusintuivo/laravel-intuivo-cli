@@ -413,7 +413,7 @@ trait ModelBasicsTester {
 				// dump($entityClass->foreignkeys());
 				if ( sizeof($use_not_found) > 4 ) {     //    <---- TOPIF 
 					$output->writeln("<error>- - - - please</error> add <error>the following inside the class</error> <info>$file_name </info> ");							
-					$output->writeln("<comment>- - - - or </comment> remove <comment>them its refeerences from migration file </comment> <info>$migration_file   </info> ");							
+					$output->writeln("<comment>- - - - or </comment> remove <comment>its references from the migration file </comment> <info>$migration_file   </info> ");							
 					foreach ($use_not_found as $k => $value) {
 						if ($value=="params" && $use_not_found[$k+1]=="foreign") {
 							//
@@ -466,7 +466,7 @@ trait ModelBasicsTester {
 
 
 
-				$output->writeln('<info>- remove extra fields test - </info>');   
+				$output->writeln('<info>- remove extra fields test compared to those in the Table * if asked to remove do a describe - </info>');   
 				// dd($all_fields_in_class);   
 				# 
 				# Compare and fail if not found                                        ++++ REMOVE EXTRA FIELDS 

@@ -4,6 +4,8 @@
 use DB;
 use PDO;
 
+use Illuminate\Database\Eloquent\Collection;
+
 trait ModelParams {
 
 
@@ -11,6 +13,7 @@ trait ModelParams {
      * Sample Use
      * use PHIWeb\Models\Param\Param; 
      * Param::byType();
+     * Param::byType('report_dental_name_types');
      * Param::byType('type', 'type');
      * Param::byType('procedures');
      * Param::byType('procedures', 'type');     
@@ -51,7 +54,7 @@ trait ModelParams {
     	$thistable = static::getClassCallerName();
 
         return  DB::table(DB::RAW($thistable . ' a'))
-                ->select(['a.id', 'a.display_name', 'b.display_name as '.$display_name_name])
+                ->select(['a.id', 'a.display_name',  'a.longer_name', 'a.numeric_value', 'b.display_name as '.$display_name_name])
                 ->join(DB::RAW($thistable . ' b'),'a.param_type_id', '=', 'b.id')
                 ->where('b.display_name', [$typeName])
                 ->where('a.active', ['1'])
@@ -229,6 +232,23 @@ trait ModelParams {
                 ->get();
     }  
 
+   /**
+     * Sample use: 
+     * use PHIWeb\Models\Param\Param; 
+     * Param::typesByEntity();
+     * Param::typesByEntity('Dental');
+     * 
+     * @author Jesus Alcaraz <jesus@gammapartners.com>
+     * @version 1
+     */
+    public static function typesByEntity($entityName='entity'){
+        DB::setFetchMode(PDO::FETCH_ASSOC); //set results to array
+
+        $res = ((  DB::select("call paramsTypesByEntity('$entityName');") ));
+        // $res; = (new Collection(  DB::select("call paramsTypesByEntity('$entityName');") ));
+        DB::setFetchMode(PDO::FETCH_CLASS); //set results to array off , objects on
+        return $res;
+    }
 
     /**
      * Sample use:

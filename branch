@@ -1,4 +1,0 @@
-#!/bin/bash
-# @author Jesus Alcaraz <jesus@gammapartners.com>
-#
-git checkout "$@";

@@ -2,7 +2,7 @@
 # @author Jesus Alcaraz <jesus@gammapartners.com>
 #
 
-# check to see if I used a message, then it will behave as a put 
+# check to see if I used a message, then it will behave as a put
 #bash shell script check input argument
 if [ -z "$1" ]
   then
@@ -11,4 +11,4 @@ if [ -z "$1" ]
 fi
 
 
-./put "update $*";
+put "update $*";

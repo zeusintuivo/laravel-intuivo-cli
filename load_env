@@ -1,8 +1,9 @@
+#!/usr/bin/env php
 <?php
 # @author Jesus Alcaraz <jesus@gammapartners.com>
 #
 # Procedural Programming to load env for this laravel project
-# 
+#
 #
 
 
@@ -15,7 +16,7 @@
 //
 
 # Before Loading anything Check Arguments Passed
-# Get argv 
+# Get argv
 // if (!isset($argv) || !isset($argv[1])) {
 // 	echo "
 // 	Sample Usage:    - expects only one Dir not more
@@ -30,13 +31,13 @@
 /**
  * Sample Usage
  * $argv[1] = changeSlash($argv[1] );
- * 
+ *
  */
 function changeSlash($que) {
 	if (stripos($que, "\\") > 0) {
 		$que = str_replace('\\', '/', $que);
 	}
-	return $que; 
+	return $que;
 }
 
 
@@ -61,7 +62,7 @@ function createApplication() {
 	require __DIR__.'/bootstrap/autoload.php';
 
 	$app = require_once __DIR__.'/bootstrap/app.php';
-	
+
 	$kernel = $app->make('Illuminate\Contracts\Console\Kernel');
 
 	$input = new Symfony\Component\Console\Input\ArgvInput;
@@ -69,18 +70,29 @@ function createApplication() {
 
 	return $kernel;
 }
-$app = createApplication();
-
+if (file_exists(__DIR__.'/bootstrap/autoload.php')) {
+	try {
+		$app = createApplication();
+	}
+	catch(Exception $e) {
+	 echo "ERROR cannot find ".__DIR__."/bootstrap/autoload.php";
+	}
+}
 //
 //
 // Load String Files
 //
 //
-use Illuminate\Support\Pluralizer;
-use Illuminate\Support\Str;
+try {
+  eval ("use Illuminate\Support\Pluralizer;");
+  eval ("use Illuminate\Support\Str;");
+}
+catch(Exception $e) {
+ echo "ERROR cannot load use Illuminate\Support";
+}
 	//LOAD TEST
 	// echo Pluralizer::plural("PersonStatus"),"\n";
-	// echo Str::snake("PersonStatus"),"\n";	
+	// echo Str::snake("PersonStatus"),"\n";
 	// $argv[1] = changeSlash($argv[1] );
 	// echo Pluralizer::plural($argv[1]),"\n";
 	// echo Str::snake($argv[1]),"\n";
@@ -110,7 +122,15 @@ use Illuminate\Support\Str;
 // echo  getenv('DB_HOST')."\n";
 // die();
 
-Dotenv::load(__DIR__ . '/');
+if (class_exists("Dotenv")) {
+try {
+	eval("Dotenv::load(__DIR__ . '/');");
+}
+catch(Exception $e) {
+ echo "ERROR cannot load Dotenv::load";
+}
+}
+
 $DB_HOST= getenv('DB_HOST');
 $DB_DATABASE= getenv('DB_DATABASE');
 $DB_USERNAME= getenv('DB_USERNAME');
@@ -121,15 +141,37 @@ $DB_DATABASE_LOGGER= getenv('DB_DATABASE_LOGGER');
 $DB_USERNAME_LOGGER= getenv('DB_USERNAME_LOGGER');
 $DB_PASSWORD_LOGGER= getenv('DB_PASSWORD_LOGGER');
 
+$abs=exec('pwd');
+define('ABSPATH',  $abs.DIRECTORY_SEPARATOR);
+if (file_exists(ABSPATH . 'wp-config.php')) {
+
+  /** The config file resides in ABSPATH */
+  require_once(ABSPATH . 'wp-config.php');
+
+} elseif (@file_exists(dirname(ABSPATH) . '/wp-config.php')) {
+
+  /** The config file resides one level above ABSPATH but is not part of another installation */
+  require_once(dirname(ABSPATH) . '/wp-config.php');
+
+}
 
 
+if (!defined('PDO_HOST') || !defined('DB_NAME') || !defined('DB_USER') || !defined('DB_PASSWORD')) {
 
+  echo ("error" . ' null ' . "wp-config.php Fehler " . ABSPATH . 'wp-config.php');
+  die();
+} else {
+	$DB_HOST= DB_HOST;
+$DB_DATABASE= DB_NAME;
+$DB_USERNAME= DB_USER;
+$DB_PASSWORD= DB_PASSWORD;
+}
 
-
+echo "DB_HOST:$DB_HOST";
 //
 //
 //
-// Wrap snake function 
+// Wrap snake function
 //
 //
 function camelToUnderScore($name) {
@@ -150,7 +192,7 @@ require "Colors";
 
 function replace(Colors $colors, $file, $find, $replace_with) {
 	say($colors, "Reading File to Change", $file);
-	if (!file_exists($file)) { 
+	if (!file_exists($file)) {
 
 		err($colors, "File was not found:", $file);
 		return;
@@ -165,7 +207,7 @@ function replace(Colors $colors, $file, $find, $replace_with) {
 //
 //
 //
-// Load scripts for author and email 
+// Load scripts for author and email
 //
 //
 //

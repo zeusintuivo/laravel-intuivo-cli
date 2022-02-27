@@ -2,8 +2,8 @@
 <?php
 # @author Jesus Alcaraz <jesus@gammapartners.com>
 #
-# Procedural Programming dump sql from Laravel DB
-# 
+# Procedural Programming mysqldump sql from Laravel DB
+#
 #
 include('load_env');
 //TEST VALUES
@@ -13,18 +13,18 @@ include('load_env');
 // $DB_PASSWORD= "toor";
 
 # Before Loading anything Check Arguments Passed
-# Get argv 
+# Get argv
 
 $target_file = "het2.sql";
 
 # Before Loading anything Check Arguments Passed
-# Get argv 
+# Get argv
 if (!isset($argv) || !isset($argv[1])) {
 	echo "
 	Sample Usage:    - expects only one Dir not more
-	    php dumpin tablename
+	    php dump tablename
 	    ";
-	  echo ""; 	
+	  echo "";
 	shell_exec('ls *.sql  | xargs -0 echo "dumpin');
 	die(0);
 }

@@ -5,4 +5,4 @@
 
 pwd
 
-php "vendor/bin/codecept" "$@"
+php "vendor/bin/behat" "$@"
